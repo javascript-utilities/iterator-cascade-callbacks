@@ -597,23 +597,25 @@ class Iterator_Cascade_Callbacks {
     }
     /**
      * Pauses/breaks iteration when limit is reached
-     * @TODO: Finish implementing logic to allow resuming iteration
-     * @param {number} amount
+     * @param {number} amount - Number of values to compute before pausing
      * @return {this}
-     * @throws {Stop_Iteration}
+     * @throws {Pause_Iteration}
      * @this {Iterator_Cascade_Callbacks}
+     * @notes
+     * - If immediately collecting to an object, consider using `collect()` method instead
      * @example
      * const icc = new Iterator_Cascade_Callbacks([1, 2, 3, 4]);
      *
-     * const collection_one = icc.take(2).collect([]);
+     * icc.take(2);
+     *
+     * const collection_one = icc.collect([]);
      * console.log(collection_one);
      * //> [ 1, 2 ]
      *
-     * const collection_two = icc.take(2).collect([]);
+     * const collection_two = icc.collect([]);
      * console.log(collection_two);
      * //> [ 3, 4 ]
      */
-    /* istanbul ignore next */
     take(amount) {
         /**
          * @function take_wrapper
