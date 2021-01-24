@@ -55,6 +55,7 @@ Iterator that chains callback function execution
     - [Method `next`][heading__method_next]
     - [Method `skip`][heading__method_skip]
     - [Method `step`][heading__method_step]
+    - [Method `take`][heading__method_take]
 
   - [Custom Interfaces][heading__custom_interfaces]
     - [Interface `Callback_Object`][heading__interface_callback_object]
@@ -283,12 +284,14 @@ function* fibonacci() {
 
 const icc = new Iterator_Cascade_Callbacks(fibonacci);
 
-const collection = icc.filter((value) => {
+icc.filter((value) => {
   return value % 2 === 0;
 }).skip(1).map((evens) => {
   return evens / 2;
-}).take(5).collect([]);
+}).take(5);
 
+
+const collection = icc.collect([]);
 
 console.log(collection);
 //> [ 1, 4, 17, 72, 305 ]
@@ -477,18 +480,19 @@ window.addEventListener('load', () => {
     const counter = new Counter(count_start);
     const icc = new Iterator_Cascade_Callbacks(counter);
 
-    const collection = icc.filter((value) => {
+    icc.filter((value) => {
       return value % filter_modulo === 0;
     }).map((value) => {
       return value * map_multiplier;
-    }).take(take_amount).collect([]);
+    }).take(take_amount);
+
+    const collection = icc.collect([]);
 
     console.log('collection ->', collection);
     const results = `[ ${collection.join(', ')} ]`;
     output_text__results.value = results;
   });
 });
-
 ```
 
 
@@ -498,9 +502,10 @@ ______
 ## API
 [heading__api]:
   #api
-  "&#x1F523; Parameter documentation"
+  "&#x1F523; Documentation for classes, methods, paramaters, and custom types/data-structures"
 
-> Parameter documentation
+
+> Documentation for classes, methods, paramaters, and custom types/data-structures
 
 
 ---
@@ -555,8 +560,6 @@ Builds new instance of `Stop_Iteration` for throwing
 
 
 Custom error type to temporarily stop iteration prematurely
-
-**TODO** See `Iterator_Cascade_Callbacks.take` for implementation draft
 
 
 #### Method `Pause_Iteration.constructor`
@@ -1048,6 +1051,49 @@ console.log(collection);
 ```
 
 
+#### Method `take`
+[heading__method_take]: #method-take "Pauses/breaks iteration when limit is reached"
+
+
+Pauses/breaks iteration when limit is reached
+
+
+**Parameters**
+
+
+- **{number}** `amount` - Number of values to compute before pausing
+
+
+Returns `this` [**{Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks]
+
+
+Throws [**{Pause_Iteration}**][heading__class_pause_iteration]
+
+
+**Example**
+
+
+```JavaScript
+const icc = new Iterator_Cascade_Callbacks([1, 2, 3, 4]);
+
+icc.take(2);
+
+const collection_one = icc.collect([]);
+console.log(collection_one);
+//> [ 1, 2 ]
+
+const collection_two = icc.collect([]);
+console.log(collection_two);
+//> [ 3, 4 ]
+```
+
+
+**Notes**
+
+
+- If immediately collecting to an object, consider using `collect()` method instead
+
+
 ---
 
 
@@ -1203,9 +1249,6 @@ ______
 
 
 This repository may not be feature complete and/or fully functional, Pull Requests that add features or fix bugs are certainly welcomed.
-
-
-At this time all `Iterator_Cascade_Callbacks` methods seem to function as intended **except** `take`, for _reasons_ it does not play-nice after second invocation, then on third fourth and fifth invocations it goes a little nutty, and by the sixth invocation `take` is well and truly broken.
 
 
 ______
