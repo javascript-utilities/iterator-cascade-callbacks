@@ -105,7 +105,7 @@ class Test__Iterator_Cascade_Callbacks {
     this.testsMap();
     this.testsSkip();
     this.testsStep();
-    // this.testsTake();
+    this.testsTake();
 
     this.testsErrorStates();
   }
@@ -579,23 +579,72 @@ class Test__Iterator_Cascade_Callbacks {
   /**
    *
    */
-  // testsTake() {
-  //   test('take -> Can I has 2 elements?', () => {
-  //     const icc = new this.iterator_cascade_callbacks(this.array_input);
-  //     const collection = icc.take(2).collect([]);
-  //     const expected = this.array_input.slice(0, 2);
-  //     expect(collection).toStrictEqual(expected);
-  //   });
-  //   test('take -> ', () => {
-  //     const iterable = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-  //     const icc = new this.iterator_cascade_callbacks(iterable);
-  //     const collection = icc.take(2).collect([]);
-  //     (collection as any[]).push(icc.take(2).collect([]));
-  //     const expected = iterable.slice(0, 4);
-  //     expect(collection).toStrictEqual(expected);
-  //   });
-  //   // test('take -> ', () => {});
-  // }
+  testsTake() {
+    test('take -> Can I has 2 elements?', () => {
+      const icc = new this.iterator_cascade_callbacks(this.array_input);
+
+      const collection = icc.take(2).collect([]);
+
+      const expected = this.array_input.slice(0, 2);
+
+      expect(collection).toStrictEqual(expected);
+    });
+
+    test('take -> Can I has 4 elements at a time?', () => {
+      const iterable = Array(20).fill(undefined).map((_, i) => i);
+
+      const icc = new this.iterator_cascade_callbacks(iterable);
+      icc.take(4);
+
+      Array(4).fill(undefined).forEach((_, i) => {
+        const collection = icc.collect([]);
+        const expected = iterable.splice(0, 4);
+        expect(collection).toStrictEqual(expected);
+      });
+    });
+
+    test('take -> Is anything broken by callbacks prior to taking?', () => {
+      const iterable = Array(20).fill(undefined).map((_, i) => i);
+
+      const icc = new this.iterator_cascade_callbacks(iterable);
+
+      icc.map((value) => {
+        return value * 2;
+      }).take(4);
+
+      Array(4).fill(undefined).forEach((_, i) => {
+        const collection = icc.collect([]);
+
+        const expected = iterable.splice(0, 4).map((value) => {
+          return value * 2;
+        });
+
+        expect(collection).toStrictEqual(expected);
+      });
+    });
+
+    test('take -> Is anything broken by callbacks after taking?', () => {
+      const iterable = Array(20).fill(undefined).map((_, i) => i);
+
+      const icc = new this.iterator_cascade_callbacks(iterable);
+
+      icc.take(4).map((value) => {
+        return value * 2;
+      });
+
+      Array(4).fill(undefined).forEach((_, i) => {
+        const collection = icc.collect([]);
+
+        const expected = iterable.splice(0, 4).map((value) => {
+          return value * 2;
+        });
+
+        expect(collection).toStrictEqual(expected);
+      });
+    });
+
+    // test('take -> ', () => {});
+  }
 
   /**
    *
