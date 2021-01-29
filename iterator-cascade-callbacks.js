@@ -1,4 +1,5 @@
 'use strict';
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Enable `instanceof` checks for Generator functions
  */
@@ -38,9 +39,7 @@ class Stop_Iteration extends Error {
 }
 /**
  * Custom error type to temporarily stop iteration prematurely
- * @TODO: See `Iterator_Cascade_Callbacks.take` for implementation draft
  */
-/* istanbul ignore next */
 class Pause_Iteration extends Error {
     /**
      * Builds new instance of `Pause_Iteration` for throwing
@@ -67,14 +66,23 @@ class Callback_Object {
     /**
      * Builds new instance of `Callback_Object` to append to `Iterator_Cascade_Callbacks.callbacks` list
      * @param {Callback_Wrapper} callback_wrapper - Function wrapper that handles input/output between `Callback_Function` and `Iterator_Cascade_Callbacks`
+     * @param {string} name - Method name that instantiated callback, eg. `filter`
+     * @param {any[]} parameters - Array of arguments that are passed to callback on each iteration
      */
-    constructor(callback_wrapper) {
+    constructor(callback_wrapper, name, parameters) {
         this.wrapper = callback_wrapper;
         this.storage = {};
+        this.name = name;
+        if (Array.isArray(parameters)) {
+            this.parameters = parameters;
+        }
+        else {
+            this.parameters = [];
+        }
     }
     /**
      * Calls `this.wrapper` function with reference to this `Callback_Object` and `Iterator_Cascade_Callbacks`
-     * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Reference to `Iterator_Cascade_Callbacks` instance
+     * @param {ICC.Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Reference to `Iterator_Cascade_Callbacks` instance
      * @this {Callback_Object}
      */
     call(iterator_cascade_callbacks) {
@@ -93,7 +101,8 @@ class Iterator_Cascade_Callbacks {
      */
     constructor(iterable) {
         this.done = false;
-        this.value = undefined;
+        this.value = [undefined, NaN];
+        // this.value = undefined;
         this.callbacks = [];
         this.state = {
             paused: false,
@@ -136,7 +145,7 @@ class Iterator_Cascade_Callbacks {
      * @yields {[any, number]}
      */
     static *iteratorFromArray(array) {
-        for (let [index, value] of Object.entries(array)) {
+        for (const [index, value] of Object.entries(array)) {
             yield [value, Number(index)];
         }
     }
@@ -146,7 +155,7 @@ class Iterator_Cascade_Callbacks {
      * @yields {[any, string]}
      */
     static *iteratorFromObject(dictionary) {
-        for (let [key, value] of Object.entries(dictionary)) {
+        for (const [key, value] of Object.entries(dictionary)) {
             yield [value, key];
         }
     }
@@ -157,10 +166,121 @@ class Iterator_Cascade_Callbacks {
      */
     static *iteratorFromGenerator(iterator) {
         let count = 0;
-        for (let value of iterator) {
+        for (const value of iterator) {
             yield [value, count];
             count++;
         }
+    }
+    /**
+     * Returns new instance of `Iterator_Cascade_Callbacks` that yields lists of either `Yielded_Tuple` or `undefined` results
+     * @param {any[]} iterables - List of Generators, Iterators, and/or instances of `Iterator_Cascade_Callbacks`
+     * @notes
+     * - Parameters that are not an instance of `Iterator_Cascade_Callbacks` will be converted
+     * - Iteration will continue until **all** iterables result in `done` value of `true`
+     * @example - Equal Length Iterables
+     * const icc_one = new Iterator_Cascade_Callbacks([1, 2, 3]);
+     * const icc_two = new Iterator_Cascade_Callbacks([4, 5, 6]);
+     *
+     * const icc_zip = Iterator_Cascade_Callbacks.zip(icc_one, icc_two);
+     *
+     * for (let [results, count] of icc_zip) {
+     *   console.log('results ->', results, '| count ->', count);
+     * }
+     * //> results -> [ [ 1, 0 ], [ 4, 0 ] ] | count -> 0
+     * //> results -> [ [ 2, 1 ], [ 5, 1 ] ] | count -> 1
+     * //> results -> [ [ 3, 2 ], [ 6, 2 ] ] | count -> 2
+     * @example - Unequal Length Iterables
+     * const icc_three = new Iterator_Cascade_Callbacks([7, 8, 9]);
+     * const icc_four = new Iterator_Cascade_Callbacks([10, 11]);
+     *
+     * const icc_zip = Iterator_Cascade_Callbacks.zip(icc_three, icc_four);
+     *
+     * for (let [results, count] of icc_zip) {
+     *   console.log('results ->', results, '| count ->', count);
+     * }
+     * //> results -> [ [ 9, 0 ], [ 10, 0 ] ] | count -> 2
+     * //> results -> [ [ 8, 1 ], [ 11, 1 ] ] | count -> 1
+     * //> results -> [ [ 7, 2 ], undefined ] | count -> 0
+     */
+    static zip(...iterables) {
+        const zip_wrapper = function* (iterables, iterator_cascade_callbacks) {
+            const iterators = iterables.map((iterable) => {
+                if (iterable instanceof iterator_cascade_callbacks) {
+                    return iterable;
+                }
+                return new iterator_cascade_callbacks(iterable);
+            });
+            while (true) {
+                const results = iterators.map((iterator) => {
+                    return iterator.next();
+                });
+                if (results.every(({ done }) => done === true)) {
+                    break;
+                }
+                const values = results.map(({ value }) => {
+                    return value;
+                });
+                yield values;
+            }
+        };
+        return new this(zip_wrapper(iterables, this));
+    }
+    /*
+     * Returns new instance of `Iterator_Cascade_Callbacks` that yields either list of values from iterators or `undefined` results
+     * @param {any[]} iterables - List of Generators, Iterators, and/or instances of `Iterator_Cascade_Callbacks`
+     * @notes
+     * - Parameters that are not an instance of `Iterator_Cascade_Callbacks` will be converted
+     * - Iteration will continue until **all** iterables result in `done` value of `true`
+     * @example - Equal Length Iterables
+     * const icc_one = new Iterator_Cascade_Callbacks([1, 2, 3]);
+     * const icc_two = new Iterator_Cascade_Callbacks([4, 5, 6]);
+     *
+     * const icc_zip = Iterator_Cascade_Callbacks.zip(icc_one, icc_two);
+     *
+     * for (let [results, count] of icc_zip) {
+     *   console.log('results ->', results, '| count ->', count);
+     * }
+     * //> results -> [ 1, 4 ] | count -> 0
+     * //> results -> [ 2, 5 ] | count -> 1
+     * //> results -> [ 3, 6 ] | count -> 2
+     * @example - Unequal Length Iterables
+     * const icc_three = new Iterator_Cascade_Callbacks([7, 8, 9]);
+     * const icc_four = new Iterator_Cascade_Callbacks([10, 11]);
+     *
+     * const icc_zip = Iterator_Cascade_Callbacks.zip(icc_three, icc_four);
+     *
+     * for (let [results, count] of icc_zip) {
+     *   console.log('results ->', results, '| count ->', count);
+     * }
+     * //> results -> [ 9, 10 ] | count -> 2
+     * //> results -> [ 8, 11 ] | count -> 1
+     * //> results -> [ 7, undefined ] | count -> 0
+     */
+    static zipValues(...iterables) {
+        const zip_values_wrapper = function* (iterables, iterator_cascade_callbacks) {
+            const iterators = iterables.map((iterable) => {
+                if (iterable instanceof iterator_cascade_callbacks) {
+                    return iterable;
+                }
+                return new iterator_cascade_callbacks(iterable);
+            });
+            while (true) {
+                const results = iterators.map((iterator) => {
+                    return iterator.next();
+                });
+                if (results.every(({ done }) => done === true)) {
+                    break;
+                }
+                const values = results.map(({ value }) => {
+                    if (Array.isArray(value)) {
+                        return value[0];
+                    }
+                    return value;
+                });
+                yield values;
+            }
+        };
+        return new this(zip_values_wrapper(iterables, this));
     }
     /**
      * Converts list of `this.callbacks` objects to `GeneratorFunction`
@@ -168,7 +288,7 @@ class Iterator_Cascade_Callbacks {
      * @yields {Callback_Object}
      */
     *iterateCallbackObjects() {
-        for (let callback of this.callbacks) {
+        for (const callback of this.callbacks) {
             yield callback;
         }
     }
@@ -213,7 +333,8 @@ class Iterator_Cascade_Callbacks {
      */
     collectToArray(target, amount) {
         let count = 0;
-        for (let [value, index] of this) {
+        for (const results of this) {
+            const [value, index] = results;
             target.push(value);
             count++;
             if (count >= amount) {
@@ -243,7 +364,8 @@ class Iterator_Cascade_Callbacks {
      */
     collectToFunction(target, callback, amount) {
         let count = 0;
-        for (let [value, index_or_key] of this) {
+        for (const results of this) {
+            const [value, index_or_key] = results;
             callback(target, value, index_or_key, this);
             count++;
             if (count >= amount) {
@@ -268,7 +390,8 @@ class Iterator_Cascade_Callbacks {
      */
     collectToObject(target, amount) {
         let count = 0;
-        for (let [value, key] of this) {
+        for (const results of this) {
+            const [value, key] = results;
             target[key] = value;
             count++;
             if (count >= amount) {
@@ -278,8 +401,42 @@ class Iterator_Cascade_Callbacks {
         return target;
     }
     /**
+     * Returns new instance of `Iterator_Cascade_Callbacks` with copy of callbacks
+     * @param {any} iterable - Any compatible iterable object, iterator, or generator
+     * @return {Iterator_Cascade_Callbacks}
+     * @notes
+     * - New instance will share references to callback wrapper functions
+     * @example
+     * const iterable_one = [1, 2, 3, 4, 5];
+     * const iterable_two = [9, 8, 7, 6, 5];
+     *
+     * const icc_one = new Iterator_Cascade_Callbacks(iterable_one);
+     *
+     * icc_one.filter((value) => {
+     *   return value % 2 === 0;
+     * }).map((evens) => {
+     *   return evens / 2;
+     * });
+     *
+     * const icc_two = icc_one.copyCallbacksOnto(iterable_two);
+     *
+     * console.log('Collection One ->', icc_one.collect([]));
+     * //> [ 1, 2 ]
+     * console.log('Collection Two ->', icc_two.collect([]));
+     * //> [ 4, 3 ]
+     */
+    copyCallbacksOnto(iterable) {
+        const icc = new this.constructor(iterable);
+        icc.callbacks = this.callbacks.map((callback_object) => {
+            const callback_wrapper = callback_object.wrapper;
+            return new Callback_Object(callback_wrapper, callback_object.name, callback_object.parameters);
+        });
+        return icc;
+    }
+    /**
      * Sets `this.value` if callback function returns _truthy_, else consumes `this.iterator` and recomputes value for callback to test
      * @param {Callback_Function} callback - Function that determines truth of `value` and/or `index_or_key` for each iteration
+     * @param {...any[]} parameters - List of arguments that are passed to callback on each iteration
      * @return {this}
      * @this {Iterator_Cascade_Callbacks}
      * @example
@@ -292,7 +449,7 @@ class Iterator_Cascade_Callbacks {
      * console.log(collection);
      * //> [ 8, 6 ]
      */
-    filter(callback) {
+    filter(callback, ...parameters) {
         /**
          * @function filter_wrapper
          * @type {Callback_Wrapper}
@@ -300,8 +457,9 @@ class Iterator_Cascade_Callbacks {
          * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
          */
         const filter_wrapper = (callback_object, iterator_cascade_callbacks) => {
+            const { parameters } = callback_object;
             let [value, index_or_key] = iterator_cascade_callbacks.value;
-            let results = callback(value, index_or_key, { iterator_cascade_callbacks, callback_object });
+            let results = callback(value, index_or_key, { iterator_cascade_callbacks, callback_object }, ...parameters);
             if (results) {
                 return;
             }
@@ -314,7 +472,7 @@ class Iterator_Cascade_Callbacks {
                     throw new Stop_Iteration('this.filter says this.iterator is done');
                 }
                 const iterate_callbacks = iterator_cascade_callbacks.iterateCallbackObjects();
-                for (let callback_other of iterate_callbacks) {
+                for (const callback_other of iterate_callbacks) {
                     if (callback_other === callback_object) {
                         [value, index_or_key] = iterator_cascade_callbacks.value;
                         results = callback(value, index_or_key, { iterator_cascade_callbacks, callback_object });
@@ -329,7 +487,66 @@ class Iterator_Cascade_Callbacks {
                 }
             }
         };
-        return this.pushCallbackWrapper(filter_wrapper);
+        return this.pushCallbackWrapper(filter_wrapper, 'filter', ...parameters);
+    }
+    /**
+     * Executes callback for each iteration
+     * @param {Callback_Function} callback - Function that generally does not mutate `value` or `index_or_key` for `Iterator_Cascade_Callbacks` instance
+     * @param {...any[]} parameters - List of arguments that are passed to callback on each iteration
+     * @notes
+     * - If mutation of `value` or `index_or_key` are desired then `map` is a better option
+     * - No protections are in place to prevent mutation of `value` or `index_or_key` Objects
+     * @example
+     * const icc = new Iterator_Cascade_Callbacks([9, 8, 7, 6, 5]);
+     *
+     * const collection = icc.forEach((value) => {
+     *   console.log(value);
+     * }).collect([]);
+     *
+     * console.log(collection);
+     * //> [ 9, 8, 7, 6, 5 ]
+     */
+    forEach(callback, ...parameters) {
+        /**
+         * @function for_each_wrapper
+         * @param {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
+         * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
+         */
+        const for_each_wrapper = (callback_object, iterator_cascade_callbacks) => {
+            const { parameters } = callback_object;
+            const [value, index_or_key] = iterator_cascade_callbacks.value;
+            callback(value, index_or_key, { callback_object, iterator_cascade_callbacks }, ...parameters);
+        };
+        return this.pushCallbackWrapper(for_each_wrapper, 'forEach', ...parameters);
+    }
+    /**
+     * Useful for debugging and inspecting iteration state
+     * @param {Callback_Function} callback - Function that logs something about each iteration
+     * @param {...any[]} parameters - List of arguments that are passed to callback on each iteration
+     * @example
+     * function inspector(value, index_or_key, { callback_object, iterator_cascade_callbacks }, ...parameters) {
+     *   console.log('value ->', value);
+     *   console.log('index_or_key ->', index_or_key);
+     *   console.log('callback_object ->', callback_object);
+     *   console.log('iterator_cascade_callbacks ->', iterator_cascade_callbacks);
+     * }
+     *
+     * const icc = new Iterator_Cascade_Callbacks([9, 8, 7, 6, 5]);
+     *
+     * const collection = icc.filter((value) => {
+     *   return value % 2 === 0;
+     * }).inspect(inspector).map((even) => {
+     *   return even / 2;
+     * }).inspect(inspector).collect([]);
+     */
+    inspect(callback, ...parameters) {
+        /* istanbul ignore next */
+        const inspect_wrapper = (callback_object, iterator_cascade_callbacks) => {
+            const { parameters } = callback_object;
+            const [value, index_or_key] = iterator_cascade_callbacks.value;
+            callback(value, index_or_key, { callback_object, iterator_cascade_callbacks }, ...parameters);
+        };
+        return this.pushCallbackWrapper(inspect_wrapper, 'inspect', ...parameters);
     }
     /**
      * Stops iteration when limit is reached
@@ -364,7 +581,7 @@ class Iterator_Cascade_Callbacks {
             if (callback_object.storage.count > amount) {
                 const iterate_callbacks = iterator_cascade_callbacks.iterateCallbackObjects();
                 let found_self = false;
-                for (let callback_other of iterate_callbacks) {
+                for (const callback_other of iterate_callbacks) {
                     if (found_self) {
                         callback_other.call(iterator_cascade_callbacks);
                     }
@@ -376,11 +593,12 @@ class Iterator_Cascade_Callbacks {
                 throw new Stop_Iteration('this.limit says amount has been reached');
             }
         };
-        return this.pushCallbackWrapper(limit_wrapper);
+        return this.pushCallbackWrapper(limit_wrapper, 'limit');
     }
     /**
      * Applies `callback` to modify `value` and/or `index_or_key` for each iteration
      * @param {Callback_Function} callback - Function may modify `value` and/or `index_or_key`
+     * @param {...any[]} parameters - List of arguments that are passed to callback on each iteration
      * @return {this}
      * @this {Iterator_Cascade_Callbacks}
      * @notes
@@ -397,7 +615,7 @@ class Iterator_Cascade_Callbacks {
      * console.log(collection);
      * //> [4, 3]
      */
-    map(callback) {
+    map(callback, ...parameters) {
         /**
          * @function map_wrapper
          * @type {Callback_Wrapper}
@@ -405,16 +623,17 @@ class Iterator_Cascade_Callbacks {
          * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
          */
         const map_wrapper = (callback_object, iterator_cascade_callbacks) => {
+            const { parameters } = callback_object;
             const [value, index_or_key] = iterator_cascade_callbacks.value;
-            const results = callback(value, index_or_key, { iterator_cascade_callbacks, callback_object });
-            if (Array.isArray(results)) {
+            const results = callback(value, index_or_key, { iterator_cascade_callbacks, callback_object }, ...parameters);
+            if (Array.isArray(results) && results.length === 2) {
                 iterator_cascade_callbacks.value = results;
             }
             else {
                 iterator_cascade_callbacks.value = [results, index_or_key];
             }
         };
-        return this.pushCallbackWrapper(map_wrapper);
+        return this.pushCallbackWrapper(map_wrapper, 'map', ...parameters);
     }
     /**
      * Updates `this.value` from chaining `this.callbacks` list, and `this.done` from `this.iterator.next()`
@@ -443,7 +662,7 @@ class Iterator_Cascade_Callbacks {
         this.done = yielded_result.done;
         this.value = yielded_result.value;
         if (!this.done) {
-            for (let callback_object of this.callbacks) {
+            for (const callback_object of this.callbacks) {
                 try {
                     callback_object.call(this);
                 }
@@ -488,12 +707,14 @@ class Iterator_Cascade_Callbacks {
     }
     /**
      * Instantiates `Callback_Object` with callback_wrapper and pushes to `this.callbacks` via `this.pushCallbackObject`
-     * @param {Callback_Wrapper} callback_wrapper
+     * @param {Callback_Wrapper} callback_wrapper - Wrapper for callback function that parses inputs and outputs
+     * @param {string} name - Callback wrapper name
+     * @param {...any[]} parameters - List of arguments that are passed to callback on each iteration
      * @return {this}
      * @this {Iterator_Cascade_Callbacks}
      */
-    pushCallbackWrapper(callback_wrapper) {
-        const callback_object = new Callback_Object(callback_wrapper);
+    pushCallbackWrapper(callback_wrapper, name, ...parameters) {
+        const callback_object = new Callback_Object(callback_wrapper, name, parameters);
         return this.pushCallbackObject(callback_object);
     }
     /**
@@ -539,7 +760,7 @@ class Iterator_Cascade_Callbacks {
                     throw new Stop_Iteration('this.skip says this.iterator is done');
                 }
                 const iterate_callbacks = iterator_cascade_callbacks.iterateCallbackObjects();
-                for (let callback_other of iterate_callbacks) {
+                for (const callback_other of iterate_callbacks) {
                     if (callback_other === callback_object) {
                         callback_object.storage.count++;
                         break;
@@ -548,7 +769,7 @@ class Iterator_Cascade_Callbacks {
                 }
             }
         };
-        return this.pushCallbackWrapper(skip_wrapper);
+        return this.pushCallbackWrapper(skip_wrapper, 'skip');
     }
     /**
      * Step over every _n_ iterations
@@ -583,7 +804,7 @@ class Iterator_Cascade_Callbacks {
                     throw new Stop_Iteration('this.skip says this.iterator is done');
                 }
                 const iterate_callbacks = iterator_cascade_callbacks.iterateCallbackObjects();
-                for (let callback_other of iterate_callbacks) {
+                for (const callback_other of iterate_callbacks) {
                     if (callback_other === callback_object) {
                         callback_object.storage.count++;
                         break;
@@ -593,7 +814,7 @@ class Iterator_Cascade_Callbacks {
             }
             callback_object.storage.count = 0;
         };
-        return this.pushCallbackWrapper(step_wrapper);
+        return this.pushCallbackWrapper(step_wrapper, 'step');
     }
     /**
      * Pauses/breaks iteration when limit is reached
@@ -637,7 +858,7 @@ class Iterator_Cascade_Callbacks {
             if (callback_object.storage.count > amount) {
                 const iterate_callbacks = iterator_cascade_callbacks.iterateCallbackObjects();
                 let found_self = false;
-                for (let callback_other of iterate_callbacks) {
+                for (const callback_other of iterate_callbacks) {
                     if (found_self) {
                         callback_other.call(iterator_cascade_callbacks);
                     }
@@ -649,7 +870,7 @@ class Iterator_Cascade_Callbacks {
                 throw new Pause_Iteration('this.take says amount has been reached');
             }
         };
-        return this.pushCallbackWrapper(take_wrapper);
+        return this.pushCallbackWrapper(take_wrapper, 'take');
     }
     /* istanbul ignore next */
     [Symbol.iterator]() {
