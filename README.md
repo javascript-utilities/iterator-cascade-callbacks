@@ -43,13 +43,17 @@ Iterator that chains callback function execution
     - [Method `Iterator_Cascade_Callbacks.constructor`][heading__method_iterator_cascade_callbacksconstructor]
     - [Static Method `*iteratorFromArray`][heading__static_method_iteratorfromarray]
     - [Static Method `*iteratorFromObject`][heading__static_method_iteratorfromobject]
-    - [Static Method `iteratorFromGenerator`][heading__static_method_iteratorfromgenerator]
+    - [Static Method `*iteratorFromGenerator`][heading__static_method_iteratorfromgenerator]
+    - [Static Method `zip`][heading__static_method_zip]
+    - [Static Method `zipValues`][heading__static_method_zipvalues]
     - [Method `*iterateCallbackObjects`][heading__method_iteratecallbackobjects]
     - [Method `collect`][heading__method_collect]
     - [Method `collectToArray`][heading__method_collecttoarray]
     - [Method `collectToFunction`][heading__method_collecttofunction]
     - [Method `collectToObject`][heading__method_collecttoobject]
     - [Method `filter`][heading__method_filter]
+    - [Method `forEach`][heading__method_foreach]
+    - [Method `inspect`][heading__method_inspect]
     - [Method `limit`][heading__method_limit]
     - [Method `map`][heading__method_map]
     - [Method `next`][heading__method_next]
@@ -97,7 +101,7 @@ npm install
 ```
 
 
-**Notice** as of version `0.0.1` NodeJS dependencies are for **development only**, ie. if utilizing this project within other applications or as a submodule, then no dependencies are required.
+**Notice** as of version `0.0.4` NodeJS dependencies are for **development only**, ie. if utilizing this project within other applications or as a submodule, then no dependencies are required.
 
 
 ______
@@ -707,6 +711,98 @@ Converts Iterator class or `GeneratorFunction` to `Generator`
 Yields [**{Yielded_Tuple}**][heading__type_yielded_tuple] `[any, number]`
 
 
+#### Static Method `zip`
+[heading__static_method_zip]:
+  #static-method-zip
+  "Returns new instance of `Iterator_Cascade_Callbacks` that yields lists of either `Yielded_Tuple` or `undefined` results"
+
+
+Returns new instance of `Iterator_Cascade_Callbacks` that yields lists of either `Yielded_Tuple` or `undefined` results
+
+
+**Parameters**
+
+
+- **{any[]}** `iterables` - List of Generators, Iterators, and/or instances of `Iterator_Cascade_Callbacks`
+
+
+**Example** Equal Length Iterables
+
+
+```JavaScript
+const icc_one = new Iterator_Cascade_Callbacks([1,2,3]);
+const icc_two = new Iterator_Cascade_Callbacks([4,5,6]);
+
+const icc_zip = Iterator_Cascade_Callbacks.zip(icc_one, icc_two);
+
+for (let [results, count] of icc_zip) {
+  console.log('results ->', results, '| count ->', count);
+}
+//> results -> [ [ 1, 0 ], [ 4, 0 ] ] | count -> 0
+//> results -> [ [ 2, 1 ], [ 5, 1 ] ] | count -> 1
+//> results -> [ [ 3, 2 ], [ 6, 2 ] ] | count -> 2
+```
+
+
+#### Static Method `zipValues`
+[heading__static_method_zipvalues]:
+  #static-method-zipvalues
+  "Returns new instance of `Iterator_Cascade_Callbacks` that yields either list of values from iterators or `undefined` results"
+
+
+Returns new instance of `Iterator_Cascade_Callbacks` that yields either list of values from iterators or `undefined` results
+
+
+**Parameters**
+
+
+- **{any[]}** `iterables` - List of Generators, Iterators, and/or instances of `Iterator_Cascade_Callbacks`
+
+
+**Example** Equal Length Iterables
+
+
+```JavaScript
+const icc_one = new Iterator_Cascade_Callbacks([1, 2, 3]);
+const icc_two = new Iterator_Cascade_Callbacks([4, 5, 6]);
+
+const icc_zip = Iterator_Cascade_Callbacks.zip(icc_one, icc_two);
+
+for (let [results, count] of icc_zip) {
+  console.log('results ->', results, '| count ->', count);
+}
+//> results -> [ 1, 4 ] | count -> 0
+//> results -> [ 2, 5 ] | count -> 1
+//> results -> [ 3, 6 ] | count -> 2
+```
+
+
+**Example** Unequal Length Iterables
+
+
+```JavaScript
+const icc_three = new Iterator_Cascade_Callbacks([7, 8, 9]);
+const icc_four = new Iterator_Cascade_Callbacks([10, 11]);
+
+const icc_zip = Iterator_Cascade_Callbacks.zip(icc_three, icc_four);
+
+for (let [results, count] of icc_zip) {
+  console.log('results ->', results, '| count ->', count);
+}
+//> results -> [ 9, 10 ] | count -> 2
+//> results -> [ 8, 11 ] | count -> 1
+//> results -> [ 7, undefined ] | count -> 0
+```
+
+
+**Notes**
+
+
+- Parameters that are not an instance of `Iterator_Cascade_Callbacks` will be converted
+
+- Iteration will continue until **all** iterables result in `done` value of `true`
+
+
 #### Method `*iterateCallbackObjects`
 [heading__method_iteratecallbackobjects]:
   #method-iteratecallbackobjects
@@ -846,6 +942,45 @@ console.log(collection);
 ```
 
 
+#### Method `copyCallbacksOnto`
+[heading__method_copycallbacksonto]:
+  #method-copycallbacksonto
+  "Returns new instance of `Iterator_Cascade_Callbacks` with copy of callbacks"
+
+
+Returns new instance of `Iterator_Cascade_Callbacks` with copy of callbacks
+
+
+**Parameters**
+
+
+- **{any}** `iterable` - Any compatible iterable object, iterator, or generator
+
+
+**Example**
+
+
+```JavaScript
+const iterable_one = [1, 2, 3, 4, 5];
+const iterable_two = [9, 8, 7, 6, 5];
+
+const icc_one = new Iterator_Cascade_Callbacks(iterable_one);
+
+icc_one.filter((value) => {
+  return value % 2 === 0;
+}).map((evens) => {
+  return evens / 2;
+});
+
+const icc_two = icc_one.copyCallbacksOnto(iterable_two);
+
+console.log('Collection One ->', icc_one.collect([]));
+//> [ 1, 2 ]
+console.log('Collection Two ->', icc_two.collect([]));
+//> [ 4, 3 ]
+```
+
+
 #### Method `filter`
 [heading__method_filter]:
   #method-filter
@@ -859,6 +994,8 @@ Sets `this.value` if callback function returns _truthy_, else consumes `this.ite
 
 
 - [**{Callback_Function}**][heading__type_callback_function] `callback` - Function that determines truth of `value` and/or `index_or_key` for each iteration
+
+- **{...any[]}** `parameters` - List of arguments that are passed to callback on each iteration
 
 
 Returns `this` [**{Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks]
@@ -876,6 +1013,85 @@ const collection = icc.filter((value) => {
 
 console.log(collection);
 //> [ 8, 6 ]
+```
+
+
+#### Method `forEach`
+[heading__method_foreach]: #method-foreach "Executes callback for each iteration"
+
+
+Executes callback for each iteration
+
+
+**Parameters**
+
+
+- [**{Callback_Function}**][heading__type_callback_function] `callback` - Function that generally does not mutate `value` or `index_or_key` for `Iterator_Cascade_Callbacks` instance
+
+- **{...any[]}** `parameters` - List of arguments that are passed to callback on each iteration
+
+
+Returns `this` [**{Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks]
+
+
+**Example**
+
+
+```JavaScript
+const icc = new Iterator_Cascade_Callbacks([9, 8, 7, 6, 5]);
+
+const collection = icc.forEach((value) => {
+  console.log(value);
+}).collect([]);
+
+console.log(collection);
+//> [ 9, 8, 7, 6, 5 ]
+```
+
+
+**Notes**
+
+
+- If mutation of `value` or `index_or_key` are desired then `map` is a better option
+
+- No protections are in place to prevent mutation of `value` or `index_or_key` Objects
+
+
+#### Method `inspect`
+[heading__method_inspect]:
+  #method-inspect
+  "Useful for debugging and inspecting iteration state"
+
+
+Useful for debugging and inspecting iteration state
+
+
+**Parameters**
+
+
+- [**{Callback_Function}**][heading__type_callback_function] `callback` - Function that logs something about each iteration
+
+- **{...any[]}** `parameters` - List of arguments that are passed to callback on each iteration
+
+
+**Example**
+
+
+```JavaScript
+function inspector(value, index_or_key, { callback_object, iterator_cascade_callbacks }, ...parameters) {
+  console.log('value ->', value);
+  console.log('index_or_key ->', index_or_key);
+  console.log('callback_object ->', callback_object);
+  console.log('iterator_cascade_callbacks ->', iterator_cascade_callbacks);
+}
+
+const icc = new Iterator_Cascade_Callbacks([9, 8, 7, 6, 5]);
+
+const collection = icc.filter((value) => {
+  return value % 2 === 0;
+}).inspect(inspector).map((even) => {
+  return even / 2;
+}).inspect(inspector).collect([]);
 ```
 
 
@@ -933,6 +1149,8 @@ Applies `callback` to modify `value` and/or `index_or_key` for each iteration
 
 
 - [**{Callback_Function}**][heading__type_callback_function] `callback` - Function may modify `value` and/or `index_or_key`
+
+- **{...any[]}** `parameters` - List of arguments that are passed to callback on each iteration
 
 
 Returns `this` [**{Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks]
