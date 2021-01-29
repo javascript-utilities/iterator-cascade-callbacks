@@ -4,9 +4,7 @@
 'use strict';
 
 
-interface Count_Iterator {
-  constructor: typeof Count_Iterator;
-}
+import { ICC } from "../@types/iterator-cascade-callbacks";
 
 
 /**
@@ -32,44 +30,13 @@ class Count_Iterator {
 };
 
 
-
-/**
- * Enables static methods to be called from within class methods
- * @see {link} - https://github.com/Microsoft/TypeScript/issues/3841
- */
-interface Test__Iterator_Cascade_Callbacks {
-  constructor: typeof Test__Iterator_Cascade_Callbacks;
-}
-
-/**
- * Enables static methods to be called from within class methods
- * @see {link} - https://github.com/Microsoft/TypeScript/issues/3841
- * @see {link} - https://stackoverflow.com/questions/12952248/interfaces-with-construct-signatures-not-type-checking
- */
-interface Iterator_Cascade_Callbacks {
-  // constructor: typeof Iterator_Cascade_Callbacks;
-  new(arg: any): Iterator_Cascade_Callbacks;
-  iteratorFromArray(iterable: any[]): Generator<any[], void, unknown>;
-  iteratorFromObject(iterable: any[]): Generator<any[], void, unknown>;
-  iteratorFromGenerator(iterable: any[]): Generator<any[], void, unknown>;
-  UUID(): string;
-}
-
-
 /**
  * Tests methods for instance(s) of `Iterator_Cascade_Callbacks` class
  */
 class Test__Iterator_Cascade_Callbacks {
-  iterator_cascade_callbacks: Iterator_Cascade_Callbacks;
-
-  array_input: any[];
-  class_input: any;
-  // class_input: Count_Iterator;
-  // class_input: Function | Count_Iterator;
-  object_input: { [key: string]: any };
-  generator_input: Function;
-  iterator_input: { next: Function };
-
+  /**
+   *
+   */
   constructor() {
     this.iterator_cascade_callbacks = require('../iterator-cascade-callbacks').Iterator_Cascade_Callbacks;
 
@@ -92,6 +59,8 @@ class Test__Iterator_Cascade_Callbacks {
 
     /* Test `static` methods */
     this.testIteratorFromArray();
+    this.testsZip();
+    this.testsZipValues();
 
     /* Test instance methods */
     this.testCollectToArray();
@@ -99,14 +68,20 @@ class Test__Iterator_Cascade_Callbacks {
     this.testCollectToObject();
     this.testCollect();
 
+    this.testsCopyCallbacksOnto();
+
     this.testsFilter();
-    this.testsNext();
+    this.testsForEach();
+    this.testsInspect();
     this.testsLimit();
+    this.testsNext();
     this.testsMap();
     this.testsSkip();
     this.testsStep();
     this.testsTake();
 
+    /* Test Edge cases and Error states */
+    this.testsEdgeCases();
     this.testsErrorStates();
   }
 
@@ -196,6 +171,46 @@ class Test__Iterator_Cascade_Callbacks {
   /**
    *
    */
+  testsCopyCallbacksOnto() {
+    test('copyCallbacksOnto -> Can callbacks be copied to another instance of Iterator_Cascade_Callbacks?', () => {
+      const iterable_one = [1, 2, 3, 4, 5];
+      const iterable_two = [9, 8, 7, 6, 5];
+
+      const icc_one = new this.iterator_cascade_callbacks(iterable_one);
+
+      icc_one.filter((value) => {
+        return value % 2 === 0;
+      }).map((evens) => {
+        return evens / 2;
+      });
+
+      const icc_two = icc_one.copyCallbacksOnto(iterable_two);
+
+      const expected_one = iterable_one.filter((value) => {
+        return value % 2 === 0;
+      }).map((evens) => {
+        return evens / 2;
+      });
+
+      const expected_two = iterable_two.filter((value) => {
+        return value % 2 === 0;
+      }).map((evens) => {
+        return evens / 2;
+      });
+
+      const collection_one = icc_one.collect([]);
+      const collection_two = icc_two.collect([]);
+
+      expect(collection_one).toStrictEqual(expected_one);
+      expect(collection_two).toStrictEqual(expected_two);
+    });
+
+    // test('copyCallbacksOnto ->', () => {});
+  }
+
+  /**
+   *
+   */
   testCollectToObject() {
     test('collectToObject -> Are Objects unmodified without callbacks?', () => {
       const icc = new this.iterator_cascade_callbacks(this.object_input);
@@ -203,7 +218,7 @@ class Test__Iterator_Cascade_Callbacks {
       expect(collection).toStrictEqual(this.object_input);
     });
 
-    test('collectToObject ->', () => {
+    test('collectToObject -> Is it okay to limit collection amount?', () => {
       const iterable = Array(20).fill(undefined).map((_, i) => i);
 
       const icc = new this.iterator_cascade_callbacks(iterable);
@@ -229,7 +244,7 @@ class Test__Iterator_Cascade_Callbacks {
   testCollectToFunction() {
     test('collectToFunction -> Are custom collecter callback functions suported?', () => {
       const map = new Map();
-      const collectToMap: Collect_To_Function = (target, value, index_or_key) => {
+      const collectToMap: ICC.Collect_To_Function = (target, value, index_or_key) => {
         (target as Map<(number | string), any>).set(index_or_key, value);
       };
 
@@ -280,7 +295,7 @@ class Test__Iterator_Cascade_Callbacks {
     });
 
     test('collect -> Is a custom collector function recognized correctly?', () => {
-      const collectToDictionary: Collect_To_Function = (target, value, index_or_key) => {
+      const collectToDictionary: ICC.Collect_To_Function = (target, value, index_or_key) => {
         if (!target.hasOwnProperty(index_or_key)) {
           target[index_or_key] = value;
         }
@@ -375,6 +390,27 @@ class Test__Iterator_Cascade_Callbacks {
   /**
    *
    */
+  testsForEach() {
+    test('forEach -> Is it fead values in the proper order?', () => {
+      const expected = this.array_input.map((value) => {
+        return value * 2;
+      });
+
+      const icc = new this.iterator_cascade_callbacks(this.array_input);
+
+      icc.map((value) => {
+        return value * 2;
+      }).forEach((value, index_or_key, { callback_object, iterator_cascade_callbacks }, expected) => {
+        expect(value).toStrictEqual(expected.shift());
+      }, expected).collect([]);
+    });
+
+    // test('forEach ->', () => {});
+  }
+
+  /**
+   *
+   */
   testsLimit() {
     test('limit -> Can I has 2 elements?', () => {
       const icc = new this.iterator_cascade_callbacks(this.array_input);
@@ -417,13 +453,37 @@ class Test__Iterator_Cascade_Callbacks {
   }
 
   /**
+   * @TODO: Sort out why JestJS does not recognize tests as covering lines within `inspect_wrapper` function
+   */
+  testsInspect() {
+    test('inspect -> Is it possible to inspect before and after `map` callback?', () => {
+      const expected_one = [...this.array_input];
+      const expected_two = this.array_input.map((value) => {
+        return value * 2;
+      });
+
+      const icc = new this.iterator_cascade_callbacks(this.array_input);
+      icc.inspect((value, index_or_key, { callback_object, iterator_cascade_callbacks }, ...paramaters) => {
+        expect(value).toStrictEqual(paramaters[0].shift());
+      }, expected_one).map((value) => {
+        return value * 2;
+      }).inspect((value, index_or_key, { callback_object, iterator_cascade_callbacks }, ...paramaters) => {
+        expect(value).toStrictEqual(paramaters[0].shift());
+      }, expected_two);
+    });
+
+    // test('inspect ->', () => {});
+  }
+
+  /**
    *
    */
   testsNext() {
     test('next -> Will `for` loop without callbacks yield expected values', () => {
       const input_copy = [...this.array_input];
       const icc = new this.iterator_cascade_callbacks(this.array_input);
-      for (let [value, index] of icc) {
+      for (let results of icc) {
+        const [ value, index ] = (results as ICC.Yielded_Tuple);
         const expected = input_copy.shift();
         expect(value).toStrictEqual(expected);
       }
@@ -649,6 +709,121 @@ class Test__Iterator_Cascade_Callbacks {
   /**
    *
    */
+  testsZip() {
+    test('zip -> Is it possible to zip number and character arrays into Iterator_Cascade_Callbacks instance?', () => {
+      const icc_zip = this.iterator_cascade_callbacks.zip([1, 2, 3], [...'abc']);
+      const collection = icc_zip.collect([]);
+
+      const expected = [
+        [ [ 1, 0 ], [ 'a', 0 ] ],
+        [ [ 2, 1 ], [ 'b', 1 ] ],
+        [ [ 3, 2 ], [ 'c', 2 ] ],
+      ];
+
+      expect(collection).toStrictEqual(expected);
+    });
+
+    test('zip -> Is it possible to zip instances of Iterator_Cascade_Callbacks?', () => {
+      const icc_one = new this.iterator_cascade_callbacks([1, 2, 3]);
+      icc_one.map((value) => {
+        return value * 2;
+      });
+
+      const icc_two = new this.iterator_cascade_callbacks([9, 8, 7]);
+      icc_two.map((value) => {
+        return value * 2;
+      });
+
+      const icc_zip = this.iterator_cascade_callbacks.zip(icc_one, icc_two);
+      const collection = icc_zip.collect([]);
+
+      const expected = [
+        [ [2, 0], [18, 0] ],
+        [ [4, 1], [16, 1] ],
+        [ [6, 2], [14, 2] ],
+      ];
+
+      expect(collection).toStrictEqual(expected);
+    });
+
+    // test('zip ->', () => {});
+  }
+
+  /**
+   *
+   */
+  testsZipValues() {
+    test('zipValues -> Will it zip values of `Iterator_Cascade_Callbacks` instances?', () => {
+      const icc_one = new this.iterator_cascade_callbacks([1, 2, 3]);
+      const icc_two = new this.iterator_cascade_callbacks([4, 5, 6]);
+      const icc_zip = this.iterator_cascade_callbacks.zipValues(icc_one, icc_two);
+
+      const collection = icc_zip.collect([]);
+
+      const expected = [
+        [ 1, 4 ],
+        [ 2, 5 ],
+        [ 3, 6 ],
+      ];
+
+      expect(collection).toStrictEqual(expected);
+    });
+
+    test('zipValues -> Will coerce iterables into `Iterator_Cascade_Callbacks` instances?', () => {
+      const icc_zip = this.iterator_cascade_callbacks.zipValues([1, 2, 3], [...'abc']);
+      const collection = icc_zip.collect([]);
+
+      const expected = [
+        [ 1, 'a' ],
+        [ 2, 'b' ],
+        [ 3, 'c' ],
+      ];
+
+      expect(collection).toStrictEqual(expected);
+    });
+
+    test('zipValues -> What happens when iterators are uneven in length?', () => {
+      const icc_zip = this.iterator_cascade_callbacks.zipValues([1, 2, 3], [...'ab']);
+      const collection = icc_zip.collect([]);
+
+      const expected = [
+        [ 1, 'a' ],
+        [ 2, 'b' ],
+        [ 3, undefined ],
+      ];
+
+      expect(collection).toStrictEqual(expected);
+    });
+
+    // test('zipValues ->', () => {});
+  }
+
+  /**
+   *
+   */
+  testsEdgeCases() {
+    test('testsEdgeCases -> What happens when extra parameters are provided?', () => {
+      const map_callback: ICC.Callback_Function = (value: any, index_or_key: ICC.Index_Or_Key, { callback_object, iterator_cascade_callbacks }, ...parameters): ICC.Yielded_Tuple => {
+        if (parameters.length > index_or_key) {
+          return [parameters.splice((index_or_key as number))[0], index_or_key];
+        }
+        return [value, index_or_key];
+      };
+
+      const icc = new this.iterator_cascade_callbacks([1, 2, 3, 4]);
+      icc.map(map_callback, 'first', 'second', 'third');
+
+      const collection = icc.collect([]);
+
+      expect(collection).toStrictEqual(['first', 'second', 'third', 4]);
+    });
+
+    // test('tests Edge Cases ->', () => {});
+  }
+
+  /**
+   *
+   */
   testsErrorStates() {
     test('testsErrorStates -> `.constructor()` -- Will unsported input throw an Error?', () => {
       expect(() => { new this.iterator_cascade_callbacks('Spam Flavored Ham'); }).toThrow(TypeError);
@@ -679,4 +854,43 @@ class Test__Iterator_Cascade_Callbacks {
 
 const test__iterator_cascade_callbacks = new Test__Iterator_Cascade_Callbacks();
 test__iterator_cascade_callbacks.runTests();
+
+
+/**
+ * ===========================================================================
+ *                  Custom TypeScript interfaces and types
+ * ===========================================================================
+ */
+// interface Count_Iterator {
+//   constructor: typeof Count_Iterator;
+// }
+
+
+/**
+ * Enables static methods to be called from within class methods
+ * @see {link} - https://github.com/Microsoft/TypeScript/issues/3841
+ */
+interface Test__Iterator_Cascade_Callbacks {
+  constructor: typeof Test__Iterator_Cascade_Callbacks;
+  iterator_cascade_callbacks: ICC.Iterator_Cascade_Callbacks;
+  // iterator_cascade_callbacks: Iterator_Cascade_Callbacks;
+  array_input: any[];
+  class_input: any;
+  object_input: { [key: string]: any };
+  generator_input: Function;
+  iterator_input: { next: Function };
+}
+
+// /**
+//  * Enables static methods to be called from within class methods
+//  * @see {link} - https://github.com/Microsoft/TypeScript/issues/3841
+//  * @see {link} - https://stackoverflow.com/questions/12952248/interfaces-with-construct-signatures-not-type-checking
+//  */
+// interface Iterator_Cascade_Callbacks {
+//   // constructor: typeof Iterator_Cascade_Callbacks;
+//   new(arg: any): Iterator_Cascade_Callbacks;
+//   iteratorFromArray(iterable: any[]): Generator<any[], void, unknown>;
+//   iteratorFromObject(iterable: any[]): Generator<any[], void, unknown>;
+//   iteratorFromGenerator(iterable: any[]): Generator<any[], void, unknown>;
+// }
 
