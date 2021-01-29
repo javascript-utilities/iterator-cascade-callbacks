@@ -8,8 +8,7 @@
     "ts-watch": "tsc --watch",
     "ci-test": "jest --coverage",
     "ci-build": "npm run ts-build && npm run ci-test",
-    "ci-watch": "jest --coverage --watchAll",
-    "py-serve": "python3 -m http.server --bind localhost 8080"
+    "ci-watch": "jest --coverage --watchAll"
   },
   "jest": {
     "verbose": true,
@@ -40,7 +39,10 @@
     "url": "git+ssh://git@github.com/javascript-utilities/iterator-cascade-callbacks.git"
   },
   "keywords": [
-    "iterator"
+    "generator",
+    "iterator",
+    "library",
+    "module"
   ],
   "author": "S0AndS0",
   "license": "AGPL-3.0",
