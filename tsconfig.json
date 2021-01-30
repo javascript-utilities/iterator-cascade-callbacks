@@ -9,5 +9,8 @@
     "noImplicitAny": true,
     "moduleResolution": "node"
   },
-  "include": [ "ts/**/*" ]
+  "include": [
+    "ts/**/*",
+    "@types/**/*"
+  ]
 }
