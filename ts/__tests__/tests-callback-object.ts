@@ -4,9 +4,6 @@
 'use strict';
 
 
-import { ICC } from "../@types/iterator-cascade-callbacks";
-
-
 class Test__Callback_Object {
 
   /**

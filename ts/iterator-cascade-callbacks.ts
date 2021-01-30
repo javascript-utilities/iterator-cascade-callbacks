@@ -3,9 +3,6 @@
 'use strict';
 
 
-import { ICC } from "./@types/iterator-cascade-callbacks";
-
-
 /**
  * Enable `instanceof` checks for Generator functions
  */
