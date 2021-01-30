@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 'use strict';
-Object.defineProperty(exports, "__esModule", { value: true });
 class Test__Callback_Object {
     /**
      *
