@@ -1,6 +1,6 @@
 {
   "name": "iterator-cascade-callbacks",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Iterator helper methods that enable chaining",
   "main": "iterator-cascade-callbacks.js",
   "scripts": {
