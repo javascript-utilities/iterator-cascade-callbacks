@@ -20,12 +20,24 @@ declare global {
 
     /**
      * Callback function for custom collection algorithms
-     * @param {any} target
-     * @param {value} any
-     * @param {number|string} index_or_key
+     * @param {any} target - An object that function will collect values to
+     * @param {value} any - Value portion of `Yielded_Tuple` from `Iterator_Cascade_Callbacks`
+     * @param {number|string} index_or_key - Index or Key portion of `Yielded_Tuple` from `Iterator_Cascade_Callbacks`
+     * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
      * @typedef Collect_To_Function
+     * @example
+     * const icc = new Iterator_Cascade_Callbacks({ spam: 'flavored', canned: 'ham' });
+     *
+     * const map = new Map();
+     *
+     * const collection = icc.collectToFunction(map, (target, value) => {
+     *   target.set(index_or_key, value);
+     * });
+     *
+     * console.log(collection);
+     * //> Map(2) { 'spam' => 'flavored', 'canned' => 'ham' }
      */
-    export type Collect_To_Function = (target: any, value: any, index_or_key: Index_Or_Key, this_ref: Iterator_Cascade_Callbacks) => any;
+    export type Collect_To_Function = (target: any, value: any, index_or_key: Index_Or_Key, iterator_cascade_callbacks: Iterator_Cascade_Callbacks) => any;
 
 
     /**
