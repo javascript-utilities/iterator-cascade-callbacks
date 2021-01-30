@@ -68,6 +68,7 @@ Iterator that chains callback function execution
     - [Type `Callback_Function`][heading__type_callback_function]
     - [Type `Callback_Function_References`][heading__type_callback_function_references]
     - [Type `Callback_Wrapper`][heading__type_callback_wrapper]
+    - [Type `Collect_To_Function`][heading__type_collect_to_function]
     - [Type `Dictionary`][heading__type_dictionary]
     - [Type `Index_Or_Key`][heading__type_index_or_key]
     - [Type `Yielded_Tuple`][heading__type_yielded_tuple]
@@ -101,7 +102,7 @@ npm install
 ```
 
 
-**Notice** as of version `0.0.4` NodeJS dependencies are for **development only**, ie. if utilizing this project within other applications or as a submodule, then no dependencies are required.
+**Notice** as of version `0.0.5` NodeJS dependencies are for **development only**, ie. if utilizing this project within other applications or as a submodule, then no dependencies are required.
 
 
 ______
@@ -602,7 +603,7 @@ Builds new instance of `Callback_Object` to append to `Iterator_Cascade_Callback
 **Parameters**
 
 
-- **{Callback_Wrapper}** `callback_wrapper` - Function wrapper that handles input/output between `Callback_Function` and `Iterator_Cascade_Callbacks`
+- [**{Callback_Wrapper}**][heading__type_callback_wrapper] `callback_wrapper` - Function wrapper that handles input/output between `Callback_Function` and `Iterator_Cascade_Callbacks`
 
 
 #### Method `Callback_Object.call`
@@ -829,7 +830,7 @@ Collects results from `this` to either an Array or Object
 
 - **{any[] | Object | any}** `target` - When `target` is Array values are pushed, when `target` is Object key value pares are assigned, `callback` is required for other types
 
-- **{Collect_To_Function?|number?}** `callback_or_amount` - Callback function for collecting to custom type, or amount to limit known collection object types to
+- [**{Collect_To_Function?|number?}**][heading__type_collect_to_function] `callback_or_amount` - Callback function for collecting to custom type, or amount to limit known collection object types to
 
 - **{number?}** `amount` - Limit collection to no more than amount
 
@@ -1336,7 +1337,7 @@ Classy object for storing wrapper function state between iterations
 **Properties**
 
 
-- **{Callback_Wrapper}** `wrapper` - Wrapper for callback function that parses inputs and outputs
+- [**{Callback_Wrapper}**][heading__type_callback_wrapper] `wrapper` - Wrapper for callback function that parses inputs and outputs
 
 - [**{Dictionary}**][heading__type_dictionary] `storage` - Generic dictionary like object
 
@@ -1403,6 +1404,44 @@ Wrapper for callback function that parses inputs and outputs
 - [**{Callback_Object}**][heading__interface_callback_object] `callback_object` - Instance reference to `this` of `Callback_Object`
 
 - [**{Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks] `iterator_cascade_callbacks` - Instance reference to `this` of `Iterator_Cascade_Callbacks`
+
+
+#### Type `Collect_To_Function`
+[heading__type_collect_to_function]:
+  #type-collecttofunction
+  "Callback function for custom collection algorithms"
+
+
+Callback function for custom collection algorithms
+
+
+**Parameters**
+
+
+- **{any}** `target` - An object that function will collect values to
+
+- **{value}** `any` - Value portion of `Yielded_Tuple` from `Iterator_Cascade_Callbacks`
+
+- **{number|string}** `index_or_key` - Index or Key portion of `Yielded_Tuple` from `Iterator_Cascade_Callbacks`
+
+- [**{Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks] `iterator_cascade_callbacks` - Instance reference to `this` of `Iterator_Cascade_Callbacks`
+
+
+**Example**
+
+
+```JavaScript
+const icc = new Iterator_Cascade_Callbacks({ spam: 'flavored', canned: 'ham' });
+
+const map = new Map();
+
+const collection = icc.collectToFunction(map, (target, value) => {
+  target.set(index_or_key, value);
+});
+
+console.log(collection);
+//> Map(2) { 'spam' => 'flavored', 'canned' => 'ham' }
+```
 
 
 #### Type `Dictionary`
