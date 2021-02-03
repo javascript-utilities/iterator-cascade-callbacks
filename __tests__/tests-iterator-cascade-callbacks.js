@@ -26,6 +26,8 @@ class Test__Iterator_Cascade_Callbacks {
      */
     constructor() {
         this.iterator_cascade_callbacks = require('../iterator-cascade-callbacks').Iterator_Cascade_Callbacks;
+        this.callback_object = require('../iterator-cascade-callbacks').Callback_Object;
+        // this.callback_wrapper = require('../iterator-cascade-callbacks').Callback_Wrapper;
         this.array_input = [9, 8, 7];
         this.class_input = Count_Iterator;
         this.generator_input = function* () { for (let value of [6, 5, 4]) {
@@ -35,6 +37,7 @@ class Test__Iterator_Cascade_Callbacks {
             yield value;
         } })();
         this.object_input = { spam: 'flavored', canned: 'ham' };
+        this.string_input = 'abcdefg';
     }
     /**
      *
@@ -60,6 +63,14 @@ class Test__Iterator_Cascade_Callbacks {
         this.testsSkip();
         this.testsStep();
         this.testsTake();
+        this.testsPopCallbackObject();
+        this.testsPopCallbackWrapper();
+        this.testsValuesAreEqual();
+        this.testsValuesAreGreaterOrEqual();
+        this.testsValuesAreGreaterThan();
+        this.testsValuesAreLessOrEqual();
+        this.testsValuesAreLessThan();
+        this.testsValuesCompare();
         /* Test Edge cases and Error states */
         this.testsEdgeCases();
         this.testsErrorStates();
@@ -88,6 +99,11 @@ class Test__Iterator_Cascade_Callbacks {
             const icc = new this.iterator_cascade_callbacks(new this.class_input(-1));
             expect(icc).toBeDefined();
         });
+        test('constructor ->', () => {
+            const icc = new this.iterator_cascade_callbacks(this.string_input);
+            expect(icc).toBeDefined();
+        });
+        // test('constructor ->', () => {});
     }
     /**
      *
@@ -376,6 +392,13 @@ class Test__Iterator_Cascade_Callbacks {
                 expect(value).toStrictEqual(paramaters[0].shift());
             }, expected_two);
         });
+        test('inspect ->', () => {
+            const icc = new this.iterator_cascade_callbacks(this.array_input);
+            icc.inspect((value, index_or_key, references, ...paramaters) => {
+                expect(paramaters).toBeInstanceOf(Array);
+            }, 'foo', 'bar');
+            icc.collect([]);
+        });
         // test('inspect ->', () => {});
     }
     /**
@@ -433,6 +456,46 @@ class Test__Iterator_Cascade_Callbacks {
             expect(collection).toStrictEqual(expected);
         });
         // test('map -> ', () => {});
+    }
+    /**
+     *
+     */
+    testsPopCallbackObject() {
+        test('popCallbackObject -> Does popping defined callback return an instance of `Callback_Object`?', () => {
+            const icc = new this.iterator_cascade_callbacks(['1', 2, NaN]);
+            const map_callback = (value, index_or_key, references, ...parameters) => {
+                return value;
+            };
+            icc.map(map_callback);
+            const popped_callback_object = icc.popCallbackObject();
+            expect(popped_callback_object).toBeInstanceOf(this.callback_object);
+        });
+        test('popCallbackObject -> Will popping an undefined callback return `undefined`?', () => {
+            const icc = new this.iterator_cascade_callbacks(['1', 2, NaN]);
+            const popped_callback_object = icc.popCallbackObject();
+            expect(popped_callback_object).toBeUndefined();
+        });
+        // test('popCallbackObject -> ', () => {});
+    }
+    /**
+     *
+     */
+    testsPopCallbackWrapper() {
+        test('popCallbackWrapper -> ', () => {
+            const icc = new this.iterator_cascade_callbacks(['1', 2, NaN]);
+            const map_callback = (value, index_or_key, references, ...parameters) => {
+                return value;
+            };
+            icc.map(map_callback);
+            const popped_callback_wrapper = icc.popCallbackWrapper();
+            expect(popped_callback_wrapper).toBeInstanceOf(Function);
+        });
+        test('popCallbackWrapper -> ', () => {
+            const icc = new this.iterator_cascade_callbacks(['1', 2, NaN]);
+            const popped_callback_object = icc.popCallbackWrapper();
+            expect(popped_callback_object).toBeUndefined();
+        });
+        // test('popCallbackWrapper -> ', () => {});
     }
     /**
      *
@@ -552,6 +615,231 @@ class Test__Iterator_Cascade_Callbacks {
     /**
      *
      */
+    testsValuesAreEqual() {
+        const input = [1, 2, 3];
+        test(`valuesAreEqual -> is ${input} equal to [1, 2, 3]?`, () => {
+            const icc = new this.iterator_cascade_callbacks(input);
+            const comparison = icc.valuesAreEqual([1, 2, 3]);
+            expect(comparison).toBe(true);
+        });
+        test(`valuesAreEqual -> is ${input} **not** equal to [1, 2, 4]?`, () => {
+            const icc = new this.iterator_cascade_callbacks(input);
+            const comparison = icc.valuesAreEqual([1, 2, 4]);
+            expect(comparison).toBe(false);
+        });
+        test('valuesAreEqual -> is "spam" equal to "spam"?', () => {
+            const icc = new this.iterator_cascade_callbacks("spam");
+            const comparison = icc.valuesAreEqual("spam");
+            expect(comparison).toBe(true);
+        });
+        // test(`valuesAreEqual -> is ${input} equal to []?`, () => {});
+    }
+    /**
+     *
+     */
+    testsValuesAreGreaterOrEqual() {
+        const input = [1, 2, 3];
+        const s_input = `[${input.join(', ')}]`;
+        test(`valuesAreGreaterOrEqual -> is ${s_input} greater or equal to [1, 2, 3]?`, () => {
+            const icc = new this.iterator_cascade_callbacks(input);
+            const comparison = icc.valuesAreGreaterOrEqual([1, 2, 3]);
+            expect(comparison).toBe(true);
+        });
+        test(`valuesAreGreaterOrEqual -> is ${s_input} greater or equal to [1, 2, 2]?`, () => {
+            const icc = new this.iterator_cascade_callbacks(input);
+            const comparison = icc.valuesAreGreaterOrEqual([1, 2, 2]);
+            expect(comparison).toBe(true);
+        });
+        test(`valuesAreGreaterOrEqual -> is ${s_input} **not** greater or equal to [1, 2, 4]?`, () => {
+            const icc = new this.iterator_cascade_callbacks(input);
+            const comparison = icc.valuesAreGreaterOrEqual([1, 2, 4]);
+            expect(comparison).toBe(false);
+        });
+        test(`valuesAreGreaterOrEqual -> is ${s_input} **not** greater or equal to [1, 2, 3, 1]?`, () => {
+            const icc = new this.iterator_cascade_callbacks(input);
+            const comparison = icc.valuesAreGreaterOrEqual([1, 2, 3, 1]);
+            expect(comparison).toBe(false);
+        });
+        test(`valuesAreGreaterOrEqual -> is ${s_input} **not** greater or equal to 'spam'`, () => {
+            const icc = new this.iterator_cascade_callbacks(input);
+            const comparison = icc.valuesAreGreaterOrEqual('spam');
+            expect(comparison).toBe(false);
+        });
+        // test('valuesAreGreaterOrEqual ->', () => {});
+    }
+    /**
+     *
+     */
+    testsValuesAreGreaterThan() {
+        const input = [1, 2, 3];
+        const s_input = `[${input.join(', ')}]`;
+        test(`valuesAreGreaterThan -> is ${s_input} greater than [1, 2, 2]?`, () => {
+            const icc = new this.iterator_cascade_callbacks(input);
+            const comparison = icc.valuesAreGreaterThan([1, 2, 2]);
+            expect(comparison).toBe(true);
+        });
+        test(`valuesAreGreaterThan -> is ${s_input} **not** greater than [1, 2, 3, 1]?`, () => {
+            const icc = new this.iterator_cascade_callbacks(input);
+            const comparison = icc.valuesAreGreaterThan([1, 2, 3, 1]);
+            expect(comparison).toBe(false);
+        });
+        test(`valuesAreGreaterThan -> is ${s_input} **not** greater than [1, 2, 3]?`, () => {
+            const icc = new this.iterator_cascade_callbacks(input);
+            const comparison = icc.valuesAreGreaterThan([1, 2, 3]);
+            expect(comparison).toBe(false);
+        });
+        test(`valuesAreGreaterThan -> is ${s_input} **not** greater than [1, 2, 4]?`, () => {
+            const icc = new this.iterator_cascade_callbacks(input);
+            const comparison = icc.valuesAreGreaterThan([1, 2, 4]);
+            expect(comparison).toBe(false);
+        });
+        test(`valuesAreGreaterThan -> is ${s_input} **not** greater than 'spam'`, () => {
+            const icc = new this.iterator_cascade_callbacks(input);
+            const comparison = icc.valuesAreGreaterThan('spam');
+            expect(comparison).toBe(false);
+        });
+        // test('valuesAreGreaterThan ->', () => {});
+    }
+    /**
+     *
+     */
+    testsValuesAreLessOrEqual() {
+        const input = [1, 2, 3];
+        const s_input = `[${input.join(', ')}]`;
+        test(`valuesAreLessOrEqual -> is ${s_input} less or equal to [1, 2, 3]?`, () => {
+            const icc = new this.iterator_cascade_callbacks(input);
+            const comparison = icc.valuesAreLessOrEqual([1, 2, 3]);
+            expect(comparison).toBe(true);
+        });
+        test(`valuesAreLessOrEqual -> is ${s_input} less or equal to [1, 2, 4]?`, () => {
+            const icc = new this.iterator_cascade_callbacks(input);
+            const comparison = icc.valuesAreLessOrEqual([1, 2, 4]);
+            expect(comparison).toBe(true);
+        });
+        test(`valuesAreLessOrEqual -> is ${s_input} less or equal to [1, 2, 3, 1]?`, () => {
+            const icc = new this.iterator_cascade_callbacks(input);
+            const comparison = icc.valuesAreLessOrEqual([1, 2, 3, 1]);
+            expect(comparison).toBe(true);
+        });
+        test(`valuesAreLessOrEqual -> is ${s_input} **not** less or equal to [1, 2, 2]?`, () => {
+            const icc = new this.iterator_cascade_callbacks(input);
+            const comparison = icc.valuesAreLessOrEqual([1, 2, 2]);
+            expect(comparison).toBe(false);
+        });
+        test(`valuesAreLessOrEqual -> is ${s_input} **not** less or equal to 'spam'`, () => {
+            const icc = new this.iterator_cascade_callbacks(input);
+            const comparison = icc.valuesAreLessOrEqual('spam');
+            expect(comparison).toBe(false);
+        });
+        // test('valuesAreLessOrEqual ->', () => {});
+    }
+    /**
+     *
+     */
+    testsValuesAreLessThan() {
+        const input = [1, 2, 3];
+        const s_input = `[${input.join(', ')}]`;
+        test(`valuesAreLessThan -> is ${s_input} less than [1, 2, 4]?`, () => {
+            const icc = new this.iterator_cascade_callbacks(input);
+            const comparison = icc.valuesAreLessThan([1, 2, 4]);
+            expect(comparison).toBe(true);
+        });
+        test(`valuesAreLessThan -> is ${s_input} less than [1, 2, 3, 1]?`, () => {
+            const icc = new this.iterator_cascade_callbacks(input);
+            const comparison = icc.valuesAreLessThan([1, 2, 3, 1]);
+            expect(comparison).toBe(true);
+        });
+        test(`valuesAreLessThan -> is ${s_input} **not** less than [1, 2, 3]?`, () => {
+            const icc = new this.iterator_cascade_callbacks(input);
+            const comparison = icc.valuesAreLessThan([1, 2, 3]);
+            expect(comparison).toBe(false);
+        });
+        test(`valuesAreLessThan -> is ${s_input} **not** less than [1, 2, 2]?`, () => {
+            const icc = new this.iterator_cascade_callbacks(input);
+            const comparison = icc.valuesAreLessThan([1, 2, 2]);
+            expect(comparison).toBe(false);
+        });
+        test(`valuesAreLessThan -> is ${s_input} **not** less than 'spam'`, () => {
+            const icc = new this.iterator_cascade_callbacks(input);
+            const comparison = icc.valuesAreLessThan('spam');
+            expect(comparison).toBe(false);
+        });
+        // test('valuesAreLessThan ->', () => {});
+    }
+    /**
+     *
+     */
+    testsValuesCompare() {
+        test('valuesCompare -> is [1, 2, 3] === [1, 2, 3]', () => {
+            const icc = new this.iterator_cascade_callbacks([1, 2, 3]);
+            const comparison = icc.valuesCompare([1, 2, 3]);
+            expect(comparison).toBe('===');
+        });
+        test('valuesCompare -> is [1, 2, 3] >= [1, 2, 2]', () => {
+            const icc = new this.iterator_cascade_callbacks([1, 2, 3]);
+            const comparison = icc.valuesCompare([1, 2, 2]);
+            expect(comparison).toBe('>=');
+        });
+        test('valuesCompare -> is [1, 2, 3] <= [1, 2, 4]', () => {
+            const icc = new this.iterator_cascade_callbacks([1, 2, 3]);
+            const comparison = icc.valuesCompare([1, 2, 4]);
+            expect(comparison).toBe('<=');
+        });
+        test('valuesCompare -> is [1, 2, 3] < [1, 2, 3, 1]', () => {
+            const icc = new this.iterator_cascade_callbacks([1, 2, 3]);
+            const comparison = icc.valuesCompare([1, 2, 3, 1]);
+            expect(comparison).toBe('<');
+        });
+        test('valuesCompare -> is [1, 2, 3, "foo"] !== [1, 2, 3]', () => {
+            const icc = new this.iterator_cascade_callbacks([1, 2, 3, 'foo']);
+            const comparison = icc.valuesCompare([1, 2, 3]);
+            expect(comparison).toBe('!==');
+        });
+        test('valuesCompare -> is [1, 2, 3, "foo"] != [1, 2, 3, "bar"]', () => {
+            const icc = new this.iterator_cascade_callbacks([1, 2, 3, 'foo']);
+            const comparison = icc.valuesCompare([1, 2, 3, 'bar']);
+            expect(comparison).toBe('!=');
+        });
+        test('valuesCompare -> is [1, 2, 3, "foo"] === [1, 2, 3, "foo"]', () => {
+            const icc = new this.iterator_cascade_callbacks([1, 2, 3, 'foo']);
+            const comparison = icc.valuesCompare([1, 2, 3, 'foo']);
+            expect(comparison).toBe('===');
+        });
+        test('valuesCompare -> is [1, 2, "3", "foo"] == [1, 2, 3, "foo"]', () => {
+            const icc = new this.iterator_cascade_callbacks([1, 2, '3', 'foo']);
+            const comparison = icc.valuesCompare([1, 2, 3, 'foo']);
+            expect(comparison).toBe('==');
+        });
+        test('valuesCompare -> is [1, 2, 3, 1] > [1, 2, 3]', () => {
+            const icc = new this.iterator_cascade_callbacks([1, 2, 3, 1]);
+            const comparison = icc.valuesCompare(new this.iterator_cascade_callbacks([1, 2, 3]));
+            expect(comparison).toBe('>');
+        });
+        test('valuesCompare -> is [1, 2, 4] >= [1, 2, 3]', () => {
+            const icc = new this.iterator_cascade_callbacks([1, 2, 4]);
+            const comparison = icc.valuesCompare(new this.iterator_cascade_callbacks([1, 2, 3]));
+            expect(comparison).toBe('>=');
+        });
+        test('valuesCompare -> is [1, 2, 3] <= [1, 2, 4]', () => {
+            const icc = new this.iterator_cascade_callbacks([1, 2, 3]);
+            const comparison = icc.valuesCompare(new this.iterator_cascade_callbacks([1, 2, 4]));
+            expect(comparison).toBe('<=');
+        });
+        test('valuesCompare -> is [1, 2, "3"] < [1, 2, 4]', () => {
+            const icc = new this.iterator_cascade_callbacks([1, 2, '3']);
+            const comparison = icc.valuesCompare(new this.iterator_cascade_callbacks([1, 2, 4]));
+            expect(comparison).toBe('<');
+        });
+        test('valuesCompare -> is [1, 2, "4"] > [1, 2, 3]', () => {
+            const icc = new this.iterator_cascade_callbacks([1, 2, '4']);
+            const comparison = icc.valuesCompare(new this.iterator_cascade_callbacks([1, 2, 3]));
+            expect(comparison).toBe('>');
+        });
+        // test('valuesCompare ->', () => {});
+    }
+    /**
+     *
+     */
     testsZip() {
         test('zip -> Is it possible to zip number and character arrays into Iterator_Cascade_Callbacks instance?', () => {
             const icc_zip = this.iterator_cascade_callbacks.zip([1, 2, 3], [...'abc']);
@@ -644,7 +932,7 @@ class Test__Iterator_Cascade_Callbacks {
      */
     testsErrorStates() {
         test('testsErrorStates -> `.constructor()` -- Will unsported input throw an Error?', () => {
-            expect(() => { new this.iterator_cascade_callbacks('Spam Flavored Ham'); }).toThrow(TypeError);
+            expect(() => { new this.iterator_cascade_callbacks(42); }).toThrow(TypeError);
         });
         test('testsErrorStates -> `.collect()` -- Will an unsuported collection target throw an Error?', () => {
             const icc = new this.iterator_cascade_callbacks(this.array_input);
