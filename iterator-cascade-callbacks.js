@@ -27,7 +27,6 @@ class Stop_Iteration extends Error {
     constructor(message) {
         super();
         this.name = 'Stop_Iteration';
-        /* istanbul ignore next */
         if (message) {
             this.message = message;
         }
@@ -47,7 +46,6 @@ class Pause_Iteration extends Error {
     constructor(message) {
         super();
         this.name = 'Pause_Iteration';
-        /* istanbul ignore next */
         if (message) {
             this.message = message;
         }
@@ -101,7 +99,6 @@ class Iterator_Cascade_Callbacks {
     constructor(iterable) {
         this.done = false;
         this.value = [undefined, NaN];
-        // this.value = undefined;
         this.callbacks = [];
         this.state = {
             paused: false,
@@ -133,6 +130,12 @@ class Iterator_Cascade_Callbacks {
                  */
                 this.iterator = this.constructor.iteratorFromObject(iterable);
             }
+        }
+        else if (typeof iterable[Symbol.iterator] === 'function') {
+            /**
+             * iterable: 'abcdefg'
+             */
+            this.iterator = this.constructor.iteratorFromGenerator(iterable[Symbol.iterator]());
         }
         else {
             throw new TypeError(`Unsuported type of iterable -> ${typeof iterable}`);
@@ -169,6 +172,62 @@ class Iterator_Cascade_Callbacks {
             yield [value, count];
             count++;
         }
+    }
+    /**
+     * Compares `left` to `right` values
+     * @param {any} left - Left-hand side of comparison
+     * @param {any} right - Right-hand side of comparison
+     * @return {Comparison_Results}
+     * @example
+     * console.log(Iterator_Cascade_Callbacks.compareValues(1, '1'));
+     * //> '=='
+     *
+     * console.log(Iterator_Cascade_Callbacks.compareValues(1, 1));
+     * //> '==='
+     *
+     * console.log(Iterator_Cascade_Callbacks.compareValues(2, 1));
+     * //> '>='
+     *
+     * console.log(Iterator_Cascade_Callbacks.compareValues(2, '3'));
+     * //> '<'
+     *
+     * console.log(Iterator_Cascade_Callbacks.compareValues('spam', 'ham'));
+     * //> '!='
+     *
+     * console.log(Iterator_Cascade_Callbacks.compareValues({ key: 'value' }, ['foo', 'bar']));
+     * //> '!=='
+     */
+    static compareValues(left, right) {
+        if (left === right) {
+            return '===';
+        }
+        else if (left == right) {
+            return '==';
+        }
+        else if (!isNaN(Number(left)) && !isNaN(Number(right))) {
+            if ((typeof left) === (typeof right)) {
+                if (left < right) {
+                    return '<=';
+                }
+                return '>=';
+            }
+            if (left < right) {
+                return '<';
+            }
+            return '>';
+        }
+        else {
+            if (!isNaN(Number(left)) && right === undefined) {
+                return '>';
+            }
+            else if (left === undefined && !isNaN(Number(right))) {
+                return '<';
+            }
+            else if ((typeof left) !== (typeof right)) {
+                return '!==';
+            }
+        }
+        return '!=';
     }
     /**
      * Returns new instance of `Iterator_Cascade_Callbacks` that yields lists of either `Yielded_Tuple` or `undefined` results
@@ -223,6 +282,36 @@ class Iterator_Cascade_Callbacks {
             }
         };
         return new this(zip_wrapper(iterables, this));
+    }
+    /**
+     * Zips `left` and `right` iterable values and prepends `Comparison_Results` to values list
+     * @param {any} left - Generator, Iterator, and/or instance of `Iterator_Cascade_Callbacks`
+     * @param {any} right - Generator, Iterator, and/or instance of `Iterator_Cascade_Callbacks`
+     * @return {Iterator_Cascade_Callbacks}
+     * @TODO: Fix `any` usage to utilize the correct type hint of `ICC.Iterator_Cascade_Callbacks`
+     * @example
+     * const left = [ 1, 0, 1, 2, 'foo', {} ]
+     * const right = [ '0', 0, 2, '2', 'bar' ]
+     *
+     * const icc = Iterator_Cascade_Callbacks.zipCompareValues(left, right);
+     * const collection = icc.collect([]);
+     *
+     * console.log(collection);
+     * //> [
+     * //>   [ '!==', 1, '0' ],
+     * //>   [ '===', 0, 0 ],
+     * //>   [ '<', 1, 2 ],
+     * //>   [ '==', 2, '2' ],
+     * //>   [ '!=', 'foo', 'bar' ],
+     * //>   [ '!==', {}, undefined ]
+     * //> ]
+     */
+    static zipCompareValuesValues(left, right) {
+        return this.zipValues(left, right).map((pare, index_or_key, { iterator_cascade_callbacks, callback_object }, ...parameters) => {
+            const [left, right] = pare;
+            const comparison_results = iterator_cascade_callbacks.constructor.compareValues(left, right);
+            return [comparison_results, left, right];
+        });
     }
     /*
      * Returns new instance of `Iterator_Cascade_Callbacks` that yields either list of values from iterators or `undefined` results
@@ -539,7 +628,6 @@ class Iterator_Cascade_Callbacks {
      * }).inspect(inspector).collect([]);
      */
     inspect(callback, ...parameters) {
-        /* istanbul ignore next */
         const inspect_wrapper = (callback_object, iterator_cascade_callbacks) => {
             const { parameters } = callback_object;
             const [value, index_or_key] = iterator_cascade_callbacks.value;
@@ -650,7 +738,6 @@ class Iterator_Cascade_Callbacks {
      * //> index_or_key -> 3 value -> 4
      */
     next() {
-        /* istanbul ignore next */
         if (this.state.paused) {
             this.done = false;
             this.state.paused = false;
@@ -671,7 +758,6 @@ class Iterator_Cascade_Callbacks {
                         this.value = undefined;
                         return this;
                     }
-                    /* istanbul ignore next */
                     else if (error instanceof Pause_Iteration) {
                         this.done = true;
                         this.state.paused = true;
@@ -688,7 +774,6 @@ class Iterator_Cascade_Callbacks {
      * Returns, and removes, last `Callback_Object` from `this.callbacks` list
      * @return {Callback_Object?}
      */
-    /* istanbul ignore next */
     popCallbackObject() {
         return this.callbacks.pop();
     }
@@ -697,7 +782,6 @@ class Iterator_Cascade_Callbacks {
      * @return {Callback_Wrapper?}
      * @this {Iterator_Cascade_Callbacks}
      */
-    /* istanbul ignore next */
     popCallbackWrapper() {
         const callback_object = this.popCallbackObject();
         if (callback_object !== undefined) {
@@ -871,7 +955,130 @@ class Iterator_Cascade_Callbacks {
         };
         return this.pushCallbackWrapper(take_wrapper, 'take');
     }
-    /* istanbul ignore next */
+    /**
+     * Check if values are equal by consuming `this` and `other` iterator
+     * @param {any|Iterator_Cascade_Callbacks} other - Iterable that is or can be converted to instance of `Iterator_Cascade_Callbacks`
+     * @return {boolean}
+     * @example
+     * const icc = new Iterator_Cascade_Callbacks([1, 2, 3]);
+     *
+     * console.assert(icc.valuesAreEqual([1, 2, 3]) === true);
+     * console.assert(icc.valuesAreEqual([1, 3, 2]) === false);
+     * console.assert(icc.valuesAreEqual('spam') === false);
+     */
+    valuesAreEqual(other) {
+        const comparison_results = this.valuesCompare(other);
+        if (['==', '==='].includes(comparison_results)) {
+            return true;
+        }
+        return false;
+    }
+    /**
+     * Returns `true` or `false` based on if `this` is greater than or equal to `other`
+     * @param {any|Iterator_Cascade_Callbacks} other - Iterable that is, or can be converted to, instance of `Iterator_Cascade_Callbacks`
+     * @return {boolean}
+     * @example
+     * const icc = new Iterator_Cascade_Callbacks([1, 2, 3]);
+     *
+     * console.assert(icc.valuesAreGreaterOrEqual([1, 2, 3]) === true);
+     * console.assert(icc.valuesAreGreaterOrEqual([1, 1, 3]) === true);
+     * console.assert(icc.valuesAreGreaterOrEqual([1, 3, 2]) === false);
+     */
+    valuesAreGreaterOrEqual(other) {
+        const comparison_results = this.valuesCompare(other);
+        if (['>', '>=', '==', '==='].includes(comparison_results)) {
+            return true;
+        }
+        return false;
+    }
+    /**
+     * Returns `true` or `false` based on if `this` is greater than `other`
+     * @param {any|Iterator_Cascade_Callbacks} other - Iterable that is, or can be converted to, instance of `Iterator_Cascade_Callbacks`
+     * @return {boolean}
+     * @example
+     * const icc = new Iterator_Cascade_Callbacks([1, 2, 3]);
+     *
+     * console.assert(icc.valuesAreGreaterThan([1, 2]) === true);
+     * console.assert(icc.valuesAreGreaterThan([1, 2, 3]) === false);
+     */
+    valuesAreGreaterThan(other) {
+        const comparison_results = this.valuesCompare(other);
+        if (['>', '>='].includes(comparison_results)) {
+            return true;
+        }
+        return false;
+    }
+    /**
+     * Returns `true` or `false` based on if `this` is less than or equal to `other`
+     * @param {any|Iterator_Cascade_Callbacks} other - Iterable that is, or can be converted to, instance of `Iterator_Cascade_Callbacks`
+     * @return {boolean}
+     * @example
+     * const icc = new Iterator_Cascade_Callbacks([1, 2, 3]);
+     *
+     * console.assert(icc.valuesAreLessOrEqual([1, 2, 3]) === true);
+     * console.assert(icc.valuesAreLessOrEqual([1, 2, 4]) === true);
+     * console.assert(icc.valuesAreLessOrEqual([1, 1, 2]) === false);
+     */
+    valuesAreLessOrEqual(other) {
+        const comparison_results = this.valuesCompare(other);
+        if (['<', '<=', '==', '==='].includes(comparison_results)) {
+            return true;
+        }
+        return false;
+    }
+    /**
+     * Returns `true` or `false` based on if `this` is less than `other`
+     * @param {any|Iterator_Cascade_Callbacks} other - Iterable that is, or can be converted to, instance of `Iterator_Cascade_Callbacks`
+     * @return {boolean}
+     * @example
+     * const icc = new Iterator_Cascade_Callbacks([1, 2, 3]);
+     *
+     * console.assert(icc.valuesAreLessThan([1, 3]) === true);
+     * console.assert(icc.valuesAreLessThan([1, 2, 3]) === false);
+     */
+    valuesAreLessThan(other) {
+        const comparison_results = this.valuesCompare(other);
+        if (['<', '<='].includes(comparison_results)) {
+            return true;
+        }
+        return false;
+    }
+    /**
+     * Consumes `this` and `other` iterator instances to return `Comparison_Results`
+     * @param {any|Iterator_Cascade_Callbacks} other - Iterable to compare with `this` iterator
+     * @notes
+     * - Parameter `other` that are not type of `Iterator_Cascade_Callbacks` will be coerced
+     * - Values are compared with `==` **not** `===` which means types may be coerced
+     * @example
+     * const icc = Iterator_Cascade_Callbacks([1, 2, 3]);
+     *
+     * console.log(icc.valuesCompare([1, 2, 4]));
+     * //> '<'
+     *
+     * console.log(icc.valuesCompare([1, 2, 2]));
+     * //> '>'
+     *
+     * console.log(icc.valuesCompare('123'));
+     * //> '=='
+     *
+     * console.log(icc.valuesCompare([1, 2, 3]));
+     * //> '==='
+     *
+     * console.log(icc.valuesCompare('spam'));
+     * //> '!=='
+     */
+    valuesCompare(other) {
+        let results = '';
+        for (const comparison_results of this.constructor.zipCompareValuesValues(this, other)) {
+            const [value, index_or_key] = comparison_results;
+            const comparator = value.shift();
+            if (comparator !== '===') {
+                return comparator;
+            }
+            results = comparator;
+        }
+        return results;
+    }
     [Symbol.iterator]() {
         return this;
     }
