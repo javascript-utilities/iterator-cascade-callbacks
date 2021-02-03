@@ -73,13 +73,13 @@ Iterator that chains callback function execution
     - [Interface `Callback_Object`][heading__interface_callbackobject]
 
   - [Custom Types][heading__custom_types]
-    - [Type `Callback_Function`][heading__type_callbackfunction]
-    - [Type `Callback_Function_References`][heading__type_callbackfunctionreferences]
-    - [Type `Callback_Wrapper`][heading__type_callbackwrapper]
-    - [Type `Collect_To_Function`][heading__type_collecttofunction]
+    - [Type `Callback_Function`][heading__type_callback_function]
+    - [Type `Callback_Function_References`][heading__type_callback_function_references]
+    - [Type `Callback_Wrapper`][heading__type_callback_wrapper]
+    - [Type `Collect_To_Function`][heading__type_collect_to_function]
     - [Type `Comparison_Results`][heading__type_comparisonresults]
     - [Type `Dictionary`][heading__type_dictionary]
-    - [Type `Generator_Function_Instance`][heading__type_generatorfunctioninstance]
+    - [Type `Generator_Function_Instance`][heading__type_generator_function_instance]
     - [Type `Index_Or_Key`][heading__type_index_or_key]
     - [Type `Yielded_Tuple`][heading__type_yielded_tuple]
     - [Type `Yielded_Result`][heading__type_yielded_result]
@@ -618,7 +618,7 @@ Builds new instance of `Callback_Object` to append to `Iterator_Cascade_Callback
 **Parameters**
 
 
-- [**{Callback_Wrapper}**][heading__type_callbackwrapper] `callback_wrapper` - Function wrapper that handles input/output between `Callback_Function` and `Iterator_Cascade_Callbacks`
+- [**{Callback_Wrapper}**][heading__type_callback_wrapper] `callback_wrapper` - Function wrapper that handles input/output between `Callback_Function` and `Iterator_Cascade_Callbacks`
 
 
 #### Method `Callback_Object.call`
@@ -925,7 +925,7 @@ Collects results from `this` to either an Array or Object
 
 - **{any[] | Object | any}** `target` - When `target` is Array values are pushed, when `target` is Object key value pares are assigned, `callback` is required for other types
 
-- [**{Collect_To_Function?|number?}**][heading__type_collecttofunction] `callback_or_amount` - Callback function for collecting to custom type, or amount to limit known collection object types to
+- [**{Collect_To_Function?|number?}**][heading__type_collect_to_function] `callback_or_amount` - Callback function for collecting to custom type, or amount to limit known collection object types to
 
 - **{number?}** `amount` - Limit collection to no more than amount
 
@@ -1089,7 +1089,7 @@ Sets `this.value` if callback function returns _truthy_, else consumes `this.ite
 **Parameters**
 
 
-- [**{Callback_Function}**][heading__type_callbackfunction] `callback` - Function that determines truth of `value` and/or `index_or_key` for each iteration
+- [**{Callback_Function}**][heading__type_callback_function] `callback` - Function that determines truth of `value` and/or `index_or_key` for each iteration
 
 - **{...any[]}** `parameters` - List of arguments that are passed to callback on each iteration
 
@@ -1124,7 +1124,7 @@ Executes callback for each iteration
 **Parameters**
 
 
-- [**{Callback_Function}**][heading__type_callbackfunction] `callback` - Function that generally does not mutate `value` or `index_or_key` for `Iterator_Cascade_Callbacks` instance
+- [**{Callback_Function}**][heading__type_callback_function] `callback` - Function that generally does not mutate `value` or `index_or_key` for `Iterator_Cascade_Callbacks` instance
 
 - **{...any[]}** `parameters` - List of arguments that are passed to callback on each iteration
 
@@ -1167,7 +1167,7 @@ Useful for debugging and inspecting iteration state
 **Parameters**
 
 
-- [**{Callback_Function}**][heading__type_callbackfunction] `callback` - Function that logs something about each iteration
+- [**{Callback_Function}**][heading__type_callback_function] `callback` - Function that logs something about each iteration
 
 - **{...any[]}** `parameters` - List of arguments that are passed to callback on each iteration
 
@@ -1246,7 +1246,7 @@ Applies `callback` to modify `value` and/or `index_or_key` for each iteration
 **Parameters**
 
 
-- [**{Callback_Function}**][heading__type_callbackfunction] `callback` - Function may modify `value` and/or `index_or_key`
+- [**{Callback_Function}**][heading__type_callback_function] `callback` - Function may modify `value` and/or `index_or_key`
 
 - **{...any[]}** `parameters` - List of arguments that are passed to callback on each iteration
 
@@ -1616,7 +1616,7 @@ Classy object for storing wrapper function state between iterations
 **Properties**
 
 
-- [**{Callback_Wrapper}**][heading__type_callbackwrapper] `wrapper` - Wrapper for callback function that parses inputs and outputs
+- [**{Callback_Wrapper}**][heading__type_callback_wrapper] `wrapper` - Wrapper for callback function that parses inputs and outputs
 
 - [**{Dictionary}**][heading__type_dictionary] `storage` - Generic dictionary like object
 
@@ -1634,8 +1634,8 @@ Classy object for storing wrapper function state between iterations
 
 
 #### Type `Callback_Function`
-[heading__type_callbackfunction]:
-  #type-callbackfunction
+[heading__type_callback_function]:
+  #type-callback_function
   "Generic callback function for parsing and/or mutating iterator data&#10;&#10;(value: any, index_or_key: Index_Or_Key, references: Callback_Function_References, ...parameters: any[]) =&gt; any"
 
 
@@ -1649,12 +1649,12 @@ Generic callback function for parsing and/or mutating iterator data
 
 - [**{Index_Or_Key}**][heading__type_index_or_key] `index_or_key` - Either a `string` or `number` depending upon iterable type
 
-- [**{Callback_Function_References}**][heading__type_callbackfunctionreferences] `references` - Dictionary with reference to _`this`_ `Iterator_Cascade_Callbacks` and _`this`_ `Callback_Object`
+- [**{Callback_Function_References}**][heading__type_callback_function_references] `references` - Dictionary with reference to _`this`_ `Iterator_Cascade_Callbacks` and _`this`_ `Callback_Object`
 
 
 #### Type `Callback_Function_References`
-[heading__type_callbackfunctionreferences]:
-  #type-callbackfunctionreferences
+[heading__type_callback_function_references]:
+  #type-callback_function_references
   "Object with references to `Iterator_Cascade_Callbacks` and `Callback_Object` instances&#10;&#10;{  iterator_cascade_callbacks: Iterator_Cascade_Callbacks,&#10;  callback_object: Callback_Object,&#10;}"
 
 
@@ -1670,8 +1670,8 @@ Object with references to `Iterator_Cascade_Callbacks` and `Callback_Object` ins
 
 
 #### Type `Callback_Wrapper`
-[heading__type_callbackwrapper]:
-  #type-callbackwrapper
+[heading__type_callback_wrapper]:
+  #type-callback_wrapper
   "Wrapper for callback function that parses inputs and outputs&#10;&#10;(callback_object: Callback_Object, iterator_cascade_callbacks: Iterator_Cascade_Callbacks) =&gt; void"
 
 
@@ -1687,8 +1687,8 @@ Wrapper for callback function that parses inputs and outputs
 
 
 #### Type `Collect_To_Function`
-[heading__type_collecttofunction]:
-  #type-collecttofunction
+[heading__type_collect_to_function]:
+  #type-collect_to_function
   "Callback function for custom collection algorithms&#10;&#10;(target: any, value: any, index_or_key: Index_Or_Key, iterator_cascade_callbacks: Iterator_Cascade_Callbacks) =&gt; any"
 
 
@@ -1771,8 +1771,8 @@ const data: Dictionary = { key: 'value' };
 
 
 #### Type `Generator_Function_Instance`
-[heading__type_generatorfunctioninstance]:
-  #type-generatorfunctioninstance
+[heading__type_generator_function_instance]:
+  #type-generator_function_instance
   "Generator function that has not been initialized&#10;&#10;(...args: any[]) =&gt; Generator&lt;unknown, any, unknown&gt;"
 
 
