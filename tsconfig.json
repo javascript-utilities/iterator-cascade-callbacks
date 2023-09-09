@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
-    "lib": [ "dom", "es2017" ],
+    "target": "ES2021",
+    "module": "Node16",
+    "lib": [ "dom", "es2021" ],
     "outDir": "",
     "sourceMap": true,
     "strictBindCallApply": true,
@@ -11,7 +11,11 @@
     "strictPropertyInitialization": true,
     "noImplicitAny": true,
     "removeComments": false,
-    "moduleResolution": "node"
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "moduleResolution": "Node16",
+    "skipLibCheck": true
   },
   "include": [
     "ts/**/*",
