@@ -1,5 +1,3 @@
-export {};
-
 
 /**
  * @see {link} https://www.typescriptlang.org/docs/handbook/namespaces.html
@@ -115,8 +113,6 @@ declare global {
      */
     export type Callback_Function = (value: any, index_or_key: Index_Or_Key, references: Callback_Function_References, ...parameters: any[]) => any;
 
-    export type Callback_Function_Consolidate = (accumulator: any, value: any, index_or_key: Index_Or_Key, references: Callback_Function_References, ...paramaters: any[]) => { value: any, done: boolean };
-
     /**
      * Object with references to `Iterator_Cascade_Callbacks` and `Callback_Object` instances
      * @property {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
@@ -203,13 +199,6 @@ declare global {
      * const index: Index_Or_Key = 42;
      */
     export type Index_Or_Key = number | string;
-
-    /**
-     *
-     */
-    interface Next_Iteration extends Error {
-      new(message?: string): Next_Iteration;
-    }
 
     /**
      *

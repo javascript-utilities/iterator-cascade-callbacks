@@ -19,27 +19,6 @@ const Static_Contract = <T extends new (...args: Array<unknown>) => void>():
 
 
 /**
- * Custom error type to force next iteration prematurely
- */
-class Next_Iteration extends Error implements Next_Iteration {
-  /**
-   * Builds new instance of `Next_Iteration` for throwing
-   * @param {string?} message - Error message to print
-   */
-  constructor(message?: string) {
-    super();
-    this.name = 'Next_Iteration';
-
-    if (message) {
-      this.message = message;
-    } else {
-      this.message = '';
-    }
-  }
-}
-
-
-/**
  * Custom error type to temporarily stop iteration prematurely
  */
 class Pause_Iteration extends Error implements Pause_Iteration {
@@ -547,45 +526,6 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
   }
 
   /**
-   *
-   */
-  consolidate(callback: ICC.Callback_Function_Consolidate, accumulator: any, ...parameters: any[]): Iterator_Cascade_Callbacks {
-    const callback_wrapper: ICC.Callback_Wrapper = (callback_object, iterator_cascade_callbacks) => {
-      const { parameters } = callback_object;
-      let [ value, index_or_key ] = (iterator_cascade_callbacks.value as ICC.Yielded_Tuple);
-
-      let results = callback(accumulator, value, index_or_key, { callback_object, iterator_cascade_callbacks }, ...parameters);
-      accumulator = results.value;
-
-      while (!results.done) {
-        const next_data: { value: ICC.Yielded_Tuple, done: boolean } = iterator_cascade_callbacks.iterator.next();
-        iterator_cascade_callbacks.value = next_data.value;
-        iterator_cascade_callbacks.done = next_data.done;
-
-        const iterate_callbacks = iterator_cascade_callbacks.iterateCallbackObjects();
-        for (const callback_other of iterate_callbacks) {
-          if (callback_other === callback_object) {
-            results = callback(accumulator, value, index_or_key, { callback_object, iterator_cascade_callbacks }, ...parameters);
-            accumulator = results.value;
-            break;
-          }
-
-          callback_other.call(iterator_cascade_callbacks);
-          [ value, index_or_key ] = iterator_cascade_callbacks.value;
-        }
-      }
-
-      if (Array.isArray(results.value) && results.value.length === 2) {
-        iterator_cascade_callbacks.value = (results.value as ICC.Yielded_Tuple);
-      } else {
-        iterator_cascade_callbacks.value = [ results.value, index_or_key ];
-      }
-    };
-
-    return this.pushCallbackWrapper(callback_wrapper, 'consolidate', ...parameters);
-  }
-
-  /**
    * Returns new instance of `Iterator_Cascade_Callbacks` with copy of callbacks
    * @param {any} iterable - Any compatible iterable object, iterator, or generator
    * @return {Iterator_Cascade_Callbacks}
@@ -876,9 +816,6 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
             this.done = true;
             this.state.paused = true;
             this.state.resumed = false;
-            return this;
-          } else if (error instanceof Next_Iteration) {
-            // this.done = true;
             return this;
           }
           throw error;
@@ -1232,7 +1169,6 @@ if (typeof module !== 'undefined') {
   exports = module.exports = {
     Callback_Object,
     Iterator_Cascade_Callbacks,
-    Next_Iteration,
     Pause_Iteration,
     Stop_Iteration,
   };
@@ -1241,7 +1177,6 @@ if (typeof module !== 'undefined') {
 export {
   Callback_Object,
   Iterator_Cascade_Callbacks,
-  Next_Iteration,
   Pause_Iteration,
   Stop_Iteration,
 }
@@ -1275,8 +1210,6 @@ interface Iterator_Cascade_Callbacks extends ICC.Iterator_Cascade_Callbacks__Ins
   constructor: typeof Iterator_Cascade_Callbacks;
 }
 
-
-interface Next_Iteration extends ICC.Next_Iteration {}
 
 interface Pause_Iteration extends ICC.Pause_Iteration {}
 
