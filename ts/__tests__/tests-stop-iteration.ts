@@ -1,14 +1,11 @@
 #!/usr/bin/env node
 
+import { Stop_Iteration } from '../iterator-cascade-callbacks';
 
 'use strict';
 
 
 class Tests__Stop_Iteration {
-  constructor() {
-    this.stop_iteration = require('../iterator-cascade-callbacks').Stop_Iteration;
-  }
-
   /**
    *
    */
@@ -21,13 +18,13 @@ class Tests__Stop_Iteration {
    */
   testsConstructor() {
     test('constructor -> Is passing a string message acceptable?', () => {
-      const stop_iteration = new this.stop_iteration('Test message');
-      expect(stop_iteration).toBeInstanceOf(this.stop_iteration);
+      const stop_iteration = new Stop_Iteration('Test message');
+      expect(stop_iteration).toBeInstanceOf(Stop_Iteration);
     });
 
     test('constructor -> Is it okay to not define a message string?', () => {
-      const stop_iteration = new this.stop_iteration();
-      expect(stop_iteration).toBeInstanceOf(this.stop_iteration);
+      const stop_iteration = new Stop_Iteration();
+      expect(stop_iteration).toBeInstanceOf(Stop_Iteration);
     });
 
     // test('constructor ->', () => {});
@@ -37,9 +34,4 @@ class Tests__Stop_Iteration {
 
 const tests_stop_iteration = new Tests__Stop_Iteration();
 tests_stop_iteration.runTests();
-
-
-interface Tests__Stop_Iteration {
-  stop_iteration: ICC.Stop_Iteration;
-}
 

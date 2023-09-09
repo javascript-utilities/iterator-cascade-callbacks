@@ -11,15 +11,30 @@ declare global {
   /**
    * Shared namespace between source code and tests for this repository
    */
-  namespace ICC {
+  export namespace ICC {
     /**
-     * Enables static methods to be called from within class methods
-     * @see {link} - https://github.com/Microsoft/TypeScript/issues/3841
+     * Combined with `Static_Contract` Decorator this defines static types and properties
+     * @see {link} https://github.com/microsoft/TypeScript/issues/14600#issuecomment-488817980
+     * @typedef Iterator_Cascade_Callbacks__Static
+     */
+    export interface Iterator_Cascade_Callbacks__Static<T> {
+      new(...args: Array<unknown>): T;
+      iteratorFromArray(array: any[]): IterableIterator<[any, number]>;
+      iteratorFromObject(dictionary: ICC.Dictionary): IterableIterator<[any, string]>;
+      iteratorFromGenerator(iterator: Generator<unknown, void, unknown>): IterableIterator<[any, number]>;
+      compareValues(left: any, right: any): Comparison_Results;
+      zip(...iterables: any[]): T;
+      zipCompareValuesValues(left: any, right: any): T;
+      zipValues(...iterables: any[]): T;
+    }
+
+    /**
+     * Defines instance methods and properties
      * @property {Dictionary} state - Data shared between `Callback_Wrapper` functions on each iteration
      * @property {Dictionary} storage - Data shared between `Callback_Function` for each iteration
-     * @typedef Iterator_Cascade_Callbacks
+     * @typedef Iterator_Cascade_Callbacks__Instance
      */
-    export interface Iterator_Cascade_Callbacks {
+    export interface Iterator_Cascade_Callbacks__Instance {
       iterator: any;
       done: boolean;
       value: Yielded_Tuple | undefined;
@@ -29,17 +44,6 @@ declare global {
         paused: boolean,
         resumed: boolean,
       };
-
-      /* Static method definitions */
-      // new(iterable: Iterable<any> | Generator<any>): Iterator_Cascade_Callbacks;
-      new(iterable: any): Iterator_Cascade_Callbacks;
-      iteratorFromArray(array: any[]): IterableIterator<[any, number]>;
-      iteratorFromObject(dictionary: Dictionary): IterableIterator<[any, string]>;
-      iteratorFromGenerator(iterator: Generator<any[], void, unknown>): IterableIterator<[any, number]>;
-      compareValues(other: (any | Iterator_Cascade_Callbacks)): Comparison_Results;
-      zip(...iterables: any[]): Iterator_Cascade_Callbacks;
-      zipCompareValuesValues(left: any, right: any): Iterator_Cascade_Callbacks;
-      zipValues(...iterables: any[]): Iterator_Cascade_Callbacks;
 
       /* Generator/Iterator methods */
       iterateCallbackObjects(): IterableIterator<Callback_Object>;
@@ -54,6 +58,8 @@ declare global {
       collectToArray(target: any[], amount?: number): any[];
       collectToFunction(target: any, callback: Collect_To_Function, amount?: number): any;
       collectToObject(target: Dictionary, amount?: number): Dictionary;
+
+      consolidate(accumulator: any, value: any, index_or_key: Index_Or_Key, ...paramaters: any[]): { value: any, done: boolean };
 
       copyCallbacksOnto(iterable: any): Iterator_Cascade_Callbacks;
       filter(callback: Callback_Function, ...parameters: any[]): Iterator_Cascade_Callbacks;
@@ -108,6 +114,8 @@ declare global {
      * @typedef Callback_Function
      */
     export type Callback_Function = (value: any, index_or_key: Index_Or_Key, references: Callback_Function_References, ...parameters: any[]) => any;
+
+    export type Callback_Function_Consolidate = (accumulator: any, value: any, index_or_key: Index_Or_Key, references: Callback_Function_References, ...paramaters: any[]) => { value: any, done: boolean };
 
     /**
      * Object with references to `Iterator_Cascade_Callbacks` and `Callback_Object` instances
@@ -199,6 +207,13 @@ declare global {
     /**
      *
      */
+    interface Next_Iteration extends Error {
+      new(message?: string): Next_Iteration;
+    }
+
+    /**
+     *
+     */
     interface Pause_Iteration extends Error {
       new(message?: string): Pause_Iteration;
     }
@@ -240,4 +255,6 @@ declare global {
     export type Yielded_Result = { done: boolean, value?: Yielded_Tuple };
   }
 }
+
+export { ICC };
 

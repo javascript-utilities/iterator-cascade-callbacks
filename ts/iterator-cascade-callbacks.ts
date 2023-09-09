@@ -11,6 +11,56 @@ const GeneratorFunction = function*(){}.constructor;
 
 
 /**
+ * Thanks be to @theseyi of GitHub
+ * @see {link} https://github.com/microsoft/TypeScript/issues/14600#issuecomment-488817980
+ */
+const Static_Contract = <T extends new (...args: Array<unknown>) => void>():
+                ((c: T) => void) => (_ctor: T): void => {};
+
+
+/**
+ * Custom error type to force next iteration prematurely
+ */
+class Next_Iteration extends Error implements Next_Iteration {
+  /**
+   * Builds new instance of `Next_Iteration` for throwing
+   * @param {string?} message - Error message to print
+   */
+  constructor(message?: string) {
+    super();
+    this.name = 'Next_Iteration';
+
+    if (message) {
+      this.message = message;
+    } else {
+      this.message = '';
+    }
+  }
+}
+
+
+/**
+ * Custom error type to temporarily stop iteration prematurely
+ */
+class Pause_Iteration extends Error implements Pause_Iteration {
+  /**
+   * Builds new instance of `Pause_Iteration` for throwing
+   * @param {string?} message - Error message to print
+   */
+  constructor(message?: string) {
+    super();
+    this.name = 'Pause_Iteration';
+
+    if (message) {
+      this.message = message;
+    } else {
+      this.message = '';
+    }
+  }
+}
+
+
+/**
  * Custom error type to permanently stop iteration prematurely
  * @example
  * const icc = new Iterator_Cascade_Callbacks([1, 2, 3, 4]);
@@ -33,27 +83,6 @@ class Stop_Iteration extends Error implements Stop_Iteration {
   constructor(message?: string) {
     super();
     this.name = 'Stop_Iteration';
-
-    if (message) {
-      this.message = message;
-    } else {
-      this.message = '';
-    }
-  }
-}
-
-
-/**
- * Custom error type to temporarily stop iteration prematurely
- */
-class Pause_Iteration extends Error implements Pause_Iteration {
-  /**
-   * Builds new instance of `Pause_Iteration` for throwing
-   * @param {string?} message - Error message to print
-   */
-  constructor(message?: string) {
-    super();
-    this.name = 'Pause_Iteration';
 
     if (message) {
       this.message = message;
@@ -89,7 +118,7 @@ class Callback_Object implements Callback_Object {
 
   /**
    * Calls `this.wrapper` function with reference to this `Callback_Object` and `Iterator_Cascade_Callbacks`
-   * @param {ICC.Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Reference to `Iterator_Cascade_Callbacks` instance
+   * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Reference to `Iterator_Cascade_Callbacks` instance
    * @this {Callback_Object}
    */
   call(iterator_cascade_callbacks: Iterator_Cascade_Callbacks) {
@@ -103,6 +132,7 @@ class Callback_Object implements Callback_Object {
  * @author S0AndS0
  * @license AGPL-3.0
  */
+@Static_Contract<ICC.Iterator_Cascade_Callbacks__Static<Iterator_Cascade_Callbacks>>()
 class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
   /**
    * Instantiates new instance of `Iterator_Cascade_Callbacks` from `iterable` input
@@ -320,10 +350,10 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
    * //>   [ '!==', {}, undefined ]
    * //> ]
    */
-  static zipCompareValuesValues(left: any, right: any): ICC.Iterator_Cascade_Callbacks {
+  static zipCompareValuesValues(left: any, right: any): Iterator_Cascade_Callbacks {
     return this.zipValues(left, right).map((pare, index_or_key, { iterator_cascade_callbacks, callback_object }, ...parameters) => {
       const [ left, right ] = pare;
-      const comparison_results: ICC.Comparison_Results = (iterator_cascade_callbacks as any).constructor.compareValues(left, right);
+      const comparison_results: ICC.Comparison_Results = (iterator_cascade_callbacks as Iterator_Cascade_Callbacks).constructor.compareValues(left, right);
       return [ comparison_results, left, right ];
     });
   }
@@ -517,6 +547,45 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
   }
 
   /**
+   *
+   */
+  consolidate(callback: ICC.Callback_Function_Consolidate, accumulator: any, ...parameters: any[]): Iterator_Cascade_Callbacks {
+    const callback_wrapper: ICC.Callback_Wrapper = (callback_object, iterator_cascade_callbacks) => {
+      const { parameters } = callback_object;
+      let [ value, index_or_key ] = (iterator_cascade_callbacks.value as ICC.Yielded_Tuple);
+
+      let results = callback(accumulator, value, index_or_key, { callback_object, iterator_cascade_callbacks }, ...parameters);
+      accumulator = results.value;
+
+      while (!results.done) {
+        const next_data: { value: ICC.Yielded_Tuple, done: boolean } = iterator_cascade_callbacks.iterator.next();
+        iterator_cascade_callbacks.value = next_data.value;
+        iterator_cascade_callbacks.done = next_data.done;
+
+        const iterate_callbacks = iterator_cascade_callbacks.iterateCallbackObjects();
+        for (const callback_other of iterate_callbacks) {
+          if (callback_other === callback_object) {
+            results = callback(accumulator, value, index_or_key, { callback_object, iterator_cascade_callbacks }, ...parameters);
+            accumulator = results.value;
+            break;
+          }
+
+          callback_other.call(iterator_cascade_callbacks);
+          [ value, index_or_key ] = iterator_cascade_callbacks.value;
+        }
+      }
+
+      if (Array.isArray(results.value) && results.value.length === 2) {
+        iterator_cascade_callbacks.value = (results.value as ICC.Yielded_Tuple);
+      } else {
+        iterator_cascade_callbacks.value = [ results.value, index_or_key ];
+      }
+    };
+
+    return this.pushCallbackWrapper(callback_wrapper, 'consolidate', ...parameters);
+  }
+
+  /**
    * Returns new instance of `Iterator_Cascade_Callbacks` with copy of callbacks
    * @param {any} iterable - Any compatible iterable object, iterator, or generator
    * @return {Iterator_Cascade_Callbacks}
@@ -595,16 +664,16 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
         const iterate_callbacks = iterator_cascade_callbacks.iterateCallbackObjects();
         for (const callback_other of iterate_callbacks) {
           if (callback_other === callback_object) {
-            [value, index_or_key] = iterator_cascade_callbacks.value;
-            results = callback(value, index_or_key, { iterator_cascade_callbacks, callback_object });
+            [ value, index_or_key ] = iterator_cascade_callbacks.value;
+            results = callback(value, index_or_key, { iterator_cascade_callbacks, callback_object }, ...parameters);
             if (results) {
               return;
             }
             break;
           }
           callback_other.call(iterator_cascade_callbacks);
-          [value, index_or_key] = iterator_cascade_callbacks.value;
-          results = callback(value, index_or_key, { iterator_cascade_callbacks, callback_object });
+          [ value, index_or_key ] = iterator_cascade_callbacks.value;
+          results = callback(value, index_or_key, { iterator_cascade_callbacks, callback_object }, ...parameters);
         }
       }
     };
@@ -807,6 +876,9 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
             this.done = true;
             this.state.paused = true;
             this.state.resumed = false;
+            return this;
+          } else if (error instanceof Next_Iteration) {
+            // this.done = true;
             return this;
           }
           throw error;
@@ -1157,14 +1229,22 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
 
 /* istanbul ignore next */
 if (typeof module !== 'undefined') {
-  module.exports = {
+  exports = module.exports = {
     Callback_Object,
     Iterator_Cascade_Callbacks,
+    Next_Iteration,
     Pause_Iteration,
     Stop_Iteration,
   };
 }
 
+export {
+  Callback_Object,
+  Iterator_Cascade_Callbacks,
+  Next_Iteration,
+  Pause_Iteration,
+  Stop_Iteration,
+}
 
 /**
  * ===========================================================================
@@ -1191,12 +1271,14 @@ interface Callback_Object extends ICC.Callback_Object {}
  * @property {Dictionary} storage - Data shared between `Callback_Function` for each iteration
  * @typedef Iterator_Cascade_Callbacks
  */
-// interface Iterator_Cascade_Callbacks {
-interface Iterator_Cascade_Callbacks extends ICC.Iterator_Cascade_Callbacks {
+interface Iterator_Cascade_Callbacks extends ICC.Iterator_Cascade_Callbacks__Instance {
   constructor: typeof Iterator_Cascade_Callbacks;
 }
 
-interface Stop_Iteration extends ICC.Stop_Iteration {}
+
+interface Next_Iteration extends ICC.Next_Iteration {}
 
 interface Pause_Iteration extends ICC.Pause_Iteration {}
+
+interface Stop_Iteration extends ICC.Stop_Iteration {}
 
