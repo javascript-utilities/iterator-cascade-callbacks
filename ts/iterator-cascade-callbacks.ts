@@ -1,109 +1,9 @@
-
-
 'use strict';
 
-
-/**
- * Enable `instanceof` checks for Generator functions
- */
-/* istanbul ignore next */
-const GeneratorFunction = function*(){}.constructor;
-
-
-/**
- * Thanks be to @theseyi of GitHub
- * @see {link} https://github.com/microsoft/TypeScript/issues/14600#issuecomment-488817980
- */
-const Static_Contract = <T extends new (...args: Array<unknown>) => void>():
-                ((c: T) => void) => (_ctor: T): void => {};
-
-
-/**
- * Custom error type to temporarily stop iteration prematurely
- */
-class Pause_Iteration extends Error implements Pause_Iteration {
-  /**
-   * Builds new instance of `Pause_Iteration` for throwing
-   * @param {string?} message - Error message to print
-   */
-  constructor(message?: string) {
-    super();
-    this.name = 'Pause_Iteration';
-
-    if (message) {
-      this.message = message;
-    } else {
-      this.message = '';
-    }
-  }
-}
-
-
-/**
- * Custom error type to permanently stop iteration prematurely
- * @example
- * const icc = new Iterator_Cascade_Callbacks([1, 2, 3, 4]);
- *
- * const collection = icc.map((value, index_or_key) => {
- *   if (index_or_key > 2) {
- *     throw new Stop_Iteration('map says to stop at indexes greater than 2');
- *   }
- *   return value;
- * }).collect([]);
- *
- * console.log(collection);
- * //> [ 1, 2, 3 ]
- */
-class Stop_Iteration extends Error implements Stop_Iteration {
-  /**
-   * Builds new instance of `Stop_Iteration` for throwing
-   * @param {string?} message - Error message to print
-   */
-  constructor(message?: string) {
-    super();
-    this.name = 'Stop_Iteration';
-
-    if (message) {
-      this.message = message;
-    } else {
-      this.message = '';
-    }
-  }
-}
-
-
-/**
- * Classy object for storing wrapper function state between iterations
- * @author S0AndS0
- * @license AGPL-3.0
- */
-class Callback_Object implements Callback_Object {
-  /**
-   * Builds new instance of `Callback_Object` to append to `Iterator_Cascade_Callbacks.callbacks` list
-   * @param {Callback_Wrapper} callback_wrapper - Function wrapper that handles input/output between `Callback_Function` and `Iterator_Cascade_Callbacks`
-   * @param {string} name - Method name that instantiated callback, eg. `filter`
-   * @param {any[]} parameters - Array of arguments that are passed to callback on each iteration
-   */
-  constructor(callback_wrapper: ICC.Callback_Wrapper, name: string, parameters: any[]) {
-    this.wrapper = callback_wrapper;
-    this.storage = {};
-    this.name = name;
-    if (Array.isArray(parameters)) {
-      this.parameters = parameters;
-    } else {
-      this.parameters = [];
-    }
-  }
-
-  /**
-   * Calls `this.wrapper` function with reference to this `Callback_Object` and `Iterator_Cascade_Callbacks`
-   * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Reference to `Iterator_Cascade_Callbacks` instance
-   * @this {Callback_Object}
-   */
-  call(iterator_cascade_callbacks: Iterator_Cascade_Callbacks) {
-    this.wrapper(this, iterator_cascade_callbacks);
-  }
-}
+import { Callback_Object } from './lib/callback-objects';
+import { Stop_Iteration, Pause_Iteration } from './lib/errors';
+import { Iterator_From } from './lib/iterator-from';
+import { GeneratorFunction, AsyncGeneratorFunction, Static_Contract } from './lib/runtime-types';
 
 
 /**
@@ -130,120 +30,34 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
       /**
        * iterable: [ 9, 8, 7 ]
        */
-      this.iterator = this.constructor.iteratorFromArray(iterable);
+      this.iterator = Iterator_From.array(iterable);
     } else if (iterable instanceof GeneratorFunction) {
       /**
        * iterable: function* () { for (let value of [6, 5, 4]) { yield value; } }
        */
-      this.iterator = this.constructor.iteratorFromGenerator((iterable as ICC.Generator_Function_Instance)());
+      this.iterator = Iterator_From.generator((iterable as Shared.Generator_Function_Instance)());
     } else if (typeof iterable === 'object') {
+      // console.trace('Iterator_Cascade_Callbacks constructor detected Object', { iterable });
       if (typeof (iterable as Generator<unknown, any, unknown>)[Symbol.iterator] === 'function' ) {
         /**
          * iterable: new class { [Symbol.iterable]() { return this; } }
          * iterable: (function* () { for (let value of [6, 5, 4]) { yield value; } })()
          */
-        this.iterator = this.constructor.iteratorFromGenerator((iterable as Generator<unknown, any, unknown>)[Symbol.iterator]());
+        this.iterator = Iterator_From.generator((iterable as Generator<unknown, any, unknown>)[Symbol.iterator]());
      } else {
         /**
          * iterable: { key: 'value', spam: 'flavored' }
          */
-        this.iterator = this.constructor.iteratorFromObject(iterable);
+        this.iterator = Iterator_From.object(iterable);
       }
     } else if (typeof (iterable as Generator<unknown, any, unknown>)[Symbol.iterator] === 'function') {
       /**
        * iterable: 'abcdefg'
        */
-      this.iterator = this.constructor.iteratorFromGenerator((iterable as Generator<unknown, any, unknown>)[Symbol.iterator]());
+      this.iterator = Iterator_From.generator((iterable as Generator<unknown, any, unknown>)[Symbol.iterator]());
     } else {
       throw new TypeError(`Unsuported type of iterable -> ${typeof iterable}`);
     }
-  }
-
-  /**
-   * Converts `Array` to `GeneratorFunction`
-   * @param {any[]} array - List any type of values
-   * @yields {[any, number]}
-   */
-  static* iteratorFromArray(array: any[]): IterableIterator<[any, number]> {
-    for (const [index, value] of Object.entries(array)) {
-      yield [value, Number(index)];
-    }
-  }
-
-  /**
-   * Converts `Object` to `GeneratorFunction`
-   * @param {Object} dictionary - Dictionary of key value pares
-   * @yields {[any, string]}
-   */
-  static* iteratorFromObject(dictionary: ICC.Dictionary): IterableIterator<[any, string]> {
-    for (const [key, value] of Object.entries(dictionary)) {
-      yield [value, key];
-    }
-  }
-
-  /**
-   * Converts Iterator class or `GeneratorFunction` to `Generator`
-   * @param {GeneratorFunction} iterator - Objects with `.next()` or `[Symbol.iterator]()` method defined
-   * @yields {[any, number]}
-   */
-  static* iteratorFromGenerator(iterator: Generator<unknown, void, unknown>): IterableIterator<[any, number]>  {
-    let count = 0;
-    for (const value of iterator) {
-      yield [value, count];
-      count++;
-    }
-  }
-
-  /**
-   * Compares `left` to `right` values
-   * @param {any} left - Left-hand side of comparison
-   * @param {any} right - Right-hand side of comparison
-   * @return {Comparison_Results}
-   * @example
-   * console.log(Iterator_Cascade_Callbacks.compareValues(1, '1'));
-   * //> '=='
-   *
-   * console.log(Iterator_Cascade_Callbacks.compareValues(1, 1));
-   * //> '==='
-   *
-   * console.log(Iterator_Cascade_Callbacks.compareValues(2, 1));
-   * //> '>='
-   *
-   * console.log(Iterator_Cascade_Callbacks.compareValues(2, '3'));
-   * //> '<'
-   *
-   * console.log(Iterator_Cascade_Callbacks.compareValues('spam', 'ham'));
-   * //> '!='
-   *
-   * console.log(Iterator_Cascade_Callbacks.compareValues({ key: 'value' }, ['foo', 'bar']));
-   * //> '!=='
-   */
-  static compareValues(left: any, right: any): ICC.Comparison_Results {
-    if (left === right) {
-      return '===';
-    } else if (left == right) {
-      return '==';
-    } else if (!isNaN(Number(left)) && !isNaN(Number(right))) {
-      if ((typeof left) === (typeof right)) {
-        if (left < right) {
-          return '<=';
-        }
-        return '>=';
-      }
-      if (left < right) {
-        return '<';
-      }
-      return '>';
-    } else {
-      if (!isNaN(Number(left)) && right === undefined) {
-        return '>';
-      } else if (left === undefined && !isNaN(Number(right))) {
-        return '<';
-      } else if ((typeof left) !== (typeof right)) {
-        return '!==';
-      }
-    }
-    return '!=';
   }
 
   /**
@@ -278,7 +92,7 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
    * //> results -> [ [ 7, 2 ], undefined ] | count -> 0
    */
   static zip(...iterables: any[]): Iterator_Cascade_Callbacks {
-    const zip_wrapper = function* (iterables: any[], iterator_cascade_callbacks: InstanceType<any>): IterableIterator<(ICC.Yielded_Tuple | undefined)[]>  {
+    const zip_wrapper = function* (iterables: any[], iterator_cascade_callbacks: InstanceType<any>): IterableIterator<(Shared.Yielded_Tuple | undefined)[]>  {
       const iterators = iterables.map((iterable) => {
         if (iterable instanceof iterator_cascade_callbacks) {
           return iterable;
@@ -287,7 +101,7 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
       });
 
       while (true) {
-        const results: ICC.Yielded_Result[] = iterators.map((iterator) => {
+        const results: Shared.Yielded_Result[] = iterators.map((iterator) => {
           return iterator.next();
         });
 
@@ -304,37 +118,6 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
     };
 
     return new this(zip_wrapper(iterables, this));
-  }
-
-  /**
-   * Zips `left` and `right` iterable values and prepends `Comparison_Results` to values list
-   * @param {any} left - Generator, Iterator, and/or instance of `Iterator_Cascade_Callbacks`
-   * @param {any} right - Generator, Iterator, and/or instance of `Iterator_Cascade_Callbacks`
-   * @return {Iterator_Cascade_Callbacks}
-   * @TODO: Fix `any` usage to utilize the correct type hint of `ICC.Iterator_Cascade_Callbacks`
-   * @example
-   * const left = [ 1, 0, 1, 2, 'foo', {} ]
-   * const right = [ '0', 0, 2, '2', 'bar' ]
-   *
-   * const icc = Iterator_Cascade_Callbacks.zipCompareValues(left, right);
-   * const collection = icc.collect([]);
-   *
-   * console.log(collection);
-   * //> [
-   * //>   [ '!==', 1, '0' ],
-   * //>   [ '===', 0, 0 ],
-   * //>   [ '<', 1, 2 ],
-   * //>   [ '==', 2, '2' ],
-   * //>   [ '!=', 'foo', 'bar' ],
-   * //>   [ '!==', {}, undefined ]
-   * //> ]
-   */
-  static zipCompareValuesValues(left: any, right: any): Iterator_Cascade_Callbacks {
-    return this.zipValues(left, right).map((pare, index_or_key, { iterator_cascade_callbacks, callback_object }, ...parameters) => {
-      const [ left, right ] = pare;
-      const comparison_results: ICC.Comparison_Results = (iterator_cascade_callbacks as Iterator_Cascade_Callbacks).constructor.compareValues(left, right);
-      return [ comparison_results, left, right ];
-    });
   }
 
   /*
@@ -378,7 +161,7 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
       });
 
       while (true) {
-        const results: ICC.Yielded_Result[] = iterators.map((iterator) => {
+        const results: Shared.Yielded_Result[] = iterators.map((iterator) => {
           return iterator.next();
         });
 
@@ -421,10 +204,10 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
    * @this {Iterator_Cascade_Callbacks}
    */
   collect(
-    target: (any[] | ICC.Dictionary | any),
+    target: (any[] | Shared.Dictionary | any),
     callback_or_amount?: (ICC.Collect_To_Function | number),
     amount?: number
-  ): (any[] | ICC.Dictionary | undefined)
+  ): (any[] | Shared.Dictionary | undefined)
   {
     if (typeof callback_or_amount === 'function') {
       return this.collectToFunction(target, callback_or_amount, amount);
@@ -456,7 +239,7 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
   collectToArray(target: any[], amount?: number): any[] {
     let count = 0;
     for (const results of this) {
-      const [ value, index ] = (results as ICC.Yielded_Tuple);
+      const [ value, index ] = (results as Shared.Yielded_Tuple);
       target.push(value);
       count++;
       if (count >= (amount as number)) {
@@ -488,7 +271,7 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
   collectToFunction(target: any, callback: ICC.Collect_To_Function, amount?: number): any {
     let count = 0;
     for (const results of this) {
-      const [ value, index_or_key ] = (results as ICC.Yielded_Tuple);
+      const [ value, index_or_key ] = (results as Shared.Yielded_Tuple);
       callback(target, value, index_or_key, this);
       count++;
       if (count >= (amount as number)) {
@@ -512,10 +295,10 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
    * console.log(collection);
    * //> { spam: 'flavored', canned: 'ham' }
    */
-  collectToObject(target: ICC.Dictionary, amount?: number): ICC.Dictionary {
+  collectToObject(target: Shared.Dictionary, amount?: number): Shared.Dictionary {
     let count = 0;
     for (const results of this) {
-      const [ value, key ] = (results as ICC.Yielded_Tuple);
+      const [ value, key ] = (results as Shared.Yielded_Tuple);
       target[key] = value;
       count++;
       if (count >= (amount as number)) {
@@ -586,13 +369,13 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
      */
     const filter_wrapper: ICC.Callback_Wrapper = (callback_object, iterator_cascade_callbacks) => {
       const { parameters } = callback_object;
-      let [ value, index_or_key ] = (iterator_cascade_callbacks.value as ICC.Yielded_Tuple);
+      let [ value, index_or_key ] = (iterator_cascade_callbacks.value as Shared.Yielded_Tuple);
       let results = callback(value, index_or_key, { iterator_cascade_callbacks, callback_object }, ...parameters);
       if (results) {
         return;
       }
 
-      let next_data: { value: ICC.Yielded_Tuple, done: boolean } = { value: [undefined, NaN], done: false };
+      let next_data: { value: Shared.Yielded_Tuple, done: boolean } = { value: [undefined, NaN], done: false };
       while (!results) {
         next_data = iterator_cascade_callbacks.iterator.next();
         iterator_cascade_callbacks.value = next_data.value;
@@ -646,7 +429,7 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
      */
     const for_each_wrapper: ICC.Callback_Wrapper = (callback_object, iterator_cascade_callbacks) => {
       const { parameters } = callback_object;
-      const [ value, index_or_key ] = (iterator_cascade_callbacks.value as ICC.Yielded_Tuple);
+      const [ value, index_or_key ] = (iterator_cascade_callbacks.value as Shared.Yielded_Tuple);
       callback(value, index_or_key, { callback_object, iterator_cascade_callbacks }, ...parameters);
     };
 
@@ -676,7 +459,7 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
   inspect(callback: ICC.Callback_Function, ...parameters: any[]): Iterator_Cascade_Callbacks {
     const inspect_wrapper: ICC.Callback_Wrapper = (callback_object, iterator_cascade_callbacks) => {
       const { parameters } = callback_object;
-      const [ value, index_or_key ] = (iterator_cascade_callbacks.value as ICC.Yielded_Tuple);
+      const [ value, index_or_key ] = (iterator_cascade_callbacks.value as Shared.Yielded_Tuple);
       callback(value, index_or_key, { callback_object, iterator_cascade_callbacks }, ...parameters);
     };
 
@@ -764,10 +547,10 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
      */
     const map_wrapper: ICC.Callback_Wrapper = (callback_object, iterator_cascade_callbacks) => {
       const { parameters } = callback_object;
-      const [ value, index_or_key ] = (iterator_cascade_callbacks.value as ICC.Yielded_Tuple);
+      const [ value, index_or_key ] = (iterator_cascade_callbacks.value as Shared.Yielded_Tuple);
       const results = callback(value, index_or_key, { iterator_cascade_callbacks, callback_object }, ...parameters);
       if (Array.isArray(results) && results.length === 2) {
-        iterator_cascade_callbacks.value = (results as ICC.Yielded_Tuple);
+        iterator_cascade_callbacks.value = (results as Shared.Yielded_Tuple);
       } else {
         iterator_cascade_callbacks.value = [results, index_or_key];
       }
@@ -799,7 +582,7 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
       return this;
     }
 
-    const yielded_result: ICC.Yielded_Result = this.iterator.next();
+    const yielded_result: Shared.Yielded_Result = this.iterator.next();
     this.done = yielded_result.done;
     this.value = yielded_result.value;
 
@@ -829,6 +612,7 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
   /**
    * Returns, and removes, last `Callback_Object` from `this.callbacks` list
    * @return {Callback_Object?}
+   * @this {Iterator_Cascade_Callbacks}
    */
   popCallbackObject(): (ICC.Callback_Object | undefined) {
     return this.callbacks.pop();
@@ -895,7 +679,7 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
         callback_object.storage.count = 0;
       }
 
-      let next_data: { value: ICC.Yielded_Tuple, done: boolean } = { value: [undefined, NaN], done: false };
+      let next_data: { value: Shared.Yielded_Tuple, done: boolean } = { value: [undefined, NaN], done: false };
       while (callback_object.storage.count < amount) {
         next_data = iterator_cascade_callbacks.iterator.next();
         iterator_cascade_callbacks.value = next_data.value;
@@ -943,7 +727,7 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
         callback_object.storage.count = 0;
       }
 
-      let next_data: { value: ICC.Yielded_Tuple, done: boolean } = { value: [undefined, NaN], done: false };
+      let next_data: { value: Shared.Yielded_Tuple, done: boolean } = { value: [undefined, NaN], done: false };
       while (callback_object.storage.count < amount) {
         next_data = iterator_cascade_callbacks.iterator.next();
         iterator_cascade_callbacks.value = next_data.value;
@@ -1026,138 +810,6 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
     return this.pushCallbackWrapper(take_wrapper, 'take');
   }
 
-  /**
-   * Check if values are equal by consuming `this` and `other` iterator
-   * @param {any|Iterator_Cascade_Callbacks} other - Iterable that is or can be converted to instance of `Iterator_Cascade_Callbacks`
-   * @return {boolean}
-   * @example
-   * const icc = new Iterator_Cascade_Callbacks([1, 2, 3]);
-   *
-   * console.assert(icc.valuesAreEqual([1, 2, 3]) === true);
-   * console.assert(icc.valuesAreEqual([1, 3, 2]) === false);
-   * console.assert(icc.valuesAreEqual('spam') === false);
-   */
-  valuesAreEqual(other: any): boolean {
-    const comparison_results: ICC.Comparison_Results = this.valuesCompare(other);
-    if (['==', '==='].includes(comparison_results)) {
-      return true;
-    }
-    return false;
-  }
-
-  /**
-   * Returns `true` or `false` based on if `this` is greater than or equal to `other`
-   * @param {any|Iterator_Cascade_Callbacks} other - Iterable that is, or can be converted to, instance of `Iterator_Cascade_Callbacks`
-   * @return {boolean}
-   * @example
-   * const icc = new Iterator_Cascade_Callbacks([1, 2, 3]);
-   *
-   * console.assert(icc.valuesAreGreaterOrEqual([1, 2, 3]) === true);
-   * console.assert(icc.valuesAreGreaterOrEqual([1, 1, 3]) === true);
-   * console.assert(icc.valuesAreGreaterOrEqual([1, 3, 2]) === false);
-   */
-  valuesAreGreaterOrEqual(other: any): boolean {
-    const comparison_results: ICC.Comparison_Results = this.valuesCompare(other);
-    if (['>', '>=', '==', '==='].includes(comparison_results)) {
-      return true;
-    }
-    return false;
-  }
-
-  /**
-   * Returns `true` or `false` based on if `this` is greater than `other`
-   * @param {any|Iterator_Cascade_Callbacks} other - Iterable that is, or can be converted to, instance of `Iterator_Cascade_Callbacks`
-   * @return {boolean}
-   * @example
-   * const icc = new Iterator_Cascade_Callbacks([1, 2, 3]);
-   *
-   * console.assert(icc.valuesAreGreaterThan([1, 2]) === true);
-   * console.assert(icc.valuesAreGreaterThan([1, 2, 3]) === false);
-   */
-  valuesAreGreaterThan(other: any): boolean {
-    const comparison_results: ICC.Comparison_Results = this.valuesCompare(other);
-    if (['>', '>='].includes(comparison_results)) {
-      return true;
-    }
-    return false;
-  }
-
-  /**
-   * Returns `true` or `false` based on if `this` is less than or equal to `other`
-   * @param {any|Iterator_Cascade_Callbacks} other - Iterable that is, or can be converted to, instance of `Iterator_Cascade_Callbacks`
-   * @return {boolean}
-   * @example
-   * const icc = new Iterator_Cascade_Callbacks([1, 2, 3]);
-   *
-   * console.assert(icc.valuesAreLessOrEqual([1, 2, 3]) === true);
-   * console.assert(icc.valuesAreLessOrEqual([1, 2, 4]) === true);
-   * console.assert(icc.valuesAreLessOrEqual([1, 1, 2]) === false);
-   */
-  valuesAreLessOrEqual(other: any): boolean {
-    const comparison_results: ICC.Comparison_Results = this.valuesCompare(other);
-    if (['<', '<=', '==', '==='].includes(comparison_results)) {
-      return true;
-    }
-    return false;
-  }
-
-  /**
-   * Returns `true` or `false` based on if `this` is less than `other`
-   * @param {any|Iterator_Cascade_Callbacks} other - Iterable that is, or can be converted to, instance of `Iterator_Cascade_Callbacks`
-   * @return {boolean}
-   * @example
-   * const icc = new Iterator_Cascade_Callbacks([1, 2, 3]);
-   *
-   * console.assert(icc.valuesAreLessThan([1, 3]) === true);
-   * console.assert(icc.valuesAreLessThan([1, 2, 3]) === false);
-   */
-  valuesAreLessThan(other: any): boolean {
-    const comparison_results: ICC.Comparison_Results = this.valuesCompare(other);
-    if (['<', '<='].includes(comparison_results)) {
-      return true;
-    }
-    return false;
-  }
-
-  /**
-   * Consumes `this` and `other` iterator instances to return `Comparison_Results`
-   * @param {any|Iterator_Cascade_Callbacks} other - Iterable to compare with `this` iterator
-   * @notes
-   * - Parameter `other` that are not type of `Iterator_Cascade_Callbacks` will be coerced
-   * - Values are compared with `==` **not** `===` which means types may be coerced
-   * @example
-   * const icc = Iterator_Cascade_Callbacks([1, 2, 3]);
-   *
-   * console.log(icc.valuesCompare([1, 2, 4]));
-   * //> '<'
-   *
-   * console.log(icc.valuesCompare([1, 2, 2]));
-   * //> '>'
-   *
-   * console.log(icc.valuesCompare('123'));
-   * //> '=='
-   *
-   * console.log(icc.valuesCompare([1, 2, 3]));
-   * //> '==='
-   *
-   * console.log(icc.valuesCompare('spam'));
-   * //> '!=='
-   */
-  valuesCompare(other: any): ICC.Comparison_Results {
-    let results = '';
-
-    for (const comparison_results of this.constructor.zipCompareValuesValues(this, other)) {
-      const [ value, index_or_key ] = (comparison_results as ICC.Yielded_Tuple);
-      const comparator = (value as [ICC.Comparison_Results, any, any]).shift();
-      if (comparator !== '===') {
-        return comparator;
-      }
-      results = comparator;
-    }
-
-    return (results as ICC.Comparison_Results);
-  }
-
   [Symbol.iterator]() {
     return this;
   }
@@ -1167,18 +819,12 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
 /* istanbul ignore next */
 if (typeof module !== 'undefined') {
   exports = module.exports = {
-    Callback_Object,
     Iterator_Cascade_Callbacks,
-    Pause_Iteration,
-    Stop_Iteration,
   };
 }
 
 export {
-  Callback_Object,
   Iterator_Cascade_Callbacks,
-  Pause_Iteration,
-  Stop_Iteration,
 }
 
 /**
@@ -1189,29 +835,13 @@ export {
 
 
 /**
- * Classy object for storing wrapper function state between iterations
- * @property {Callback_Wrapper} wrapper - Wrapper for callback function that parses inputs and outputs
- * @property {Dictionary} storage - Generic dictionary like object
- * @property {string} name - Method name that instantiated callback, eg. `filter`
- * @property {any[]} parameters - List of arguments that are passed to callback on each iteration
- * @typedef {Callback_Object}
- */
-interface Callback_Object extends ICC.Callback_Object {}
-
-
-/**
  * Enables static methods to be called from within class methods
  * @see {link} - https://github.com/Microsoft/TypeScript/issues/3841
- * @property {Dictionary} state - Data shared between `Callback_Wrapper` functions on each iteration
- * @property {Dictionary} storage - Data shared between `Callback_Function` for each iteration
+ * @property {Shared.Dictionary} state - Data shared between `Callback_Wrapper` functions on each iteration
+ * @property {Shared.Dictionary} storage - Data shared between `Callback_Function` for each iteration
  * @typedef Iterator_Cascade_Callbacks
  */
 interface Iterator_Cascade_Callbacks extends ICC.Iterator_Cascade_Callbacks__Instance {
   constructor: typeof Iterator_Cascade_Callbacks;
 }
-
-
-interface Pause_Iteration extends ICC.Pause_Iteration {}
-
-interface Stop_Iteration extends ICC.Stop_Iteration {}
 

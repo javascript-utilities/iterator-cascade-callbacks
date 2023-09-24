@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { Stop_Iteration } from '../iterator-cascade-callbacks';
+import { Stop_Iteration } from '../lib/errors';
 
 'use strict';
 
