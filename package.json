@@ -17,10 +17,15 @@
       "__tests__"
     ],
     "collectCoverageFrom": [
-      "iterator-cascade-callbacks.js"
+      "iterator-cascade-callbacks.js",
+      "iterator-cascade-callbacks-asynchronously.js",
+      "lib/**/*.js"
     ],
     "coveragePathIgnorePatterns": [
       "node_modules/"
+    ],
+    "testPathIgnorePatterns": [
+      "__tests__/lib"
     ],
     "coverageThreshold": {
       "global": {
