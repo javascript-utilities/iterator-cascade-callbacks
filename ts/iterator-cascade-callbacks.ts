@@ -1,9 +1,9 @@
 'use strict';
 
-import { Callback_Object } from './lib/callback-objects';
-import { Stop_Iteration, Pause_Iteration } from './lib/errors';
-import { Iterator_From } from './lib/iterator-from';
-import { GeneratorFunction, AsyncGeneratorFunction, Static_Contract } from './lib/runtime-types';
+import { Callback_Object } from './lib/callback-objects.js';
+import { Stop_Iteration, Pause_Iteration } from './lib/errors.js';
+import { Iterator_From } from './lib/iterator-from.js';
+import { GeneratorFunction, AsyncGeneratorFunction, Static_Contract } from './lib/runtime-types.js';
 
 
 /**

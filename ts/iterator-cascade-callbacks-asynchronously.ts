@@ -1,14 +1,14 @@
 'use strict';
 
-import { Callback_Object_Asynchronously } from './lib/callback-objects';
-import { Stop_Iteration, Pause_Iteration } from './lib/errors';
-import { Iterator_From } from './lib/iterator-from';
+import { Callback_Object_Asynchronously } from './lib/callback-objects.js';
+import { Stop_Iteration, Pause_Iteration } from './lib/errors.js';
+import { Iterator_From } from './lib/iterator-from.js';
 import {
 	GeneratorFunction,
 	AsyncGeneratorFunction,
 	AsyncGeneratorClass,
 	Static_Contract,
-} from './lib/runtime-types';
+} from './lib/runtime-types.js';
 
 /**
  * Asynchronous Iterator that chains callback function execution
