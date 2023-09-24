@@ -18,12 +18,10 @@ Iterator that chains callback function execution
 - [&#x1F3D7; Requirements][heading__requirements]
 
 - [&#9889; Quick Start][heading__quick_start]
-
   - [&#x1F4DD; Edit Your ReadMe File][heading__your_readme_file]
   - [&#x1F4BE; Commit and Push][heading__commit_and_push]
 
 - [&#x1F9F0; Usage][heading__usage]
-
   - [NodeJS Examples][heading__nodejs_examples]
   - [Web Application Example][heading__web_application_example]
 
@@ -70,7 +68,7 @@ Iterator that chains callback function execution
     - [Method `valuesCompare`][heading__method_valuescompare]
 
   - [Custom Interfaces][heading__custom_interfaces]
-    - [Interface `Callback_Object`][heading__interface_callbackobject]
+    - [Interface `Callback_Object`][heading__interface_callback_object]
 
   - [Custom Types][heading__custom_types]
     - [Type `Callback_Function`][heading__type_callback_function]
@@ -91,7 +89,6 @@ Iterator that chains callback function execution
   - [Version `0.0.5`][heading__version_005]
 
 - [&#x1F4C8; Contributing][heading__contributing]
-
   - [&#x1F531; Forking][heading__forking]
   - [&#x1F4B1; Sponsor][heading__sponsor]
 
@@ -321,7 +318,7 @@ console.log(collection);
 The above filters even numbers from `fibonacci` Generator, skips the first even result, divides results by two, limits iteration to five results, and finally collects values to an array.
 
 
-To achieve the same output but without `Iterator_Cascade_Callbacks` class, code may be similar to...
+To achieve the same output but without [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks] class, code may be similar to...
 
 
 ```javascript
@@ -522,10 +519,12 @@ ______
 ## API
 [heading__api]:
   #api
-  "&#x1F523; Documentation for classes, methods, paramaters, and custom types/data-structures"
+  "&#x1F523; Documentation for classes, methods, parameters, and custom types/data-structures"
 
 
-> Documentation for classes, methods, paramaters, and custom types/data-structures
+> Documentation for classes, methods, parameters, and custom types/data-structures
+>
+> TypeScript source may be reviewed at [`ts/iterator-cascade-callbacks.ts`][file__ts__iterator_cascade_callbacks_ts] which transpiles into [`iterator-cascade-callbacks.js`][file__iterator_cascade_callbacks_js] JavaScript.
 
 
 ---
@@ -538,6 +537,9 @@ ______
 
 
 Custom error type to permanently stop iteration prematurely
+
+
+**Example**
 
 
 ```javascript
@@ -618,7 +620,7 @@ Builds new instance of `Callback_Object` to append to `Iterator_Cascade_Callback
 **Parameters**
 
 
-- [**{Callback_Wrapper}**][heading__type_callback_wrapper] `callback_wrapper` - Function wrapper that handles input/output between `Callback_Function` and `Iterator_Cascade_Callbacks`
+- [**{Callback_Wrapper}**][heading__type_callback_wrapper] `callback_wrapper` - Function wrapper that handles input/output between [`Callback_Function`][heading__type_callback_function] and [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks]
 
 
 #### Method `Callback_Object.call`
@@ -627,13 +629,13 @@ Builds new instance of `Callback_Object` to append to `Iterator_Cascade_Callback
   "Calls `this.wrapper` function with reference to this `Callback_Object` and `Iterator_Cascade_Callbacks`"
 
 
-Calls `this.wrapper` function with reference to this `Callback_Object` and `Iterator_Cascade_Callbacks`
+Calls `this.wrapper` function with reference to this `Callback_Object` and [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks]
 
 
 **Parameters**
 
 
-- [**{Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks] `iterator_cascade_callbacks` - Reference to `Iterator_Cascade_Callbacks` instance
+- [**{Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks] `iterator_cascade_callbacks` - Reference to [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks] instance
 
 
 ---
@@ -651,9 +653,9 @@ Iterator that chains callback function execution
 **Properties**
 
 
-- [**{Dictionary}**][heading__type_dictionary] `state` - Data shared between `Callback_Wrapper` functions on each iteration
+- [**{Dictionary}**][heading__type_dictionary] `state` - Data shared between [`Callback_Wrapper`][heading__type_callback_wrapper] functions on each iteration
 
-- [**{Dictionary}**][heading__type_dictionary] `storage` - Data shared between `Callback_Function` for each iteration
+- [**{Dictionary}**][heading__type_dictionary] `storage` - Data shared between [`Callback_Function`][heading__type_callback_function] for each iteration
 
 
 #### Method `Iterator_Cascade_Callbacks.constructor`
@@ -662,7 +664,7 @@ Iterator that chains callback function execution
   "Instantiates new instance of `Iterator_Cascade_Callbacks` from `iterable` input&#10;&#10;new Iterator_Cascade_Callbacks(iterable: any) =&gt; Iterator_Cascade_Callbacks"
 
 
-Instantiates new instance of `Iterator_Cascade_Callbacks` from `iterable` input
+Instantiates new instance of [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks] from `iterable` input
 
 
 **Parameters**
@@ -774,13 +776,13 @@ console.log(Iterator_Cascade_Callbacks.compareValues({ key: 'value' }, ['foo', '
   "Returns new instance of `Iterator_Cascade_Callbacks` that yields lists of either `Yielded_Tuple` or `undefined` results&#10;&#10;zip(...iterables: any[]) => Iterator_Cascade_Callbacks"
 
 
-Returns new instance of `Iterator_Cascade_Callbacks` that yields lists of either `Yielded_Tuple` or `undefined` results
+Returns new instance of [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks] that yields lists of either `Yielded_Tuple` or `undefined` results
 
 
 **Parameters**
 
 
-- **{any[]}** `iterables` - List of Generators, Iterators, and/or instances of `Iterator_Cascade_Callbacks`
+- **{any[]}** `iterables` - List of Generators, Iterators, and/or instances of [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks]
 
 
 **Example** Equal Length Iterables
@@ -813,9 +815,9 @@ Zips `left` and `right` iterable values and prepends `Comparison_Results` to val
 **Parameters**
 
 
-- **{any}** left - Generator, Iterator, and/or instance of `Iterator_Cascade_Callbacks`
+- **{any}** left - Generator, Iterator, and/or instance of [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks]
 
-- **{any}** right - Generator, Iterator, and/or instance of `Iterator_Cascade_Callbacks`
+- **{any}** right - Generator, Iterator, and/or instance of [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks]
 
 
 **Example**
@@ -846,13 +848,13 @@ console.log(collection);
   "Returns new instance of `Iterator_Cascade_Callbacks` that yields either list of values from iterators or `undefined` results&#10;&#10;zipValues(...iterables: any[]) =&gt; Iterator_Cascade_Callbacks"
 
 
-Returns new instance of `Iterator_Cascade_Callbacks` that yields either list of values from iterators or `undefined` results
+Returns new instance of [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks] that yields either list of values from iterators or `undefined` results
 
 
 **Parameters**
 
 
-- **{any[]}** `iterables` - List of Generators, Iterators, and/or instances of `Iterator_Cascade_Callbacks`
+- **{any[]}** `iterables` - List of Generators, Iterators, and/or instances of [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks]
 
 
 **Example** Equal Length Iterables
@@ -894,7 +896,7 @@ for (let [results, count] of icc_zip) {
 **Notes**
 
 
-- Parameters that are not an instance of `Iterator_Cascade_Callbacks` will be converted
+- Parameters that are not an instance of [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks] will be converted
 
 - Iteration will continue until **all** iterables result in `done` value of `true`
 
@@ -908,7 +910,7 @@ for (let [results, count] of icc_zip) {
 Converts list of `this.callbacks` objects to `GeneratorFunction`
 
 
-Yields [**{Callback_Object}**][heading__interface_callbackobject]
+Yields [**{Callback_Object}**][heading__interface_callback_object]
 
 
 #### Method `collect`
@@ -1044,7 +1046,7 @@ console.log(collection);
   "Returns new instance of `Iterator_Cascade_Callbacks` with copy of callbacks&#10;&#10;copyCallbacksOnto(iterable: any) =&gt; Iterator_Cascade_Callbacks"
 
 
-Returns new instance of `Iterator_Cascade_Callbacks` with copy of callbacks
+Returns new instance of [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks] with copy of callbacks
 
 
 **Parameters**
@@ -1124,7 +1126,7 @@ Executes callback for each iteration
 **Parameters**
 
 
-- [**{Callback_Function}**][heading__type_callback_function] `callback` - Function that generally does not mutate `value` or `index_or_key` for `Iterator_Cascade_Callbacks` instance
+- [**{Callback_Function}**][heading__type_callback_function] `callback` - Function that generally does not mutate `value` or `index_or_key` for [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks] instance
 
 - **{...any[]}** `parameters` - List of arguments that are passed to callback on each iteration
 
@@ -1317,7 +1319,7 @@ Skip number of iterations
 **Parameters**
 
 
-- {number} amount - Number of iterations to skip past
+- **{number}** amount - Number of iterations to skip past
 
 
 Returns `this` [**{Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks]
@@ -1424,7 +1426,7 @@ Returns `true` or `false` based on if `this` is equal to `other`
 **Parameters**
 
 
-- [**{any|Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks] `other` - Iterable that is, or can be converted to, instance of `Iterator_Cascade_Callbacks`
+- [**{any|Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks] `other` - Iterable that is, or can be converted to, instance of [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks]
 
 
 **Example**
@@ -1451,7 +1453,7 @@ Returns `true` or `false` based on if `this` is greater than or equal to `other`
 **Parameters**
 
 
-- [**{any|Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks] `other` - Iterable that is, or can be converted to, instance of `Iterator_Cascade_Callbacks`
+- [**{any|Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks] `other` - Iterable that is, or can be converted to, instance of [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks]
 
 
 **Example**
@@ -1478,7 +1480,7 @@ Returns `true` or `false` based on if `this` is greater than `other`
 **Parameters**
 
 
-- [**{any|Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks] `other` - Iterable that is, or can be converted to, instance of `Iterator_Cascade_Callbacks`
+- [**{any|Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks] `other` - Iterable that is, or can be converted to, instance of [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks]
 
 
 **Example**
@@ -1504,7 +1506,7 @@ Returns `true` or `false` based on if `this` is less than or equal to `other`
 **Parameters**
 
 
-- [**{any|Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks] `other` - Iterable that is, or can be converted to, instance of `Iterator_Cascade_Callbacks`
+- [**{any|Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks] `other` - Iterable that is, or can be converted to, instance of [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks]
 
 
 **Example**
@@ -1531,7 +1533,7 @@ Returns `true` or `false` based on if `this` is less than `other`
 **Parameters**
 
 
-- [**{any|Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks] `other` - Iterable that is, or can be converted to, instance of `Iterator_Cascade_Callbacks`
+- [**{any|Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks] `other` - Iterable that is, or can be converted to, instance of [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks]
 
 
 **Example**
@@ -1557,7 +1559,7 @@ Consumes `this` and `other` iterator instances to return `Comparison_Results`
 **Parameters**
 
 
-- [**{any|Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks] `other` - Iterable to compare with `this` instance of `Iterator_Cascade_Callbacks`
+- [**{any|Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks] `other` - Iterable to compare with `this` instance of [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks]
 
 
 Returns [**{Collect_To_Function}**][heading__type_comparisonresults]
@@ -1589,7 +1591,7 @@ console.log(icc.valuesCompare('spam'));
 **Notes**
 
 
-- Parameter `other` that are not type of `Iterator_Cascade_Callbacks` will be coerced
+- Parameter `other` that are not type of [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks] will be coerced
 
 
 ---
@@ -1605,9 +1607,9 @@ console.log(icc.valuesCompare('spam'));
 
 
 #### Interface `Callback_Object`
-[heading__interface_callbackobject]:
-  #interface-callbackobject
-  "Classy object for storing wrapper function state between iterations"
+[heading__interface_callback_object]:
+  #interface-callback_object
+  "Classy object for storing wrapper function state between iterations&#10;&#10;{&#10;  wrapper: Callback_Wrapper,&#10;  storage: Dictionary&#10;}"
 
 
 Classy object for storing wrapper function state between iterations
@@ -1649,24 +1651,24 @@ Generic callback function for parsing and/or mutating iterator data
 
 - [**{Index_Or_Key}**][heading__type_index_or_key] `index_or_key` - Either a `string` or `number` depending upon iterable type
 
-- [**{Callback_Function_References}**][heading__type_callback_function_references] `references` - Dictionary with reference to _`this`_ `Iterator_Cascade_Callbacks` and _`this`_ `Callback_Object`
+- [**{Callback_Function_References}**][heading__type_callback_function_references] `references` - Dictionary with reference to _`this`_ [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks] and _`this`_ `Callback_Object`
 
 
 #### Type `Callback_Function_References`
 [heading__type_callback_function_references]:
   #type-callback_function_references
-  "Object with references to `Iterator_Cascade_Callbacks` and `Callback_Object` instances&#10;&#10;{  iterator_cascade_callbacks: Iterator_Cascade_Callbacks,&#10;  callback_object: Callback_Object,&#10;}"
+  "Object with references to `Iterator_Cascade_Callbacks` and `Callback_Object` instances&#10;&#10;{&#10;  iterator_cascade_callbacks: Iterator_Cascade_Callbacks,&#10;  callback_object: Callback_Object,&#10;}"
 
 
-Object with references to `Iterator_Cascade_Callbacks` and `Callback_Object` instances
+Object with references to [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks] and `Callback_Object` instances
 
 
 **Properties**
 
 
-- [**{Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks] `iterator_cascade_callbacks` - Instance reference to `this` of `Iterator_Cascade_Callbacks`
+- [**{Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks] `iterator_cascade_callbacks` - Instance reference to `this` of [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks]
 
-- [**{Callback_Object}**][heading__interface_callbackobject] `callback_object` - Instance reference to `this` of `Callback_Object`
+- [**{Callback_Object}**][heading__interface_callback_object] `callback_object` - Instance reference to `this` of `Callback_Object`
 
 
 #### Type `Callback_Wrapper`
@@ -1681,9 +1683,9 @@ Wrapper for callback function that parses inputs and outputs
 **Parameters**
 
 
-- [**{Callback_Object}**][heading__interface_callbackobject] `callback_object` - Instance reference to `this` of `Callback_Object`
+- [**{Callback_Object}**][heading__interface_callback_object] `callback_object` - Instance reference to `this` of `Callback_Object`
 
-- [**{Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks] `iterator_cascade_callbacks` - Instance reference to `this` of `Iterator_Cascade_Callbacks`
+- [**{Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks] `iterator_cascade_callbacks` - Instance reference to `this` of [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks]
 
 
 #### Type `Collect_To_Function`
@@ -1700,11 +1702,11 @@ Callback function for custom collection algorithms
 
 - **{any}** `target` - An object that function will collect values to
 
-- **{value}** `any` - Value portion of `Yielded_Tuple` from `Iterator_Cascade_Callbacks`
+- **{value}** `any` - Value portion of `Yielded_Tuple` from [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks]
 
-- **{number|string}** `index_or_key` - Index or Key portion of `Yielded_Tuple` from `Iterator_Cascade_Callbacks`
+- **{number|string}** `index_or_key` - Index or Key portion of `Yielded_Tuple` from [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks]
 
-- [**{Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks] `iterator_cascade_callbacks` - Instance reference to `this` of `Iterator_Cascade_Callbacks`
+- [**{Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks] `iterator_cascade_callbacks` - Instance reference to `this` of [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks]
 
 
 **Example**
@@ -1783,7 +1785,7 @@ Generator function that has not been initialized
 
 
 ```JavaScript
-function* gen() { for (let i = 0; i &lt; 10; i++;) { yield i; } }
+function* gen() { for (let i = 0; i < 10; i++;) { yield i; } }
 
 function collect(generator: Generator_Function_Instance): any[] {
   let collection = [];
@@ -1879,6 +1881,9 @@ ______
 This repository may not be feature complete and/or fully functional, Pull Requests that add features or fix bugs are certainly welcomed.
 
 
+Experimental features of TypeScript are utilized by this project, namely `experimentalDecorators`, which enable type hints for static methods and properties. If errors are experienced during build/transpiling please check that the version of TypeScript matches the version defined within the [`package-lock.json`][file__package_lock_json] file.
+
+
 ______
 
 
@@ -1905,7 +1910,9 @@ Sub-headings within this section will experience much _churn_; completed items w
 **`@types/iterator-cascade-callbacks/iterator-cascade-callbacks.d.ts`**
 
 
-- [ ] `Iterator_Cascade_Callbacks` - Define `static` method types in a way that TypeScript understands and produce errors **only** if used improperly
+- [X] [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks] - Define `static` method types in a way that TypeScript understands and produce errors **only** if used improperly
+
+> Achieved via experimental TypeScript decorator features
 
 
 **`ts/iterator-cascade-callbacks.ts`**
@@ -1915,13 +1922,15 @@ Sub-headings within this section will experience much _churn_; completed items w
 
 - [ ] Add _`Skip_Iteration`_, or similar, `Error` type and refactor `skip`, and `step`, methods to throw such error type
 
-- [ ] `zipCompareValues` - Fix `any` usage to utilize the correct type hint of `Iterator_Cascade_Callbacks`
+- [X] `zipCompareValues` - Fix `any` usage to utilize the correct type hint of [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks]
+
+> **Fixed** by changing _`any`_ to _`Iterator_Cascade_Callbacks`_, after enabling experimental TypeScript decorator features, and adjusting _`interface`s_
 
 
 **`tsconfig.json`**
 
 
-- [ ] Change `_` to `true` once `/* istanbul ignore next */` commits are removed from source
+- [ ] Change `removeComments` to `true` once `/* istanbul ignore next */` commits are removed from source
 
 - [X] Enable _stricter_ transpiling options
 
@@ -2145,4 +2154,17 @@ For further details review full length version of [AGPL-3.0][branch__current__li
 
 [build_travis_ci]:
   https://travis-ci.com/javascript-utilities/iterator-cascade-callbacks
+
+
+[file__iterator_cascade_callbacks_js]:
+  iterator-cascade-callbacks.js
+  "JavaScript transpiled from TypeScript source code within the `ts/` directory"
+
+[file__ts__iterator_cascade_callbacks_ts]:
+  ts/iterator-cascade-callbacks.ts
+  "TypeScript source code of this repository that is intended to be used by other projects"
+
+[file__package_lock_json]:
+  /package-lock.json
+  "Targets specific versions of dependencies"
 
