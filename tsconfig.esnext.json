@@ -1,0 +1,12 @@
+{
+	"extends": "./.config/type-script/base.json",
+	"compilerOptions": {
+		"target": "ESNext",
+		"module": "ESNext",
+		"lib": ["dom", "dom.iterable", "es2021"],
+		"outDir": "targets/esnext",
+		"esModuleInterop": true
+	},
+	"include": ["ts/**/*", "@types/**/*"],
+	"exclude": ["ts/__tests__/**/*"]
+}

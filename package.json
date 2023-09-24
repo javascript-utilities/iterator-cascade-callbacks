@@ -4,28 +4,30 @@
   "description": "Iterator helper methods that enable chaining",
   "main": "iterator-cascade-callbacks.js",
   "scripts": {
-    "ts-build": "tsc --build",
+    "ts-build:ci-cd": "tsc --build",
+    "ts-build:es2021": "tsc --project tsconfig.es2021.json",
+    "ts-build:esnext": "tsc --project tsconfig.esnext.json",
     "ts-watch": "tsc --watch",
     "ci-test": "jest --coverage",
-    "ci-build": "npm run ts-build && npm run ci-test",
+    "ci-build": "npm run ts-build:ci-cd && npm run ci-test",
     "ci-watch": "jest --coverage --watchAll"
   },
   "jest": {
     "verbose": true,
     "testEnvironment": "jsdom",
     "roots": [
-      "__tests__"
+      "targets/ci-cd/__tests__"
     ],
     "collectCoverageFrom": [
-      "iterator-cascade-callbacks.js",
-      "iterator-cascade-callbacks-asynchronously.js",
-      "lib/**/*.js"
+      "targets/ci-cd/iterator-cascade-callbacks.js",
+      "targets/ci-cd/iterator-cascade-callbacks-asynchronously.js",
+      "targets/ci-cd/lib/**/*.js"
     ],
     "coveragePathIgnorePatterns": [
       "node_modules/"
     ],
     "testPathIgnorePatterns": [
-      "__tests__/lib"
+      "targets/ci-cd/__tests__/lib"
     ],
     "coverageThreshold": {
       "global": {

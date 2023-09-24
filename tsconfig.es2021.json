@@ -1,14 +1,13 @@
 {
-	"comments": ["This file is intended for use by IDE and CI/CD servers"],
 	"extends": "./.config/type-script/base.json",
 	"compilerOptions": {
 		"target": "ES2021",
 		"module": "Node16",
 		"lib": ["dom", "dom.iterable", "es2021"],
-		"outDir": "targets/ci-cd",
-		"sourceMap": true,
-		"removeComments": false,
+		"outDir": "targets/es2021",
+		"esModuleInterop": true,
 		"moduleResolution": "Node16"
 	},
-	"include": ["ts/**/*", "@types/**/*"]
+	"include": ["ts/**/*", "@types/**/*"],
+	"exclude": ["ts/__tests__/**/*"]
 }
