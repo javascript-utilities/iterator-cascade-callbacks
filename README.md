@@ -518,7 +518,7 @@ ______
 
 > Documentation for classes, methods, parameters, and custom types/data-structures
 >
-> TypeScript source may be reviewed at [`ts/iterator-cascade-callbacks.ts`][file__ts__iterator_cascade_callbacks_ts] which transpiles into [`iterator-cascade-callbacks.js`][file__iterator_cascade_callbacks_js] JavaScript.
+> TypeScript source may be reviewed at [`ts/iterator-cascade-callbacks.ts`][file__ts__iterator_cascade_callbacks_ts].
 
 
 ---
@@ -1969,10 +1969,6 @@ For further details review full length version of [AGPL-3.0][branch__current__li
 [build_travis_ci]:
   https://travis-ci.com/javascript-utilities/iterator-cascade-callbacks
 
-
-[file__iterator_cascade_callbacks_js]:
-  iterator-cascade-callbacks.js
-  "JavaScript transpiled from TypeScript source code within the `ts/` directory"
 
 [file__ts__iterator_cascade_callbacks_ts]:
   ts/iterator-cascade-callbacks.ts
