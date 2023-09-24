@@ -9,5 +9,5 @@
 		"moduleResolution": "Node16"
 	},
 	"include": ["ts/**/*", "@types/**/*"],
-	"exclude": ["ts/__tests__/**/*"]
+	"exclude": ["ts/index*", "ts/__tests__/**/*"]
 }

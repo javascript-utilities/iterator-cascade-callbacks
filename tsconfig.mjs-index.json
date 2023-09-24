@@ -4,9 +4,9 @@
 		"target": "ESNext",
 		"module": "ESNext",
 		"lib": ["dom", "dom.iterable", "es2021"],
-		"outDir": "targets/esnext",
+		"outDir": "targets/mjs",
 		"esModuleInterop": true
 	},
 	"include": ["ts/**/*", "@types/**/*"],
-	"exclude": ["ts/index*", "ts/__tests__/**/*"]
+	"exclude": ["ts/__tests__/**/*", "node_modules"]
 }

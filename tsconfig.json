@@ -10,5 +10,6 @@
 		"removeComments": false,
 		"moduleResolution": "Node16"
 	},
-	"include": ["ts/**/*", "@types/**/*"]
+	"include": ["ts/**/*", "@types/**/*"],
+	"exclude": ["ts/index*"]
 }
