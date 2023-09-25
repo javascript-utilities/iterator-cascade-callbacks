@@ -12,8 +12,19 @@ class Callback_Object implements Callback_Object {
 	 * @param {string} name - Method name that instantiated callback, eg. `filter`
 	 * @param {any[]} parameters - Array of arguments that are passed to callback on each iteration
 	 */
-	constructor(callback_wrapper: ICC.Callback_Wrapper, name: string, parameters: any[]) {
-		this.wrapper = callback_wrapper;
+	constructor({
+		wrapper,
+		name,
+		callback,
+		parameters,
+	}: {
+		wrapper: ICC.Callback_Wrapper;
+		name: string;
+		callback: ICC.Callback_Function;
+		parameters: any[];
+	}) {
+		this.wrapper = wrapper;
+		this.callback = callback;
 		this.storage = {};
 		this.name = name;
 		if (Array.isArray(parameters)) {

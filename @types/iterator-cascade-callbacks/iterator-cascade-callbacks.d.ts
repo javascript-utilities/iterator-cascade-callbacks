@@ -82,11 +82,23 @@ declare global {
 		 */
 		export interface Callback_Object {
 			wrapper: Callback_Wrapper;
+			callback: Callback_Function;
 			storage: Shared.Dictionary;
 			name: string;
 			parameters: any[];
 
-			new (callback_wrapper: Callback_Wrapper, name: string, parameters: any[]): Callback_Object;
+			new ({
+				wrapper,
+				name,
+				callback,
+				parameters,
+			}: {
+				wrapper: ICC.Callback_Wrapper;
+				name: string;
+				callback?: ICC.Callback_Function;
+				parameters: any[];
+			}): Callback_Object;
+
 			call(iterator_cascade_callbacks: Iterator_Cascade_Callbacks): void;
 		}
 

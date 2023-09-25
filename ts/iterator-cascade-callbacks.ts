@@ -4,6 +4,7 @@ import { Callback_Object } from './lib/callback-objects.js';
 import { Stop_Iteration, Pause_Iteration } from './lib/errors.js';
 import { Iterator_From } from './lib/iterator-from.js';
 import { GeneratorFunction, AsyncGeneratorFunction, Static_Contract } from './lib/runtime-types.js';
+import { Wrappers_Synchronous } from './lib/wrappers.js';
 
 
 /**
@@ -92,32 +93,7 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
    * //> results -> [ [ 7, 2 ], undefined ] | count -> 0
    */
   static zip(...iterables: any[]): Iterator_Cascade_Callbacks {
-    const zip_wrapper = function* (iterables: any[], iterator_cascade_callbacks: InstanceType<any>): IterableIterator<(Shared.Yielded_Tuple | undefined)[]>  {
-      const iterators = iterables.map((iterable) => {
-        if (iterable instanceof iterator_cascade_callbacks) {
-          return iterable;
-        }
-        return new iterator_cascade_callbacks(iterable);
-      });
-
-      while (true) {
-        const results: Shared.Yielded_Result[] = iterators.map((iterator) => {
-          return iterator.next();
-        });
-
-        if (results.every(({done}) => done === true)) {
-          break;
-        }
-
-        const values = results.map(({value}) => {
-          return value;
-        });
-
-        yield values;
-      }
-    };
-
-    return new this(zip_wrapper(iterables, this));
+    return new this(Wrappers_Synchronous.zip(iterables, this));
   }
 
   /*
@@ -152,35 +128,7 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
    * //> results -> [ 7, undefined ] | count -> 0
    */
   static zipValues(...iterables: any[]): Iterator_Cascade_Callbacks {
-    const zip_values_wrapper = function* (iterables: any[], iterator_cascade_callbacks: InstanceType<any>): IterableIterator<(any[] | undefined)> {
-      const iterators = iterables.map((iterable) => {
-        if (iterable instanceof iterator_cascade_callbacks) {
-          return iterable;
-        }
-        return new iterator_cascade_callbacks(iterable);
-      });
-
-      while (true) {
-        const results: Shared.Yielded_Result[] = iterators.map((iterator) => {
-          return iterator.next();
-        });
-
-        if (results.every(({done}) => done === true)) {
-          break;
-        }
-
-        const values = results.map(({value}) => {
-          if (Array.isArray(value)) {
-            return value[0];
-          }
-          return value;
-        });
-
-        yield values;
-      }
-    };
-
-    return new this(zip_values_wrapper(iterables, this));
+    return new this(Wrappers_Synchronous.zipValues(iterables, this));
   }
 
   /**
@@ -338,7 +286,12 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
 
     icc.callbacks = this.callbacks.map((callback_object) => {
       const callback_wrapper = callback_object.wrapper;
-      return new Callback_Object(callback_wrapper, callback_object.name, callback_object.parameters);
+      return new Callback_Object({
+        wrapper: callback_wrapper,
+        name: callback_object.name,
+        callback: callback_object.callback,
+        parameters: callback_object.parameters
+      });
     });
 
     return icc;
@@ -361,47 +314,9 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
    * //> [ 8, 6 ]
    */
   filter(callback: ICC.Callback_Function, ...parameters: any[]): Iterator_Cascade_Callbacks {
-    /**
-     * @function filter_wrapper
-     * @type {Callback_Wrapper}
-     * @param {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
-     * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
-     */
-    const filter_wrapper: ICC.Callback_Wrapper = (callback_object, iterator_cascade_callbacks) => {
-      const { parameters } = callback_object;
-      let [ value, index_or_key ] = (iterator_cascade_callbacks.value as Shared.Yielded_Tuple);
-      let results = callback(value, index_or_key, { iterator_cascade_callbacks, callback_object }, ...parameters);
-      if (results) {
-        return;
-      }
-
-      let next_data: { value: Shared.Yielded_Tuple, done: boolean } = { value: [undefined, NaN], done: false };
-      while (!results) {
-        next_data = iterator_cascade_callbacks.iterator.next();
-        iterator_cascade_callbacks.value = next_data.value;
-        iterator_cascade_callbacks.done = next_data.done;
-        if (iterator_cascade_callbacks.done) {
-          throw new Stop_Iteration('this.filter says this.iterator is done');
-        }
-
-        const iterate_callbacks = iterator_cascade_callbacks.iterateCallbackObjects();
-        for (const callback_other of iterate_callbacks) {
-          if (callback_other === callback_object) {
-            [ value, index_or_key ] = iterator_cascade_callbacks.value;
-            results = callback(value, index_or_key, { iterator_cascade_callbacks, callback_object }, ...parameters);
-            if (results) {
-              return;
-            }
-            break;
-          }
-          callback_other.call(iterator_cascade_callbacks);
-          [ value, index_or_key ] = iterator_cascade_callbacks.value;
-          results = callback(value, index_or_key, { iterator_cascade_callbacks, callback_object }, ...parameters);
-        }
-      }
-    };
-
-    return this.pushCallbackWrapper(filter_wrapper, 'filter', ...parameters);
+    return this.pushCallbackWrapper({
+      wrapper: Wrappers_Synchronous.filter, name: 'filter', callback, parameters
+    });
   }
 
   /**
@@ -422,18 +337,9 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
    * //> [ 9, 8, 7, 6, 5 ]
    */
   forEach(callback: ICC.Callback_Function, ...parameters: any[]): Iterator_Cascade_Callbacks {
-    /**
-     * @function for_each_wrapper
-     * @param {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
-     * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
-     */
-    const for_each_wrapper: ICC.Callback_Wrapper = (callback_object, iterator_cascade_callbacks) => {
-      const { parameters } = callback_object;
-      const [ value, index_or_key ] = (iterator_cascade_callbacks.value as Shared.Yielded_Tuple);
-      callback(value, index_or_key, { callback_object, iterator_cascade_callbacks }, ...parameters);
-    };
-
-    return this.pushCallbackWrapper(for_each_wrapper, 'forEach', ...parameters);
+    return this.pushCallbackWrapper({
+      wrapper: Wrappers_Synchronous.forEach, name: 'forEach', callback, parameters
+    });
   }
 
   /**
@@ -457,13 +363,9 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
    * }).inspect(inspector).collect([]);
    */
   inspect(callback: ICC.Callback_Function, ...parameters: any[]): Iterator_Cascade_Callbacks {
-    const inspect_wrapper: ICC.Callback_Wrapper = (callback_object, iterator_cascade_callbacks) => {
-      const { parameters } = callback_object;
-      const [ value, index_or_key ] = (iterator_cascade_callbacks.value as Shared.Yielded_Tuple);
-      callback(value, index_or_key, { callback_object, iterator_cascade_callbacks }, ...parameters);
-    };
-
-    return this.pushCallbackWrapper(inspect_wrapper, 'inspect', ...parameters);
+    return this.pushCallbackWrapper({
+      wrapper: Wrappers_Synchronous.inspect, name: 'inspect', callback, parameters
+    });
   }
 
   /**
@@ -485,37 +387,12 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
    * //> [1, 2]
    */
   limit(amount: number): Iterator_Cascade_Callbacks {
-    /**
-     * @function limit_wrapper
-     * @type {Callback_Wrapper}
-     * @param {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
-     * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
-     */
-    const limit_wrapper: ICC.Callback_Wrapper = (callback_object, iterator_cascade_callbacks) => {
-      if (isNaN(callback_object.storage.count)) {
-        callback_object.storage.count = 0;
-      }
-
-      callback_object.storage.count++;
-
-      if (callback_object.storage.count > amount) {
-        const iterate_callbacks = iterator_cascade_callbacks.iterateCallbackObjects();
-        let found_self = false;
-        for (const callback_other of iterate_callbacks) {
-          if (found_self) {
-            callback_other.call(iterator_cascade_callbacks);
-          }
-          /* istanbul ignore next */
-          else if (callback_other === callback_object) {
-            found_self = true;
-          }
-        }
-
-        throw new Stop_Iteration('this.limit says amount has been reached');
-      }
-    }
-
-    return this.pushCallbackWrapper(limit_wrapper, 'limit');
+    return this.pushCallbackWrapper({
+      wrapper: Wrappers_Synchronous.limit,
+      name: 'limit',
+      callback: this.#noOpCallback,
+      parameters: [amount],
+    });
   }
 
   /**
@@ -539,24 +416,12 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
    * //> [4, 3]
    */
   map(callback: ICC.Callback_Function, ...parameters: any[]): Iterator_Cascade_Callbacks {
-    /**
-     * @function map_wrapper
-     * @type {Callback_Wrapper}
-     * @param {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
-     * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
-     */
-    const map_wrapper: ICC.Callback_Wrapper = (callback_object, iterator_cascade_callbacks) => {
-      const { parameters } = callback_object;
-      const [ value, index_or_key ] = (iterator_cascade_callbacks.value as Shared.Yielded_Tuple);
-      const results = callback(value, index_or_key, { iterator_cascade_callbacks, callback_object }, ...parameters);
-      if (Array.isArray(results) && results.length === 2) {
-        iterator_cascade_callbacks.value = (results as Shared.Yielded_Tuple);
-      } else {
-        iterator_cascade_callbacks.value = [results, index_or_key];
-      }
-    }
-
-    return this.pushCallbackWrapper(map_wrapper, 'map', ...parameters);
+    return this.pushCallbackWrapper({
+      wrapper: Wrappers_Synchronous.map,
+      name: 'map',
+      callback,
+      parameters
+    });
   }
 
   /**
@@ -632,24 +497,24 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
 
   /**
    * Instantiates `Callback_Object` with callback_wrapper and pushes to `this.callbacks` via `this.pushCallbackObject`
-   * @param {Callback_Wrapper} callback_wrapper - Wrapper for callback function that parses inputs and outputs
-   * @param {string} name - Callback wrapper name
-   * @param {...any[]} parameters - List of arguments that are passed to callback on each iteration
+   * @param {Object} o
+   * @param {Callback_Wrapper} o.wrapper - Wrapper for callback function that parses inputs and outputs
+   * @param {string} o.name - Callback wrapper name
+   * @param {ICC.Callback_Function} callback - Generic callback function for parsing and/or mutating iterator data
+   * @param {...any[]} o.parameters - List of arguments that are passed to callback on each iteration
    * @return {this}
    * @this {Iterator_Cascade_Callbacks}
    */
-  pushCallbackWrapper(callback_wrapper: ICC.Callback_Wrapper, name: string, ...parameters: any[]): Iterator_Cascade_Callbacks {
-    const callback_object = new Callback_Object(callback_wrapper, name, parameters);
-    return this.pushCallbackObject(callback_object);
-  }
-
-  /**
-   * Pushes `Callback_Object` to `this.callbacks` then returns reference to instance of `Iterator_Cascade_Callbacks`
-   * @param {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
-   * @return {this}
-   * @this {Iterator_Cascade_Callbacks}
-   */
-  pushCallbackObject(callback_object: ICC.Callback_Object): Iterator_Cascade_Callbacks {
+  pushCallbackWrapper(
+    o:
+    {
+      wrapper: ICC.Callback_Wrapper,
+      name: string,
+      callback: ICC.Callback_Function,
+      parameters: any[]
+    }
+  ): Iterator_Cascade_Callbacks {
+    const callback_object = new Callback_Object(o);
     this.callbacks.push(callback_object);
     return this;
   }
@@ -668,38 +533,12 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
    * //> [ 2, 3, 4, 5 ]
    */
   skip(amount: number): Iterator_Cascade_Callbacks {
-    /**
-     * @function skip_wrapper
-     * @type {Callback_Wrapper}
-     * @param {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
-     * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
-     */
-    const skip_wrapper: ICC.Callback_Wrapper = (callback_object, iterator_cascade_callbacks) => {
-      if (isNaN(callback_object.storage.count)) {
-        callback_object.storage.count = 0;
-      }
-
-      let next_data: { value: Shared.Yielded_Tuple, done: boolean } = { value: [undefined, NaN], done: false };
-      while (callback_object.storage.count < amount) {
-        next_data = iterator_cascade_callbacks.iterator.next();
-        iterator_cascade_callbacks.value = next_data.value;
-        iterator_cascade_callbacks.done = next_data.done;
-        if (iterator_cascade_callbacks.done) {
-          throw new Stop_Iteration('this.skip says this.iterator is done');
-        }
-
-        const iterate_callbacks = iterator_cascade_callbacks.iterateCallbackObjects();
-        for (const callback_other of iterate_callbacks) {
-          if (callback_other === callback_object) {
-            callback_object.storage.count++;
-            break;
-          }
-          callback_other.call(iterator_cascade_callbacks);
-        }
-      }
-    };
-
-    return this.pushCallbackWrapper(skip_wrapper, 'skip');
+    return this.pushCallbackWrapper({
+      wrapper: Wrappers_Synchronous.skip,
+      name: 'skip',
+      callback: this.#noOpCallback,
+      parameters: [amount],
+    });
   }
 
   /**
@@ -716,40 +555,12 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
    * //> [ 1, 3, 5 ]
    */
   step(amount: number): Iterator_Cascade_Callbacks {
-    /**
-     * @function step_wrapper
-     * @type {Callback_Wrapper}
-     * @param {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
-     * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
-     */
-    const step_wrapper: ICC.Callback_Wrapper = (callback_object, iterator_cascade_callbacks) => {
-      if (isNaN(callback_object.storage.count)) {
-        callback_object.storage.count = 0;
-      }
-
-      let next_data: { value: Shared.Yielded_Tuple, done: boolean } = { value: [undefined, NaN], done: false };
-      while (callback_object.storage.count < amount) {
-        next_data = iterator_cascade_callbacks.iterator.next();
-        iterator_cascade_callbacks.value = next_data.value;
-        iterator_cascade_callbacks.done = next_data.done;
-        if (iterator_cascade_callbacks.done) {
-          throw new Stop_Iteration('this.skip says this.iterator is done');
-        }
-
-        const iterate_callbacks = iterator_cascade_callbacks.iterateCallbackObjects();
-        for (const callback_other of iterate_callbacks) {
-          if (callback_other === callback_object) {
-            callback_object.storage.count++;
-            break;
-          }
-          callback_other.call(iterator_cascade_callbacks);
-        }
-      }
-
-      callback_object.storage.count = 0;
-    };
-
-    return this.pushCallbackWrapper(step_wrapper, 'step');
+    return this.pushCallbackWrapper({
+      wrapper: Wrappers_Synchronous.step,
+      name: 'step',
+      callback: this.#noOpCallback,
+      parameters: [amount]
+    });
   }
 
   /**
@@ -774,41 +585,18 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
    * //> [ 3, 4 ]
    */
   take(amount: number): Iterator_Cascade_Callbacks {
-    /**
-     * @function take_wrapper
-     * @type {Callback_Wrapper}
-     * @param {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
-     * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
-     */
-    const take_wrapper: ICC.Callback_Wrapper = (callback_object, iterator_cascade_callbacks) => {
-      if (isNaN(callback_object.storage.count)) {
-        callback_object.storage.count = 0;
-        callback_object.storage.resumed = false;
-      } else if (callback_object.storage.paused) {
-        callback_object.storage.count = 1;
-        callback_object.storage.paused = false;
-        callback_object.storage.resumed = true;
-      }
-      callback_object.storage.count++;
-
-      if (callback_object.storage.count > amount) {
-        const iterate_callbacks = iterator_cascade_callbacks.iterateCallbackObjects();
-        let found_self = false;
-        for (const callback_other of iterate_callbacks) {
-          if (found_self) {
-            callback_other.call(iterator_cascade_callbacks);
-          } else if (callback_other === callback_object) {
-            found_self = true;
-          }
-        }
-
-        callback_object.storage.paused = true;
-        throw new Pause_Iteration('this.take says amount has been reached');
-      }
-    }
-
-    return this.pushCallbackWrapper(take_wrapper, 'take');
+    return this.pushCallbackWrapper({
+      wrapper: Wrappers_Synchronous.take,
+      name: 'take',
+      callback: this.#noOpCallback,
+      parameters: [amount]
+    });
   }
+
+  /**
+   *
+   */
+  #noOpCallback() {}
 
   [Symbol.iterator]() {
     return this;
