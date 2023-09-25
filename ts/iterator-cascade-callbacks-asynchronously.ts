@@ -803,7 +803,7 @@ class Iterator_Cascade_Callbacks_Asynchronously
 	 * @this {Iterator_Cascade_Callbacks_Asynchronously}
 	 */
 	pushCallbackObject(
-		callback_object: ICC.Callback_Object
+		callback_object: ICCA.Callback_Object_Asynchronously
 	): Iterator_Cascade_Callbacks_Asynchronously {
 		this.callbacks.push(callback_object);
 		return this;
