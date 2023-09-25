@@ -7,14 +7,14 @@ import { Callback_Object, Callback_Object_Asynchronously } from '../lib/callback
 
 class Test__Callback_Object {
   callback_wrapper: ICC.Callback_Wrapper;
-  callback_paramaters: any[];
+  callback_parameters: any[];
 
   /**
    *
    */
   constructor() {
     this.callback_wrapper = (callback_object, iterator_cascade_callbacks) => {
-      const callback: ICC.Callback_Function = (value, index_or_key, { callback_object, iterator_cascade_callbacks }, paramaters) => {
+      const callback: ICC.Callback_Function = (value, index_or_key, { callback_object, iterator_cascade_callbacks }, parameters) => {
         return [ value, index_or_key ];
       };
 
@@ -27,7 +27,7 @@ class Test__Callback_Object {
       }
     };
 
-    this.callback_paramaters = [ 'first', 'second', 'third' ];
+    this.callback_parameters = [ 'first', 'second', 'third' ];
   }
 
   /**
@@ -44,15 +44,20 @@ class Test__Callback_Object {
     test('Callback_Object.constructor -> Are object properties assigned as designed?', () => {
       const name = 'noOpp';
 
-      const callback_object = new Callback_Object(this.callback_wrapper, name, this.callback_paramaters);
+      const callback_object = new Callback_Object({
+        wrapper: this.callback_wrapper,
+        name,
+        callback: () => {},
+        parameters: this.callback_parameters
+      });
 
       expect(callback_object.name).toStrictEqual(name);
-      expect(callback_object.parameters).toStrictEqual(this.callback_paramaters);
+      expect(callback_object.parameters).toStrictEqual(this.callback_parameters);
       expect(callback_object.wrapper).toStrictEqual(this.callback_wrapper);
     });
 
-    test('Callback_Object.constructor -> Do `.paramaters` default to an empty array if undefined?', () => {
-      const name = 'empty_paramaters';
+    test('Callback_Object.constructor -> Do `.parameters` default to an empty array if undefined?', () => {
+      const name = 'empty_parameters';
 
       /* @ts-ignore */
       const callback_object = new Callback_Object(this.callback_wrapper, name, undefined);
@@ -66,14 +71,14 @@ class Test__Callback_Object {
 
 class Test__Callback_Object_Asynchronously {
   callback_wrapper: ICCA.Callback_Wrapper;
-  callback_paramaters: any[];
+  callback_parameters: any[];
 
   /**
    *
    */
   constructor() {
     this.callback_wrapper = async (callback_object, iterator_cascade_callbacks) => {
-      const callback: ICCA.Callback_Function = (value, index_or_key, { callback_object, iterator_cascade_callbacks }, paramaters) => {
+      const callback: ICCA.Callback_Function = (value, index_or_key, { callback_object, iterator_cascade_callbacks }, parameters) => {
         return [ value, index_or_key ];
       };
 
@@ -86,7 +91,7 @@ class Test__Callback_Object_Asynchronously {
       }
     };
 
-    this.callback_paramaters = [ 'first', 'second', 'third' ];
+    this.callback_parameters = [ 'first', 'second', 'third' ];
   }
 
   /**
@@ -103,15 +108,15 @@ class Test__Callback_Object_Asynchronously {
     test('Callback_Object_Asynchronously.constructor -> Are object properties assigned as designed?', async () => {
       const name = 'noOpp';
 
-      const callback_object = new Callback_Object_Asynchronously(this.callback_wrapper, name, this.callback_paramaters);
+      const callback_object = new Callback_Object_Asynchronously(this.callback_wrapper, name, this.callback_parameters);
 
       expect(callback_object.name).toStrictEqual(name);
-      expect(callback_object.parameters).toStrictEqual(this.callback_paramaters);
+      expect(callback_object.parameters).toStrictEqual(this.callback_parameters);
       expect(callback_object.wrapper).toStrictEqual(this.callback_wrapper);
     });
 
-    test('Callback_Object_Asynchronously.constructor -> Do `.paramaters` default to an empty array if undefined?', async () => {
-      const name = 'empty_paramaters';
+    test('Callback_Object_Asynchronously.constructor -> Do `.parameters` default to an empty array if undefined?', async () => {
+      const name = 'empty_parameters';
 
       /* @ts-ignore */
       const callback_object = new Callback_Object_Asynchronously(this.callback_wrapper, name, undefined);
