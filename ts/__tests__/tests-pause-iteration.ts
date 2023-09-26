@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// vim: noexpandtab
 
 import { Pause_Iteration } from '../lib/errors';
 

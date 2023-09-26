@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// vim: noexpandtab
 
 import { Callback_Object, Callback_Object_Asynchronously } from '../lib/callback-objects';
 

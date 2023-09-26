@@ -1,3 +1,5 @@
+// vim: noexpandtab
+
 'use strict';
 
 import { Pause_Iteration, Stop_Iteration } from './errors.js';

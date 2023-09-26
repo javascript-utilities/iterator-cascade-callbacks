@@ -1,3 +1,5 @@
+// vim: noexpandtab
+
 'use strict';
 
 import { Callback_Object } from './lib/callback-objects.js';
