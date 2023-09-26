@@ -291,9 +291,8 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
 		const icc = new this.constructor(iterable);
 
 		icc.callbacks = this.callbacks.map((callback_object) => {
-			const callback_wrapper = callback_object.wrapper;
 			return new Callback_Object({
-				wrapper: callback_wrapper,
+				wrapper: callback_object.wrapper,
 				name: callback_object.name,
 				callback: callback_object.callback,
 				parameters: callback_object.parameters,

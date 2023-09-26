@@ -29,6 +29,9 @@ declare global {
 				resumed: boolean;
 			};
 
+			/* Generator/Iterator methods */
+			iterateCallbackObjects(): IterableIterator<Callback_Object>;
+
 			/* Instance method definitions */
 			collect(
 				target: any[] | Shared.Dictionary | any,
@@ -67,6 +70,7 @@ declare global {
 		 */
 		export interface Callback_Object_Asynchronously {
 			wrapper: Callback_Wrapper;
+			callback: Callback_Function;
 			storage: Shared.Dictionary;
 			name: string;
 			parameters: any[];

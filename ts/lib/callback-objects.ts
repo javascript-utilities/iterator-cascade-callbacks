@@ -58,8 +58,19 @@ class Callback_Object_Asynchronously implements Callback_Object_Asynchronously {
 	 * @param {string} name - Method name that instantiated callback, eg. `filter`
 	 * @param {any[]} parameters - Array of arguments that are passed to callback on each iteration
 	 */
-	constructor(callback_wrapper: ICCA.Callback_Wrapper, name: string, parameters: any[]) {
-		this.wrapper = callback_wrapper;
+	constructor({
+		wrapper,
+		name,
+		callback,
+		parameters,
+	}: {
+		wrapper: ICCA.Callback_Wrapper;
+		name: string;
+		callback: ICCA.Callback_Function;
+		parameters: any[];
+	}) {
+		this.wrapper = wrapper;
+		this.callback = callback;
 		this.storage = {};
 		this.name = name;
 		if (Array.isArray(parameters)) {

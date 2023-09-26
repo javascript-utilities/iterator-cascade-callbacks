@@ -109,7 +109,12 @@ class Test__Callback_Object_Asynchronously {
     test('Callback_Object_Asynchronously.constructor -> Are object properties assigned as designed?', async () => {
       const name = 'noOpp';
 
-      const callback_object = new Callback_Object_Asynchronously(this.callback_wrapper, name, this.callback_parameters);
+      const callback_object = new Callback_Object_Asynchronously({
+        wrapper: this.callback_wrapper,
+        name,
+        callback: () => {},
+        parameters: this.callback_parameters
+      });
 
       expect(callback_object.name).toStrictEqual(name);
       expect(callback_object.parameters).toStrictEqual(this.callback_parameters);
