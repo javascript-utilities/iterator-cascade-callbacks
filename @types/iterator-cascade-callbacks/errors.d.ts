@@ -1,3 +1,5 @@
+// vim: noexpandtab
+
 import { ICC } from './iterator-cascade-callbacks';
 import { ICCA } from './iterator-cascade-callbacks-asynchronously';
 
@@ -16,4 +18,3 @@ declare global {
 }
 
 export { Errors };
-
