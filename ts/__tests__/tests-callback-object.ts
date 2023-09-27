@@ -2,6 +2,9 @@
 // vim: noexpandtab
 
 import { Callback_Object, Callback_Object_Asynchronously } from '../lib/callback-objects';
+import {
+	Yielded_Data,
+} from '../lib/runtime-types';
 
 'use strict';
 
@@ -19,12 +22,12 @@ class Test__Callback_Object {
         return [ value, index_or_key ];
       };
 
-      const [ value, index_or_key ] = (iterator_cascade_callbacks.value as Shared.Yielded_Tuple);
+      const { value, index_or_key } = iterator_cascade_callbacks.yielded_data;
       const results = callback(value, index_or_key, { callback_object, iterator_cascade_callbacks }, ...callback_object.parameters);
-      if (Array.isArray(results)) {
-        iterator_cascade_callbacks.value = (results as Shared.Yielded_Tuple);
+      if (results instanceof Yielded_Data) {
+        iterator_cascade_callbacks.yielded_data = results;
       } else {
-        iterator_cascade_callbacks.value = [ results, index_or_key ];
+        iterator_cascade_callbacks.yielded_data.value = results;
       }
     };
 
@@ -83,12 +86,12 @@ class Test__Callback_Object_Asynchronously {
         return [ value, index_or_key ];
       };
 
-      const [ value, index_or_key ] = (iterator_cascade_callbacks.value as Shared.Yielded_Tuple);
+      const { value, index_or_key } = iterator_cascade_callbacks.yielded_data;
       const results = await callback(value, index_or_key, { callback_object, iterator_cascade_callbacks }, ...callback_object.parameters);
-      if (Array.isArray(results)) {
-        iterator_cascade_callbacks.value = (results as Shared.Yielded_Tuple);
+      if (results instanceof Yielded_Data) {
+        iterator_cascade_callbacks.yielded_data = results;
       } else {
-        iterator_cascade_callbacks.value = [ results, index_or_key ];
+        iterator_cascade_callbacks.yielded_data.value = results;
       }
     };
 

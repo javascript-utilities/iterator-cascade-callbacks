@@ -1,3 +1,5 @@
+// vim: noexpandtab
+
 import { Errors } from './errors';
 import { ICC } from './iterator-cascade-callbacks';
 import { ICCA } from './iterator-cascade-callbacks-asynchronously';
@@ -22,12 +24,15 @@ declare global {
 		export type Index_Or_Key = number | string;
 
 		/**
-		 * Array with `value` and `index_or_key` entries
-		 * @typedef Yielded_Tuple
+		 * Classy object with `value` and `index_or_key` entries
+		 * @typedef Yielded_Data
 		 * @example
-		 * const result: Yielded_Tuple = ['spam', 3];
+		 * const result: Yielded_Data = new Yielded_Data({ value: 'spam', index_or_key: 3 });
 		 */
-		export type Yielded_Tuple = [any, Index_Or_Key];
+		export type Yielded_Data = {
+			content: any;
+			index_or_key: Index_Or_Key;
+		}
 
 		/**
 		 * Return string value for comparisons
@@ -78,7 +83,7 @@ declare global {
 		 *   results = icc.next();
 		 * }
 		 */
-		export type Yielded_Result = { done: boolean; value?: Shared.Yielded_Tuple };
+		export type Yielded_Result = { done: boolean; value?: Shared.Yielded_Data };
 	}
 }
 

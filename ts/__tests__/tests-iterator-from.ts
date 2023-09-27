@@ -12,9 +12,9 @@ test('Iterator_From.array -> ', () => {
 
 	const values = [];
 	const indexes = [];
-	for (let [value, index] of iteratorFromArray) {
-		values.push(value);
-		indexes.push(index);
+	for (let { content, index_or_key } of iteratorFromArray) {
+		values.push(content);
+		indexes.push(index_or_key);
 	}
 
 	expect(values).toStrictEqual(Synchronous.array_input);
@@ -26,9 +26,9 @@ test('Iterator_From.object -> ', () => {
 
 	const values = [];
 	const keys = [];
-	for (let [value, index] of iteratorFromObject) {
-		values.push(value);
-		keys.push(index);
+	for (let { content, index_or_key } of iteratorFromObject) {
+		values.push(content);
+		keys.push(index_or_key);
 	}
 
 	expect(values).toStrictEqual(Object.values(Synchronous.object_input));
@@ -39,8 +39,8 @@ test('Iterator_From.generator -> ', () => {
 	const iteratorFromGenerator = Iterator_From.generator(Synchronous.generator_input());
 
 	const values = [];
-	for (let [value, index] of iteratorFromGenerator) {
-		values.push(value);
+	for (let { content, index_or_key } of iteratorFromGenerator) {
+		values.push(content);
 	}
 
 	expect(values).toStrictEqual([...Synchronous.generator_input()]);
@@ -50,8 +50,8 @@ test('Iterator_From.asyncGenerator -> ', async () => {
 	const iteratorFromAsyncGenerator = Iterator_From.asyncGenerator(Asynchronous.generator_input());
 
 	const values = [];
-	for await (let [value, index] of iteratorFromAsyncGenerator) {
-		values.push(value);
+	for await (let { content, index_or_key } of iteratorFromAsyncGenerator) {
+		values.push(content);
 	}
 
 	expect(values).toStrictEqual(Synchronous.array_input);

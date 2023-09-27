@@ -12,16 +12,16 @@ test('Iterator_Cascade_Callbacks_Asynchronously.zip -> Is it possible to zip num
 
 	const expected = [
 		[
-			[1, 0],
-			['a', 0],
+			1,
+			'a',
 		],
 		[
-			[2, 1],
-			['b', 1],
+			2,
+			'b',
 		],
 		[
-			[3, 2],
-			['c', 2],
+			3,
+			'c',
 		],
 	];
 
@@ -44,16 +44,16 @@ test('Iterator_Cascade_Callbacks_Asynchronously.zip -> Is it possible to zip ins
 
 	const expected = [
 		[
-			[2, 0],
-			[18, 0],
+			2,
+			18,
 		],
 		[
-			[4, 1],
-			[16, 1],
+			4,
+			16,
 		],
 		[
-			[6, 2],
-			[14, 2],
+			6,
+			14,
 		],
 	];
 

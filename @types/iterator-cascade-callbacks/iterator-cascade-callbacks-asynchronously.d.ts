@@ -1,3 +1,5 @@
+// vim: noexpandtab
+
 import { Shared } from './index';
 import { ICC } from './iterator-cascade-callbacks';
 
@@ -15,13 +17,14 @@ declare global {
 		//
 		export interface Iterator_Cascade_Callbacks_Asynchronously__Static<T> {
 			new (...args: Array<unknown>): T;
+			zip(...iterables: any[]): T;
 		}
 
 		//
 		export interface Iterator_Cascade_Callbacks_Asynchronously__Instance {
 			iterator: any;
+			yielded_data: Shared.Yielded_Data;
 			done: boolean;
-			value: Shared.Yielded_Tuple | undefined;
 			callbacks: Callback_Object[];
 			storage: Shared.Dictionary;
 			state: {
@@ -29,8 +32,10 @@ declare global {
 				resumed: boolean;
 			};
 
+			get value(): any;
+
 			/* Generator/Iterator methods */
-			iterateCallbackObjects(): IterableIterator<Callback_Object>;
+			entries(): AsyncIterator<Shared.Yielded_Data>;
 
 			/* Instance method definitions */
 			collect(
@@ -48,7 +53,7 @@ declare global {
 			collectToObject(target: Shared.Dictionary, amount?: number): Promise<Shared.Dictionary>;
 			collectToArray(target: any[], amount?: number): Promise<any[]>;
 
-			next(): Promise<Iterator_Cascade_Callbacks_Asynchronously>;
+			next(): Promise<Iterator_Cascade_Callbacks_Asynchronously__Instance>;
 
 			popCallbackObject(): Callback_Object_Asynchronously | undefined;
 			popCallbackWrapper(): Callback_Wrapper | undefined;

@@ -10,18 +10,9 @@ test('Iterator_Cascade_Callbacks.zip -> Is it possible to zip number and charact
 	const collection = icc_zip.collect([]);
 
 	const expected = [
-		[
-			[1, 0],
-			['a', 0],
-		],
-		[
-			[2, 1],
-			['b', 1],
-		],
-		[
-			[3, 2],
-			['c', 2],
-		],
+		[1, 'a'],
+		[2, 'b'],
+		[3, 'c'],
 	];
 
 	expect(collection).toStrictEqual(expected);
@@ -42,18 +33,9 @@ test('Iterator_Cascade_Callbacks.zip -> Is it possible to zip instances of Itera
 	const collection = icc_zip.collect([]);
 
 	const expected = [
-		[
-			[2, 0],
-			[18, 0],
-		],
-		[
-			[4, 1],
-			[16, 1],
-		],
-		[
-			[6, 2],
-			[14, 2],
-		],
+		[2, 18],
+		[4, 16],
+		[6, 14],
 	];
 
 	expect(collection).toStrictEqual(expected);

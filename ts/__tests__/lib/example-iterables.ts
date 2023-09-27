@@ -47,23 +47,24 @@ class Count_Iterator_Asynchronously {
 	}
 }
 
-
 const Synchronous = {
-	array_input: [9, 8, 7],
+	array_input: Array(20)
+		.fill(undefined)
+		.map((_, i) => i),
 	class_input: Count_Iterator,
 	generator_input: function* () {
-		for (let value of [6, 5, 4]) {
+		for (let value of this.array_input) {
 			yield value;
 		}
 	},
 	iterator_input: (function* () {
-		for (let value of [6, 5, 4]) {
+		for (let value of this.array_input) {
 			yield value;
 		}
 	})(),
 	object_input: { spam: 'flavored', canned: 'ham' },
 	string_input: 'abcdefg',
-  Count_Iterator,
+	Count_Iterator,
 };
 
 const Asynchronous = {
@@ -77,7 +78,7 @@ const Asynchronous = {
 		}
 	},
 	iterator_input: (function* () {
-		for (let value of [6, 5, 4]) {
+		for (let value of Synchronous.array_input) {
 			yield value;
 		}
 	})(),

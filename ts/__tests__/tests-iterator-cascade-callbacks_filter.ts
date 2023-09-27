@@ -90,4 +90,33 @@ test('Iterator_Cascade_Callbacks.filter -> Can `.filter()` and `.map()` be chain
 	expect(collection).toStrictEqual(expected);
 });
 
+test('Iterator_Cascade_Callbacks.filter -> Will filtering twice confuse first filter?', () => {
+	const icc = new Iterator_Cascade_Callbacks(Synchronous.array_input);
+
+	const collection = icc
+		.filter((value) => {
+			return value % 2 === 0;
+		})
+		.map((value) => {
+			return value + 1;
+		})
+		.filter((value) => {
+			return value % 3 === 0;
+		})
+		.collect([]);
+
+	const expected = Synchronous.array_input
+		.filter((value) => {
+			return value % 2 === 0;
+		})
+		.map((value) => {
+			return value + 1;
+		})
+		.filter((value) => {
+			return value % 3 === 0;
+		})
+
+	expect(collection).toStrictEqual(expected);
+});
+
 // test('Iterator_Cascade_Callbacks.filter -> ', () => {});

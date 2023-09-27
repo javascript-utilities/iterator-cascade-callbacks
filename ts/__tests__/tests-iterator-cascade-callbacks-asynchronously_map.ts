@@ -4,6 +4,7 @@
 'use strict';
 
 import { Iterator_Cascade_Callbacks_Asynchronously } from '../iterator-cascade-callbacks-asynchronously';
+import { Yielded_Data, } from '../lib/runtime-types.js';
 import { Synchronous } from './lib/example-iterables';
 
 test('Iterator_Cascade_Callbacks_Asynchronously.map -> Does chaining one callback break anything?', async () => {
@@ -53,12 +54,15 @@ test('Iterator_Cascade_Callbacks_Asynchronously.map -> Can multiple map callback
 	expect(collection).toStrictEqual(expected);
 });
 
-test('Iterator_Cascade_Callbacks_Asynchronously.map -> Is it okay for map callbacks to return `value` / `index_or_key` Tuple', async () => {
+test('Iterator_Cascade_Callbacks_Asynchronously.map -> Is it okay for map callbacks to return `Yielded_Data` instance?', async () => {
 	const icca = new Iterator_Cascade_Callbacks_Asynchronously(Synchronous.array_input);
 
 	const collection = await icca
 		.map((value, index_or_key) => {
-			return [(index_or_key as number) % 2 === 0, index_or_key];
+			return new Yielded_Data({
+				content: (index_or_key as number) % 2 === 0,
+				index_or_key,
+			});
 		})
 		.collect([]);
 

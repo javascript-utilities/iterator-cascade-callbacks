@@ -10,8 +10,7 @@ test('Iterator_Cascade_Callbacks_Asynchronously.next -> Will `for` loop without 
 	const input_copy = [...Synchronous.array_input];
 
 	const icca = new Iterator_Cascade_Callbacks_Asynchronously(Synchronous.array_input);
-	for await (let results of icca) {
-		const [value, index] = results as Shared.Yielded_Tuple;
+	for await (let value of icca) {
 		const expected = input_copy.shift();
 		expect(value).toStrictEqual(expected);
 	}

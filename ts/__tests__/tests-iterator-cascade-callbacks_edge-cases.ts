@@ -11,11 +11,11 @@ test('Iterator_Cascade_Callbacks -- tests Edge Cases -> What happens when extra 
 		index_or_key: Shared.Index_Or_Key,
 		{ callback_object, iterator_cascade_callbacks },
 		...parameters
-	): Shared.Yielded_Tuple => {
+	): Shared.Yielded_Data => {
 		if (parameters.length > (index_or_key as number)) {
-			return [parameters.splice(index_or_key as number)[0], index_or_key];
+			return parameters.splice(index_or_key as number)[0];
 		}
-		return [value, index_or_key];
+		return value;
 	};
 
 	const icc = new Iterator_Cascade_Callbacks([1, 2, 3, 4]);

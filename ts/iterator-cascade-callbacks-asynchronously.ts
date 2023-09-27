@@ -11,6 +11,7 @@ import {
 	AsyncGeneratorFunction,
 	AsyncGeneratorClass,
 	Static_Contract,
+	Yielded_Data,
 } from './lib/runtime-types.js';
 
 /**
@@ -31,7 +32,7 @@ class Iterator_Cascade_Callbacks_Asynchronously
 	 */
 	constructor(iterable: any) {
 		this.done = false;
-		this.value = [undefined, NaN];
+		this.yielded_data = new Yielded_Data({ content: undefined, index_or_key: NaN });
 		this.callbacks = [];
 		this.state = {
 			paused: false,
@@ -110,6 +111,16 @@ class Iterator_Cascade_Callbacks_Asynchronously
 		} else {
 			throw new TypeError(`Unsuported type of iterable -> ${typeof iterable}`);
 		}
+
+		/* https://stackoverflow.com/questions/34517538/setting-an-es6-class-getter-to-enumerable */
+		for (const [key, descriptor] of Object.entries(
+			Object.getOwnPropertyDescriptors(Object.getPrototypeOf(this))
+		)) {
+			if (typeof descriptor.get === 'function') {
+				descriptor.enumerable = true;
+				Object.defineProperty(this, key, descriptor);
+			}
+		}
 	}
 
 	/**
@@ -152,50 +163,9 @@ class Iterator_Cascade_Callbacks_Asynchronously
 		return new this(Wrappers_Asynchronous.zip(iterables, this));
 	}
 
-	/**
-	 * Returns new instance of `Iterator_Cascade_Callbacks_Asynchronously` that yields either list of values from iterators or `undefined` results
-	 * @param {any[]} iterables - List of Generators, Iterators, and/or instances of `Iterator_Cascade_Callbacks_Asynchronously`
-	 * @notes
-	 * - Parameters that are not an instance of `Iterator_Cascade_Callbacks_Asynchronously` will be converted
-	 * - Iteration will continue until **all** iterables result in `done` value of `true`
-	 * @example - Equal Length Iterables
-	 * const icca_one = new Iterator_Cascade_Callbacks_Asynchronously([1, 2, 3]);
-	 * const icca_two = new Iterator_Cascade_Callbacks_Asynchronously([4, 5, 6]);
-	 *
-	 * const icca_zip = Iterator_Cascade_Callbacks_Asynchronously.zip(icca_one, icca_two);
-	 *
-	 * for (let [results, count] of icca_zip) {
-	 *   console.log('results ->', results, '| count ->', count);
-	 * }
-	 * //> results -> [ 1, 4 ] | count -> 0
-	 * //> results -> [ 2, 5 ] | count -> 1
-	 * //> results -> [ 3, 6 ] | count -> 2
-	 * @example - Unequal Length Iterables
-	 * const icca_three = new Iterator_Cascade_Callbacks_Asynchronously([7, 8, 9]);
-	 * const icca_four = new Iterator_Cascade_Callbacks_Asynchronously([10, 11]);
-	 *
-	 * const icca_zip = Iterator_Cascade_Callbacks_Asynchronously.zip(icca_three, icca_four);
-	 *
-	 * for (let [results, count] of icca_zip) {
-	 *   console.log('results ->', results, '| count ->', count);
-	 * }
-	 * //> results -> [ 9, 10 ] | count -> 2
-	 * //> results -> [ 8, 11 ] | count -> 1
-	 * //> results -> [ 7, undefined ] | count -> 0
-	 */
-	static zipValues(...iterables: any[]): Iterator_Cascade_Callbacks_Asynchronously {
-		return new this(Wrappers_Asynchronous.zipValues(iterables, this));
-	}
-
-	/**
-	 * Converts list of `this.callbacks` objects to `GeneratorFunction`
-	 * @this {Iterator_Cascade_Callbacks_Asynchronously}
-	 * @yields {Callback_Object}
-	 */
-	*iterateCallbackObjects(): IterableIterator<ICCA.Callback_Object_Asynchronously> {
-		for (const callback of this.callbacks) {
-			yield callback;
-		}
+	/***/
+	get value() {
+		return this.yielded_data.content;
 	}
 
 	/**
@@ -243,8 +213,7 @@ class Iterator_Cascade_Callbacks_Asynchronously
 	 */
 	async collectToArray(target: any[], amount?: number): Promise<any[]> {
 		let count = 0;
-		for await (const results of this) {
-			const [value, index] = results as Shared.Yielded_Tuple;
+		for await (const value of this) {
 			target.push(value);
 			count++;
 			if (count >= (amount as number)) {
@@ -281,9 +250,8 @@ class Iterator_Cascade_Callbacks_Asynchronously
 		amount?: number
 	): Promise<any> {
 		let count = 0;
-		for await (const results of this) {
-			const [value, index_or_key] = results as Shared.Yielded_Tuple;
-			await callback(target, value, index_or_key, this);
+		for await (const value of this) {
+			await callback(target, value, this.yielded_data.index_or_key, this);
 			count++;
 			if (count >= (amount as number)) {
 				break;
@@ -310,9 +278,8 @@ class Iterator_Cascade_Callbacks_Asynchronously
 	 */
 	async collectToObject(target: Shared.Dictionary, amount?: number): Promise<Shared.Dictionary> {
 		let count = 0;
-		for await (const results of this) {
-			const [value, key] = results as Shared.Yielded_Tuple;
-			target[key] = value;
+		for await (const value of this) {
+			target[this.yielded_data.index_or_key] = value;
 			count++;
 			if (count >= (amount as number)) {
 				break;
@@ -549,7 +516,8 @@ class Iterator_Cascade_Callbacks_Asynchronously
 
 		const yielded_result: Shared.Yielded_Result = await this.iterator.next();
 		this.done = yielded_result.done;
-		this.value = yielded_result.value;
+		this.yielded_data.content = yielded_result.value?.content;
+		this.yielded_data.index_or_key = yielded_result?.value?.index_or_key as Shared.Index_Or_Key;
 
 		if (!this.done) {
 			for (const callback_object of this.callbacks) {
@@ -558,7 +526,7 @@ class Iterator_Cascade_Callbacks_Asynchronously
 				} catch (error) {
 					if (error instanceof Stop_Iteration) {
 						this.done = true;
-						this.value = undefined;
+						this.yielded_data.content = undefined;
 						return this;
 					} else if (error instanceof Pause_Iteration) {
 						this.done = true;

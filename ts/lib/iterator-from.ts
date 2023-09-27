@@ -11,9 +11,9 @@ class Iterator_From {
 	 * @param {any[]} array - List any type of values
 	 * @yields {[any, number]}
 	 */
-	static *array(array: any[]): IterableIterator<[any, number]> {
-		for (const [index, value] of array.entries()) {
-			yield [value, index];
+	static *array(array: any[]): IterableIterator<Shared.Yielded_Data> {
+		for (const [index_or_key, content] of array.entries()) {
+			yield { content, index_or_key };
 		}
 	}
 
@@ -22,9 +22,9 @@ class Iterator_From {
 	 * @param {Object} dictionary - Dictionary of key value pares
 	 * @yields {[any, string]}
 	 */
-	static *object(dictionary: Shared.Dictionary): IterableIterator<[any, string]> {
-		for (const [key, value] of Object.entries(dictionary)) {
-			yield [value, key];
+	static *object(dictionary: Shared.Dictionary): IterableIterator<Shared.Yielded_Data> {
+		for (const [index_or_key, content] of Object.entries(dictionary)) {
+			yield { content, index_or_key };
 		}
 	}
 
@@ -33,21 +33,23 @@ class Iterator_From {
 	 * @param {GeneratorFunction} iterator - Objects with `.next()` or `[Symbol.iterator]()` method defined
 	 * @yields {[any, number]}
 	 */
-	static *generator(iterator: Generator<unknown, void, unknown>): IterableIterator<[any, number]> {
-		let count = 0;
-		for (const value of iterator) {
-			yield [value, count];
-			count++;
+	static *generator(
+		iterator: Generator<unknown, void, unknown>
+	): IterableIterator<Shared.Yielded_Data> {
+		let index_or_key = 0;
+		for (const content of iterator) {
+			yield { content, index_or_key };
+			index_or_key++;
 		}
 	}
 
 	static async *asyncGenerator(
 		iterator: AsyncIterable<unknown>
-	): AsyncGenerator<unknown[], void, unknown> {
-		let count = 0;
-		for await (const value of iterator) {
-			yield [value, count];
-			count++;
+	): AsyncGenerator<Shared.Yielded_Data, void, unknown> {
+		let index_or_key = 0;
+		for await (const content of iterator) {
+			yield { content, index_or_key };
+			index_or_key++;
 		}
 	}
 }
