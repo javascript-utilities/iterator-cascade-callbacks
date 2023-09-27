@@ -34,6 +34,16 @@ const Static_Contract =
 	<T extends new (...args: Array<unknown>) => void>(): ((c: T) => void) =>
 	(_ctor: T): void => {};
 
+/***/
+class Yielded_Data implements Shared.Yielded_Data {
+	content: any;
+	index_or_key: any;
+	constructor({ content, index_or_key }: Shared.Yielded_Data) {
+		this.content = content;
+		this.index_or_key = index_or_key;
+	}
+}
+
 /* istanbul ignore next */
 if (typeof module !== 'undefined') {
 	exports = module.exports = {
@@ -41,7 +51,8 @@ if (typeof module !== 'undefined') {
 		AsyncGeneratorFunction,
 		AsyncGeneratorClass,
 		Static_Contract,
+		Yielded_Data,
 	};
 }
 
-export { GeneratorFunction, AsyncGeneratorFunction, AsyncGeneratorClass, Static_Contract };
+export { GeneratorFunction, AsyncGeneratorFunction, AsyncGeneratorClass, Static_Contract, Yielded_Data };
