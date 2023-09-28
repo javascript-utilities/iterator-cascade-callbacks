@@ -32,7 +32,18 @@ declare global {
 		export type Yielded_Data = {
 			content: any;
 			index_or_key: Index_Or_Key;
-		}
+		};
+
+		/**
+		 * Array with `index_or_key` and `value` entries
+		 * @typedef {[Index_Or_Key, any]} Yielded_Entry
+		 * @example
+		 * ```typescript
+		 * const result_from_array: Yielded_Entry = [3, 'spam'];
+		 * const result_from_object: Yielded_Entry = ['foo', 'bar'];
+		 * ```
+		 */
+		export type Yielded_Entry = ArrayLike<Index_Or_Key, any>;
 
 		/**
 		 * Return string value for comparisons

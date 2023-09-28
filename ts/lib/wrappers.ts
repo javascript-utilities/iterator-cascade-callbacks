@@ -47,6 +47,20 @@ class Wrappers_Synchronous {
 	 * callback_object - Instance reference to `this` of `Callback_Object`
 	 * iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
 	 */
+	static entries(
+		callback_object: ICC.Callback_Object,
+		iterator_cascade_callbacks: ICC.Iterator_Cascade_Callbacks__Instance
+	) {
+		iterator_cascade_callbacks.yielded_data.content = [
+			iterator_cascade_callbacks.yielded_data.index_or_key,
+			iterator_cascade_callbacks.yielded_data.content,
+		]
+	}
+
+	/**
+	 * callback_object - Instance reference to `this` of `Callback_Object`
+	 * iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
+	 */
 	static filter(
 		callback_object: ICC.Callback_Object,
 		iterator_cascade_callbacks: ICC.Iterator_Cascade_Callbacks__Instance
@@ -340,6 +354,20 @@ class Wrappers_Asynchronous {
 
 			yield values;
 		}
+	}
+
+	/**
+	 * callback_object - Instance reference to `this` of `Callback_Object`
+	 * iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks_Asynchronously`
+	 */
+	static entries(
+		callback_object: ICC.Callback_Object,
+		iterator_cascade_callbacks: ICC.Iterator_Cascade_Callbacks__Instance
+	) {
+		iterator_cascade_callbacks.yielded_data.content = [
+			iterator_cascade_callbacks.yielded_data.index_or_key,
+			iterator_cascade_callbacks.yielded_data.content,
+		]
 	}
 
 	/**

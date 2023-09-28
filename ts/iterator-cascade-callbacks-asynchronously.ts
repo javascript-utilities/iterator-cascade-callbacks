@@ -169,6 +169,19 @@ class Iterator_Cascade_Callbacks_Asynchronously
 	}
 
 	/**
+	 * Sets `this.value` to `Yielded_Entry` which contains `[this.yielded_data.index_or_key, this.yielded_data.content]`
+	 * @return {this}
+	 */
+	entries(): Iterator_Cascade_Callbacks_Asynchronously {
+		return this.pushCallbackWrapper({
+			wrapper: Wrappers_Asynchronous.entries,
+			name: 'entries',
+			callback: this.#noOpCallback,
+			parameters: this.#noOpParameters,
+		});
+	}
+
+	/**
 	 * Collects results from `this` to either an Array or Object
 	 * @param {any[]|Object|any} target - When target is Array values are pushed, when target is Object key value pares are assigned, callback is required for other types
 	 * @param {Collect_To_Function?|number?} callback_or_amount - Callback function for collecting to custom type, or number to limit collection to
@@ -666,6 +679,11 @@ class Iterator_Cascade_Callbacks_Asynchronously
 	 * Cheep reusable function reference satisfies TypeScript, and `pushCallbackWrapper`, requirements
 	 */
 	#noOpCallback() {}
+
+	/**
+	 * Cheep reusable array reference satisfies TypeScript, and `pushCallbackWrapper`, requirements
+	 */
+	#noOpParameters = [];
 
 	/**
 	 * @see {link} https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncIterator

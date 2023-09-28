@@ -54,6 +54,9 @@ declare global {
 			collectToObject(target: Shared.Dictionary, amount?: number): Shared.Dictionary;
 
 			copyCallbacksOnto(iterable: any): Iterator_Cascade_Callbacks;
+
+			entries(): IterableIterator<Shared.Yielded_Data>;
+
 			filter(callback: Callback_Function, ...parameters: any[]): Iterator_Cascade_Callbacks;
 			forEach(callback: Callback_Function, ...paramaters: any[]): Iterator_Cascade_Callbacks;
 			inspect(callback: Callback_Function, ...paramaters: any[]): Iterator_Cascade_Callbacks;

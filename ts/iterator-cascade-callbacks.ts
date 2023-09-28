@@ -277,6 +277,19 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
 	}
 
 	/**
+	 * Sets `this.value` to `Yielded_Entry` which contains `[this.yielded_data.index_or_key, this.yielded_data.content]`
+	 * @return {this}
+	 */
+	entries(): Iterator_Cascade_Callbacks {
+		return this.pushCallbackWrapper({
+			wrapper: Wrappers_Synchronous.entries,
+			name: 'entries',
+			callback: this.#noOpCallback,
+			parameters: this.#noOpParameters,
+		});
+	}
+
+	/**
 	 * Sets `this.value` if callback function returns _truthy_, else consumes `this.iterator` and recomputes value for callback to test
 	 * @param {Callback_Function} callback - Function that determines truth of `value` and/or `index_or_key` for each iteration
 	 * @param {...any[]} parameters - List of arguments that are passed to callback on each iteration
@@ -583,6 +596,11 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
 	 * Cheep reusable function reference satisfies TypeScript, and `pushCallbackWrapper`, requirements
 	 */
 	#noOpCallback() {}
+
+	/**
+	 * Cheep reusable array reference satisfies TypeScript, and `pushCallbackWrapper`, requirements
+	 */
+	#noOpParameters = [];
 
 	[Symbol.iterator]() {
 		return this;
