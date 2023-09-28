@@ -39,18 +39,12 @@ Iterator that chains callback function execution
 
   - [Class `Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks]
     - [Method `Iterator_Cascade_Callbacks.constructor`][heading__method_iterator_cascade_callbacksconstructor]
-    - [Static Method `*iteratorFromArray`][heading__static_method_iteratorfromarray]
-    - [Static Method `*iteratorFromObject`][heading__static_method_iteratorfromobject]
-    - [Static Method `*iteratorFromGenerator`][heading__static_method_iteratorfromgenerator]
-    - [Static Method `compareValues`][heading__static_method_comparevalues]
     - [Static Method `zip`][heading__static_method_zip]
-    - [Static Method `zipCompareValues`][heading__static_method_zipcomparevalues]
-    - [Static Method `zipValues`][heading__static_method_zipvalues]
-    - [Method `*iterateCallbackObjects`][heading__method_iteratecallbackobjects]
     - [Method `collect`][heading__method_collect]
     - [Method `collectToArray`][heading__method_collecttoarray]
     - [Method `collectToFunction`][heading__method_collecttofunction]
     - [Method `collectToObject`][heading__method_collecttoobject]
+    - [Method `entries`][heading__method_entries]
     - [Method `filter`][heading__method_filter]
     - [Method `forEach`][heading__method_foreach]
     - [Method `inspect`][heading__method_inspect]
@@ -667,182 +661,13 @@ Instantiates new instance of [`Iterator_Cascade_Callbacks`][heading__class_itera
 - **{any}** `iterable` - Currently may be an array, object, generator, or iterator type
 
 
-#### Static Method `*iteratorFromArray`
-[heading__static_method_iteratorfromarray]:
-  #static-method-iteratorfromarray
-  "Converts `Array` to `GeneratorFunction`&#10;&#10;iteratorFromArray(array: any[]) =&gt; IterableIterator&lt;[any, number]&gt;"
-
-
-Converts `Array` to `GeneratorFunction`
-
-
-**Parameters**
-
-
-- **{any[]}** `array` - List any type of values
-
-
-Yields [**{Yielded_Tuple}**][heading__type_yielded_tuple] `[any, number]`
-
-
-#### Static Method `*iteratorFromObject`
-[heading__static_method_iteratorfromobject]:
-  #static-method-iteratorfromobject
-  "Converts `Object` to `GeneratorFunction`&#10;&#10;iteratorFromObject(dictionary: Dictionary) =&gt; IterableIterator&lt;[any, string]&gt;"
-
-
-Converts `Object` to `GeneratorFunction`
-
-
-
-**Parameters**
-
-
-- [**{Dictionary}**][heading__type_dictionary] `dictionary` - Dictionary of key value pares
-
-
-Yields [**{Yielded_Tuple}**][heading__type_yielded_tuple] `[any, string]`
-
-
-#### Static Method `*iteratorFromGenerator`
-[heading__static_method_iteratorfromgenerator]:
-  #static-method-iteratorfromgenerator
-  "Converts Iterator class or `GeneratorFunction` to `Generator`&#10;&#10;iteratorFromGenerator(iterator: Generator&lt;any[], void, unknown&gt;) =&gt; IterableIterator&lt;[any, number]&gt;"
-
-
-Converts Iterator class or `GeneratorFunction` to `Generator`
-
-
-
-**Parameters**
-
-
-- **{GeneratorFunction}** `iterator` - Objects with `.next()` or `[Symbol.iterator]()` method defined
-
-
-Yields [**{Yielded_Tuple}**][heading__type_yielded_tuple] `[any, number]`
-
-
-#### Static Method `compareValues`
-[heading__static_method_comparevalues]:
-  #static-method-comparevalues
-  "Compares `left` to `right` values&#10;&#10;compareValues(left: any, right: any) =&gt; Comparison_Results"
-
-
-Compares `left` to `right` values
-
-
-**Parameters**
-
-
-- **{any}** `left` - Left-hand side of comparison
-
-- **{any}** `right` - Right-hand side of comparison
-
-
-**Example**
-
-
-```JavaScript
-console.log(Iterator_Cascade_Callbacks.compareValues(1, '1'));
-//> '=='
-
-console.log(Iterator_Cascade_Callbacks.compareValues(1, 1));
-//> '==='
-
-console.log(Iterator_Cascade_Callbacks.compareValues(2, 1));
-//> '>'
-
-console.log(Iterator_Cascade_Callbacks.compareValues(2, '3'));
-//> '<'
-
-console.log(Iterator_Cascade_Callbacks.compareValues('spam', 'ham'));
-//> '!='
-
-console.log(Iterator_Cascade_Callbacks.compareValues({ key: 'value' }, ['foo', 'bar']));
-//> '!=='
-```
-
-
 #### Static Method `zip`
 [heading__static_method_zip]:
   #static-method-zip
-  "Returns new instance of `Iterator_Cascade_Callbacks` that yields lists of either `Yielded_Tuple` or `undefined` results&#10;&#10;zip(...iterables: any[]) => Iterator_Cascade_Callbacks"
+  "Returns new instance of `Iterator_Cascade_Callbacks` that yields lists of values from each iteration"
 
 
-Returns new instance of [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks] that yields lists of either `Yielded_Tuple` or `undefined` results
-
-
-**Parameters**
-
-
-- **{any[]}** `iterables` - List of Generators, Iterators, and/or instances of [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks]
-
-
-**Example** Equal Length Iterables
-
-
-```JavaScript
-const icc_one = new Iterator_Cascade_Callbacks([1,2,3]);
-const icc_two = new Iterator_Cascade_Callbacks([4,5,6]);
-
-const icc_zip = Iterator_Cascade_Callbacks.zip(icc_one, icc_two);
-
-for (let [results, count] of icc_zip) {
-  console.log('results ->', results, '| count ->', count);
-}
-//> results -> [ [ 1, 0 ], [ 4, 0 ] ] | count -> 0
-//> results -> [ [ 2, 1 ], [ 5, 1 ] ] | count -> 1
-//> results -> [ [ 3, 2 ], [ 6, 2 ] ] | count -> 2
-```
-
-
-#### Static Method `zipCompareValues`
-[heading__static_method_zipcomparevalues]:
-  #static-method-zipcomparevalues
-  "Zips `left` and `right` iterable values and prepends `Comparison_Results` to values list&#10;&#10;zipCompareValues(left: any, right: any) =&gt; Iterator_Cascade_Callbacks"
-
-
-Zips `left` and `right` iterable values and prepends `Comparison_Results` to values list
-
-
-**Parameters**
-
-
-- **{any}** left - Generator, Iterator, and/or instance of [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks]
-
-- **{any}** right - Generator, Iterator, and/or instance of [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks]
-
-
-**Example**
-
-
-```JavaScript
-const left = [ 1, 0, 1, 2, 'foo', {} ]
-const right = [ '0', 0, 2, '2', 'bar' ]
-
-const icc = Iterator_Cascade_Callbacks.zipCompareValues(left, right);
-const collection = icc.collect([]);
-
-console.log(collection);
-//> [
-//>   [ '>', 1, '0' ],
-//>   [ '===', 0, 0 ],
-//>   [ '<', 1, 2 ],
-//>   [ '==', 2, '2' ],
-//>   [ '!=', 'foo', 'bar' ],
-//>   [ '!==', {}, undefined ]
-//> ]
-```
-
-
-#### Static Method `zipValues`
-[heading__static_method_zipvalues]:
-  #static-method-zipvalues
-  "Returns new instance of `Iterator_Cascade_Callbacks` that yields either list of values from iterators or `undefined` results&#10;&#10;zipValues(...iterables: any[]) =&gt; Iterator_Cascade_Callbacks"
-
-
-Returns new instance of [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks] that yields either list of values from iterators or `undefined` results
+Returns new instance of [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks] that yields lists of values from each iteration
 
 
 **Parameters**
@@ -854,57 +679,19 @@ Returns new instance of [`Iterator_Cascade_Callbacks`][heading__class_iterator_c
 **Example** Equal Length Iterables
 
 
-```JavaScript
+```javascript
 const icc_one = new Iterator_Cascade_Callbacks([1, 2, 3]);
 const icc_two = new Iterator_Cascade_Callbacks([4, 5, 6]);
 
 const icc_zip = Iterator_Cascade_Callbacks.zip(icc_one, icc_two);
 
-for (let [results, count] of icc_zip) {
-  console.log('results ->', results, '| count ->', count);
+for (let values of icc_zip) {
+  console.log('values ->', values);
 }
-//> results -> [ 1, 4 ] | count -> 0
-//> results -> [ 2, 5 ] | count -> 1
-//> results -> [ 3, 6 ] | count -> 2
+//> values -> [ 1, 4 ]
+//> values -> [ 2, 5 ]
+//> values -> [ 3, 6 ]
 ```
-
-
-**Example** Unequal Length Iterables
-
-
-```JavaScript
-const icc_three = new Iterator_Cascade_Callbacks([7, 8, 9]);
-const icc_four = new Iterator_Cascade_Callbacks([10, 11]);
-
-const icc_zip = Iterator_Cascade_Callbacks.zip(icc_three, icc_four);
-
-for (let [results, count] of icc_zip) {
-  console.log('results ->', results, '| count ->', count);
-}
-//> results -> [ 9, 10 ] | count -> 2
-//> results -> [ 8, 11 ] | count -> 1
-//> results -> [ 7, undefined ] | count -> 0
-```
-
-
-**Notes**
-
-
-- Parameters that are not an instance of [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks] will be converted
-
-- Iteration will continue until **all** iterables result in `done` value of `true`
-
-
-#### Method `*iterateCallbackObjects`
-[heading__method_iteratecallbackobjects]:
-  #method-iteratecallbackobjects
-  "Converts list of `this.callbacks` objects to `GeneratorFunction`&#10;&#10;iterateCallbackObjects() =&gt; IterableIterator&lt;Callback_Object&gt;"
-
-
-Converts list of `this.callbacks` objects to `GeneratorFunction`
-
-
-Yields [**{Callback_Object}**][heading__interface_callback_object]
 
 
 #### Method `collect`
@@ -1070,6 +857,32 @@ console.log('Collection One ->', icc_one.collect([]));
 //> [ 1, 2 ]
 console.log('Collection Two ->', icc_two.collect([]));
 //> [ 4, 3 ]
+```
+
+
+#### Method `entries`
+[heading__method_entries]:
+  #method-entries
+  "Sets `this.value` to `Yielded_Entry` which contains `[this.yielded_data.index_or_key, this.yielded_data.content]`"
+
+
+Sets `this.value` to `Yielded_Entry` which contains `[this.yielded_data.index_or_key, this.yielded_data.content]`
+
+Returns `this` [**{Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks]
+
+
+**Example**
+
+
+```JavaScript
+const icc = new Iterator_Cascade_Callbacks([9, 8, 7, 6, 5]);
+
+const collection = icc.filter(([index, value]) => {
+  return (value - index) % 3 === 0;
+}).collect([]);
+
+console.log(collection);
+//> [ [ 0, 9 ], [ 3, 6 ] ]
 ```
 
 

@@ -87,35 +87,37 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
 	}
 
 	/**
-	 * Returns new instance of `Iterator_Cascade_Callbacks` that yields lists of either `Yielded_Tuple` or `undefined` results
+	 * Returns new instance of `Iterator_Cascade_Callbacks` that yields lists of values from each iteration
 	 * @param {any[]} iterables - List of Generators, Iterators, and/or instances of `Iterator_Cascade_Callbacks`
 	 * @notes
 	 * - Parameters that are not an instance of `Iterator_Cascade_Callbacks` will be converted
 	 * - Iteration will continue until **all** iterables result in `done` value of `true`
+	 *
 	 * @example - Equal Length Iterables
 	 * const icc_one = new Iterator_Cascade_Callbacks([1, 2, 3]);
 	 * const icc_two = new Iterator_Cascade_Callbacks([4, 5, 6]);
-	 *
+	 * 
 	 * const icc_zip = Iterator_Cascade_Callbacks.zip(icc_one, icc_two);
-	 *
-	 * for (let [results, count] of icc_zip) {
-	 *   console.log('results ->', results, '| count ->', count);
+	 * 
+	 * for (let values of icc_zip) {
+	 *   console.log('values ->', values);
 	 * }
-	 * //> results -> [ [ 1, 0 ], [ 4, 0 ] ] | count -> 0
-	 * //> results -> [ [ 2, 1 ], [ 5, 1 ] ] | count -> 1
-	 * //> results -> [ [ 3, 2 ], [ 6, 2 ] ] | count -> 2
+	 * //> values -> [ 1, 4 ]
+	 * //> values -> [ 2, 5 ]
+	 * //> values -> [ 3, 6 ]
+	 *
 	 * @example - Unequal Length Iterables
 	 * const icc_three = new Iterator_Cascade_Callbacks([7, 8, 9]);
 	 * const icc_four = new Iterator_Cascade_Callbacks([10, 11]);
 	 *
 	 * const icc_zip = Iterator_Cascade_Callbacks.zip(icc_three, icc_four);
 	 *
-	 * for (let [results, count] of icc_zip) {
-	 *   console.log('results ->', results, '| count ->', count);
+	 * for (let values of icc_zip) {
+	 *   console.log('values ->', values);
 	 * }
-	 * //> results -> [ [ 9, 0 ], [ 10, 0 ] ] | count -> 2
-	 * //> results -> [ [ 8, 1 ], [ 11, 1 ] ] | count -> 1
-	 * //> results -> [ [ 7, 2 ], undefined ] | count -> 0
+	 * //> values -> [ 7, 10 ]
+	 * //> values -> [ 8, 11 ]
+	 * //> values -> [ 9, undefined ]
 	 */
 	static zip(...iterables: any[]): Iterator_Cascade_Callbacks {
 		return new this(Wrappers_Synchronous.zip(iterables, this));
@@ -279,6 +281,16 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
 	/**
 	 * Sets `this.value` to `Yielded_Entry` which contains `[this.yielded_data.index_or_key, this.yielded_data.content]`
 	 * @return {this}
+	 * @this {Iterator_Cascade_Callbacks}
+	 * @example
+	 * const icc = new Iterator_Cascade_Callbacks([9, 8, 7, 6, 5]);
+	 *
+	 * const collection = icc.entries().filter(([index, value]) => {
+	 *   return (value - index) % 3 === 0;
+	 * }).collect([]);
+	 *
+	 * console.log(collection);
+	 * //> [ [ 0, 9 ], [ 3, 6 ] ]
 	 */
 	entries(): Iterator_Cascade_Callbacks {
 		return this.pushCallbackWrapper({
