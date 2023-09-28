@@ -136,12 +136,12 @@ class Iterator_Cascade_Callbacks_Asynchronously
 	 * const icca_zip = Iterator_Cascade_Callbacks_Asynchronously.zip(icca_one, icca_two);
 	 *
 	 * (async () => {
-	 *   for await (let [results, count] of icca_zip) {
-	 *     console.log('results ->', results, '| count ->', count);
+	 *   for await (let values of icca_zip) {
+	 *     console.log('values ->', values);
 	 *   }
-	 *   //> results -> [ [ 1, 0 ], [ 4, 0 ] ] | count -> 0
-	 *   //> results -> [ [ 2, 1 ], [ 5, 1 ] ] | count -> 1
-	 *   //> results -> [ [ 3, 2 ], [ 6, 2 ] ] | count -> 2
+	 *   //> values -> [ 1, 4 ]
+	 *   //> values -> [ 2, 5 ]
+	 *   //> values -> [ 3, 6 ]
 	 * })();
 	 *
 	 * @example - Unequal Length Iterables
@@ -151,12 +151,12 @@ class Iterator_Cascade_Callbacks_Asynchronously
 	 * const icca_zip = Iterator_Cascade_Callbacks_Asynchronously.zip(icca_three, icca_four);
 	 *
 	 * (async () => {
-	 *   for (let [results, count] of icca_zip) {
-	 *     console.log('results ->', results, '| count ->', count);
+	 *   for await (let values of icca_zip) {
+	 *     console.log('values ->', values);
 	 *   }
-	 *   //> results -> [ [ 9, 0 ], [ 10, 0 ] ] | count -> 2
-	 *   //> results -> [ [ 8, 1 ], [ 11, 1 ] ] | count -> 1
-	 *   //> results -> [ [ 7, 2 ], undefined ] | count -> 0
+	 *   //> values -> [ 7, 10 ]
+	 *   //> values -> [ 8, 11 ]
+	 *   //> values -> [ 9, undefined ]
 	 * })();
 	 */
 	static zip(...iterables: any[]): Iterator_Cascade_Callbacks_Asynchronously {
@@ -169,24 +169,11 @@ class Iterator_Cascade_Callbacks_Asynchronously
 	}
 
 	/**
-	 * Sets `this.value` to `Yielded_Entry` which contains `[this.yielded_data.index_or_key, this.yielded_data.content]`
-	 * @return {this}
-	 */
-	entries(): Iterator_Cascade_Callbacks_Asynchronously {
-		return this.pushCallbackWrapper({
-			wrapper: Wrappers_Asynchronous.entries,
-			name: 'entries',
-			callback: this.#noOpCallback,
-			parameters: this.#noOpParameters,
-		});
-	}
-
-	/**
 	 * Collects results from `this` to either an Array or Object
 	 * @param {any[]|Object|any} target - When target is Array values are pushed, when target is Object key value pares are assigned, callback is required for other types
 	 * @param {Collect_To_Function?|number?} callback_or_amount - Callback function for collecting to custom type, or number to limit collection to
 	 * @param {number?} amount - Limit collection to no more than amount
-	 * @return {any[]|Object|any}
+	 * @return {Promise<any[]|Object|any>}
 	 * @throws {TypeError}
 	 * @this {Iterator_Cascade_Callbacks_Asynchronously}
 	 */
@@ -216,7 +203,7 @@ class Iterator_Cascade_Callbacks_Asynchronously
 	 * const icca = new Iterator_Cascade_Callbacks_Asynchronously([5, 6, 7, 8, 9]);
 	 *
 	 * (async () => {
-	 *   const collection = icca.filter((value) => {
+	 *   const collection = await icca.filter((value) => {
 	 *     return value % 2 === 0;
 	 *   }).collectToArray([1, 2, 3]);
 	 *
@@ -249,7 +236,7 @@ class Iterator_Cascade_Callbacks_Asynchronously
 	 * const map = new Map();
 	 *
 	 * (async () => {
-	 *   const collection = icca.collectToFunction(map, (target, value, index_or_key) => {
+	 *   const collection = await icca.collectToFunction(map, (target, value, index_or_key) => {
 	 *     target.set(index_or_key, value);
 	 *   });
 	 *
@@ -283,7 +270,7 @@ class Iterator_Cascade_Callbacks_Asynchronously
 	 * const icca = new Iterator_Cascade_Callbacks_Asynchronously({ spam: 'flavored', canned: 'ham' });
 	 *
 	 * (async () => {
-	 *   const collection = icca.collectToObject({});
+	 *   const collection = await icca.collectToObject({});
 	 *
 	 *   console.log(collection);
 	 *   //> { spam: 'flavored', canned: 'ham' }
@@ -323,9 +310,9 @@ class Iterator_Cascade_Callbacks_Asynchronously
 	 * const icca_two = icc_one.copyCallbacksOnto(iterable_two);
 	 *
 	 * (async () => {
-	 *   console.log('Collection One ->', icca_one.collect([]));
+	 *   console.log('Collection One ->', await icca_one.collect([]));
 	 *   //> [ 1, 2 ]
-	 *   console.log('Collection Two ->', icca_two.collect([]));
+	 *   console.log('Collection Two ->', await icca_two.collect([]));
 	 *   //> [ 4, 3 ]
 	 * })();
 	 */
@@ -345,6 +332,34 @@ class Iterator_Cascade_Callbacks_Asynchronously
 	}
 
 	/**
+	 * Sets `this.value` to `Yielded_Entry` which contains `[this.yielded_data.index_or_key, this.yielded_data.content]`
+	 * @return {this}
+	 * @this {Iterator_Cascade_Callbacks_Asynchronously}
+	 * @example
+	 * const icca = new Iterator_Cascade_Callbacks_Asynchronously([9, 8, 7, 6, 5]);
+	 *
+	 * (async () => {
+	 *   const collection = await icca
+	 *     .entries()
+	 *     .filter(([index, value]) => {
+	 *       return (value - index) % 3 === 0;
+	 *     })
+	 *     .collect([]);
+	 *
+	 *   console.log(collection);
+	 *   //> [ [ 0, 9 ], [ 3, 6 ] ]
+	 * })();
+	 */
+	entries(): Iterator_Cascade_Callbacks_Asynchronously {
+		return this.pushCallbackWrapper({
+			wrapper: Wrappers_Asynchronous.entries,
+			name: 'entries',
+			callback: this.#noOpCallback,
+			parameters: this.#noOpParameters,
+		});
+	}
+
+	/**
 	 * Sets `this.value` if callback function returns _truthy_, else consumes `this.iterator` and recomputes value for callback to test
 	 * @param {ICCA.Callback_Function} callback - Function that determines truth of `value` and/or `index_or_key` for each iteration
 	 * @param {...any[]} parameters - List of arguments that are passed to callback on each iteration
@@ -354,9 +369,11 @@ class Iterator_Cascade_Callbacks_Asynchronously
 	 * const icca = new Iterator_Cascade_Callbacks_Asynchronously([9, 8, 7, 6, 5]);
 	 *
 	 * (async () => {
-	 *   const collection = icca.filter((value) => {
-	 *     return value % 2 === 0;
-	 *   }).collect([]);
+	 *   const collection = icca
+	 *     .filter((value) => {
+	 *       return value % 2 === 0;
+	 *     })
+	 *     .collect([]);
 	 *
 	 *   console.log(collection);
 	 *   //> [ 8, 6 ]
@@ -385,9 +402,11 @@ class Iterator_Cascade_Callbacks_Asynchronously
 	 * const icca = new Iterator_Cascade_Callbacks_Asynchronously([9, 8, 7, 6, 5]);
 	 *
 	 * (async () => {
-	 *   const collection = await icca.forEach((value) => {
-	 *     console.log(value);
-	 *   }).collect([]);
+	 *   const collection = await icca
+	 *     .forEach((value) => {
+	 *       console.log(value);
+	 *     })
+	 *     .collect([]);
 	 *
 	 *   console.log(collection);
 	 *   //> [ 9, 8, 7, 6, 5 ]
@@ -410,7 +429,12 @@ class Iterator_Cascade_Callbacks_Asynchronously
 	 * @param {ICCA.Callback_Function} callback - Function that logs something about each iteration
 	 * @param {...any[]} parameters - List of arguments that are passed to callback on each iteration
 	 * @example
-	 * function inspector(value, index_or_key, { callback_object, iterator_cascade_callbacks }, ...parameters) {
+	 * function inspector(
+	 *   value,
+	 *   index_or_key,
+	 *   { callback_object, iterator_cascade_callbacks },
+	 *   ...parameters
+	 * ) {
 	 *   console.log('value ->', value);
 	 *   console.log('index_or_key ->', index_or_key);
 	 *   console.log('callback_object ->', callback_object);
@@ -420,11 +444,16 @@ class Iterator_Cascade_Callbacks_Asynchronously
 	 * const icca = new Iterator_Cascade_Callbacks_Asynchronously([9, 8, 7, 6, 5]);
 	 *
 	 * (async () => {
-	 *   const collection = icca.filter((value) => {
-	 *     return value % 2 === 0;
-	 *   }).inspect(inspector).map((even) => {
-	 *     return even / 2;
-	 *   }).inspect(inspector).collect([]);
+	 *   const collection = await icca
+	 *     .filter((value) => {
+	 *       return value % 2 === 0;
+	 *     })
+	 *     .inspect(inspector)
+	 *     .map((even) => {
+	 *       return even / 2;
+	 *     })
+	 *     .inspect(inspector)
+	 *     .collect([]);
 	 * })();
 	 */
 	inspect(
@@ -453,7 +482,7 @@ class Iterator_Cascade_Callbacks_Asynchronously
 	 * const icca = new Iterator_Cascade_Callbacks_Asynchronously([1, 2, 3, 4]);
 	 *
 	 * (async () => {
-	 *   const collection = icca.limit(2).collect([]);
+	 *   const collection = await icca.limit(2).collect([]);
 	 *
 	 *   console.log(collection);
 	 *   //> [1, 2]
@@ -475,16 +504,19 @@ class Iterator_Cascade_Callbacks_Asynchronously
 	 * @return {this}
 	 * @this {Iterator_Cascade_Callbacks_Asynchronously}
 	 * @notes
-	 * - If callback does **not** return `Yielded_Tuple` (array), then results from callback are used as `value` and initial `index_or_key` is reused
+	 * - If callback does **not** return `Yielded_Data` (array), then results from callback are used as `value` and initial `index_or_key` is reused
 	 * @example
 	 * const icca = new Iterator_Cascade_Callbacks_Asynchronously([9, 8, 7, 6, 5]);
 	 *
 	 * (async () => {
-	 *   const collection = icca.filter((value) => {
-	 *     return value % 2 === 0;
-	 *   }).map((value) => {
-	 *     return value / 2;
-	 *   }).collect([]);
+	 *   const collection = await icca
+	 *     .filter((value) => {
+	 *       return value % 2 === 0;
+	 *     })
+	 *     .map((value) => {
+	 *       return value / 2;
+	 *     })
+	 *     .collect([]);
 	 *
 	 *   console.log(collection);
 	 *   //> [4, 3]
@@ -510,14 +542,14 @@ class Iterator_Cascade_Callbacks_Asynchronously
 	 * const icca = new Iterator_Cascade_Callbacks_Asynchronously([1, 2, 3, 4]);
 	 *
 	 * (async () => {
-	 *   for await (let [value, index_or_key] of icca) {
-	 *     console.log('index_or_key ->', index_or_key, 'value ->', value);
+	 *   for await (let value of icca) {
+	 *     console.log('value ->', value);
 	 *   }
-	 *   //> index_or_key -> 0 value -> 1
-	 *   //> index_or_key -> 1 value -> 2
-	 *   //> index_or_key -> 2 value -> 3
-	 *   //> index_or_key -> 3 value -> 4
-	 * })()
+	 *   //> value -> 1
+	 *   //> value -> 2
+	 *   //> value -> 3
+	 *   //> value -> 4
+	 * })();
 	 */
 	async next(): Promise<Iterator_Cascade_Callbacks_Asynchronously> {
 		if (this.state.paused) {
@@ -604,7 +636,7 @@ class Iterator_Cascade_Callbacks_Asynchronously
 	 * const icca = new Iterator_Cascade_Callbacks_Asynchronously([0, 1, 2, 3, 4, 5]);
 	 *
 	 * (async () => {
-	 *   const collection = icca.skip(2).collect([]);
+	 *   const collection = await icca.skip(2).collect([]);
 	 *
 	 *   console.log(collection);
 	 *   //> [ 2, 3, 4, 5 ]
@@ -628,7 +660,7 @@ class Iterator_Cascade_Callbacks_Asynchronously
 	 * const icca = new Iterator_Cascade_Callbacks_Asynchronously([0, 1, 2, 3, 4, 5]);
 	 *
 	 * (async () => {
-	 *   const collection = icca.step(1).collect([]);
+	 *   const collection = await icca.step(1).collect([]);
 	 *
 	 *   console.log(collection);
 	 *   //> [ 1, 3, 5 ]

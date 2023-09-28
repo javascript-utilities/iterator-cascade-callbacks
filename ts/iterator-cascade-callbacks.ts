@@ -96,9 +96,9 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
 	 * @example - Equal Length Iterables
 	 * const icc_one = new Iterator_Cascade_Callbacks([1, 2, 3]);
 	 * const icc_two = new Iterator_Cascade_Callbacks([4, 5, 6]);
-	 * 
+	 *
 	 * const icc_zip = Iterator_Cascade_Callbacks.zip(icc_one, icc_two);
-	 * 
+	 *
 	 * for (let values of icc_zip) {
 	 *   console.log('values ->', values);
 	 * }
@@ -162,9 +162,11 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
 	 * @example
 	 * const icc = new Iterator_Cascade_Callbacks([5, 6, 7, 8, 9]);
 	 *
-	 * const collection = icc.filter((value) => {
-	 *   return value % 2 === 0;
-	 * }).collectToArray([1, 2, 3]);
+	 * const collection = icc
+	 *   .filter((value) => {
+	 *     return value % 2 === 0;
+	 *   })
+	 *   .collectToArray([1, 2, 3]);
 	 *
 	 * console.log(collection);
 	 * //> [ 1, 2, 3, 6, 8 ]
@@ -248,13 +250,13 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
 	 * const iterable_one = [1, 2, 3, 4, 5];
 	 * const iterable_two = [9, 8, 7, 6, 5];
 	 *
-	 * const icc_one = new Iterator_Cascade_Callbacks(iterable_one);
-	 *
-	 * icc_one.filter((value) => {
-	 *   return value % 2 === 0;
-	 * }).map((evens) => {
-	 *   return evens / 2;
-	 * });
+	 * const icc_one = new Iterator_Cascade_Callbacks(iterable_one)
+	 *   .filter((value) => {
+	 *     return value % 2 === 0;
+	 *   })
+	 *   .map((evens) => {
+	 *     return evens / 2;
+	 *   });
 	 *
 	 * const icc_two = icc_one.copyCallbacksOnto(iterable_two);
 	 *
@@ -310,9 +312,11 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
 	 * @example
 	 * const icc = new Iterator_Cascade_Callbacks([9, 8, 7, 6, 5]);
 	 *
-	 * const collection = icc.filter((value) => {
-	 *   return value % 2 === 0;
-	 * }).collect([]);
+	 * const collection = icc
+	 *   .filter((value) => {
+	 *     return value % 2 === 0;
+	 *   })
+	 *   .collect([]);
 	 *
 	 * console.log(collection);
 	 * //> [ 8, 6 ]
@@ -336,9 +340,11 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
 	 * @example
 	 * const icc = new Iterator_Cascade_Callbacks([9, 8, 7, 6, 5]);
 	 *
-	 * const collection = icc.forEach((value) => {
-	 *   console.log(value);
-	 * }).collect([]);
+	 * const collection = icc
+	 *   .forEach((value) => {
+	 *     console.log(value);
+	 *   })
+	 *   .collect([]);
 	 *
 	 * console.log(collection);
 	 * //> [ 9, 8, 7, 6, 5 ]
@@ -357,7 +363,12 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
 	 * @param {Callback_Function} callback - Function that logs something about each iteration
 	 * @param {...any[]} parameters - List of arguments that are passed to callback on each iteration
 	 * @example
-	 * function inspector(value, index_or_key, { callback_object, iterator_cascade_callbacks }, ...parameters) {
+	 * function inspector(
+	 *   value,
+	 *   index_or_key,
+	 *   { callback_object, iterator_cascade_callbacks },
+	 *   ...parameters
+	 * ) {
 	 *   console.log('value ->', value);
 	 *   console.log('index_or_key ->', index_or_key);
 	 *   console.log('callback_object ->', callback_object);
@@ -366,11 +377,16 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
 	 *
 	 * const icc = new Iterator_Cascade_Callbacks([9, 8, 7, 6, 5]);
 	 *
-	 * const collection = icc.filter((value) => {
-	 *   return value % 2 === 0;
-	 * }).inspect(inspector).map((even) => {
-	 *   return even / 2;
-	 * }).inspect(inspector).collect([]);
+	 * const collection = icc
+	 *   .filter((value) => {
+	 *     return value % 2 === 0;
+	 *   })
+	 *   .inspect(inspector)
+	 *   .map((even) => {
+	 *     return even / 2;
+	 *   })
+	 *   .inspect(inspector)
+	 *   .collect([]);
 	 */
 	inspect(callback: ICC.Callback_Function, ...parameters: any[]): Iterator_Cascade_Callbacks {
 		return this.pushCallbackWrapper({
@@ -419,14 +435,17 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
 	 * @example
 	 * const icc = new Iterator_Cascade_Callbacks([9, 8, 7, 6, 5]);
 	 *
-	 * const collection = icc.filter((value) => {
-	 *   return value % 2 === 0;
-	 * }).map((value) => {
-	 *   return value / 2;
-	 * }).collect([]);
+	 * const collection = icc
+	 *   .filter((value) => {
+	 *     return value % 2 === 0;
+	 *   })
+	 *   .map((value) => {
+	 *     return value / 2;
+	 *   })
+	 *   .collect([]);
 	 *
 	 * console.log(collection);
-	 * //> [4, 3]
+	 * //> [ 4, 3 ]
 	 */
 	map(callback: ICC.Callback_Function, ...parameters: any[]): Iterator_Cascade_Callbacks {
 		return this.pushCallbackWrapper({
@@ -444,13 +463,13 @@ class Iterator_Cascade_Callbacks implements Iterator_Cascade_Callbacks {
 	 * @example
 	 * const icc = new Iterator_Cascade_Callbacks([1, 2, 3, 4]);
 	 *
-	 * for (let [value, index_or_key] of icc) {
-	 *   console.log('index_or_key ->', index_or_key, 'value ->', value);
+	 * for (let value of icc) {
+	 *   console.log('value ->', value);
 	 * }
-	 * //> index_or_key -> 0 value -> 1
-	 * //> index_or_key -> 1 value -> 2
-	 * //> index_or_key -> 2 value -> 3
-	 * //> index_or_key -> 3 value -> 4
+	 * //> value -> 1
+	 * //> value -> 2
+	 * //> value -> 3
+	 * //> value -> 4
 	 */
 	next(): Iterator_Cascade_Callbacks {
 		if (this.state.paused) {
