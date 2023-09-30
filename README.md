@@ -1,10 +1,10 @@
 # Iterator Cascade Callbacks
 [heading__top]:
   #iterator-cascade-callbacks
-  "&#x2B06; Iterator that chains callback function execution"
+  "&#x2B06; JavaScript/TypeScript Iterables with Rust-like ergonomics: `.filter`, `.map`, and more!"
 
 
-Iterator that chains callback function execution
+JavaScript/TypeScript Iterables with Rust-like ergonomics: `.filter`, `.map`, and more!
 
 
 ## [![Byte size of Iterator Cascade Callbacks][badge__main__iterator_cascade_callbacks__source_code]][iterator_cascade_callbacks__main__source_code] [![Open Issues][badge__issues__iterator_cascade_callbacks]][issues__iterator_cascade_callbacks] [![Open Pull Requests][badge__pull_requests__iterator_cascade_callbacks]][pull_requests__iterator_cascade_callbacks] [![Latest commits][badge__commits__iterator_cascade_callbacks__main]][commits__iterator_cascade_callbacks__main] [![Build Status][badge_travis_ci]][build_travis_ci]
@@ -33,61 +33,65 @@ Iterator that chains callback function execution
   - [Class `Pause_Iteration`][heading__class_pause_iteration]
     - [Method `Pause_Iteration.constructor`][heading__method_pause_iterationconstructor]
 
-  - [Class `Callback_Object`][heading__class_callback_object]
-    - [Method `Callback_Object.constructor`][heading__method_callback_objectconstructor]
-    - [Method `Callback_Object.call`][heading__method_callback_objectcall]
+  - [Class `Synchronous.Callback_Object`][heading__class_synchronouscallback_object]
+    - [Method `Synchronous.Callback_Object.constructor`][heading__method_synchronouscallback_objectconstructor]
+    - [Method `Synchronous.Callback_Object.call`][heading__method_synchronouscallback_objectcall]
 
-  - [Class `Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks]
-    - [Method `constructor`][heading__method_iterator_cascade_callbacksconstructor]
-    - [Static Method `zip`][heading__static_method_iterator_cascade_callbackszip]
-    - [Method `collect`][heading__method_iterator_cascade_callbackscollect]
-    - [Method `collectToArray`][heading__method_iterator_cascade_callbackscollecttoarray]
-    - [Method `collectToFunction`][heading__method_iterator_cascade_callbackscollecttofunction]
-    - [Method `collectToObject`][heading__method_iterator_cascade_callbackscollecttoobject]
-    - [Method `entries`][heading__method_iterator_cascade_callbacksentries]
-    - [Method `filter`][heading__method_iterator_cascade_callbacksfilter]
-    - [Method `forEach`][heading__method_iterator_cascade_callbacksforeach]
-    - [Method `inspect`][heading__method_iterator_cascade_callbacksinspect]
-    - [Method `limit`][heading__method_iterator_cascade_callbackslimit]
-    - [Method `map`][heading__method_iterator_cascade_callbacksmap]
-    - [Method `next`][heading__method_iterator_cascade_callbacksnext]
-    - [Method `skip`][heading__method_iterator_cascade_callbacksskip]
-    - [Method `step`][heading__method_iterator_cascade_callbacksstep]
-    - [Method `take`][heading__method_iterator_cascade_callbackstake]
+  - [Class `Synchronous.Iterator_Cascade_Callbacks`][heading__class_synchronousiterator_cascade_callbacks]
+    - [Method `constructor`][heading__method_synchronousiterator_cascade_callbacksconstructor]
+    - [Static Method `zip`][heading__static_method_synchronousiterator_cascade_callbackszip]
+    - [Method `collect`][heading__method_synchronousiterator_cascade_callbackscollect]
+    - [Method `collectToArray`][heading__method_synchronousiterator_cascade_callbackscollecttoarray]
+    - [Method `collectToFunction`][heading__method_synchronousiterator_cascade_callbackscollecttofunction]
+    - [Method `collectToObject`][heading__method_synchronousiterator_cascade_callbackscollecttoobject]
+    - [Method `copyCallbacksOnto`][heading__method_synchronousiterator_cascade_callbackscopycallbacksonto]:
+    - [Method `entries`][heading__method_synchronousiterator_cascade_callbacksentries]
+    - [Method `filter`][heading__method_synchronousiterator_cascade_callbacksfilter]
+    - [Method `forEach`][heading__method_synchronousiterator_cascade_callbacksforeach]
+    - [Method `inspect`][heading__method_synchronousiterator_cascade_callbacksinspect]
+    - [Method `limit`][heading__method_synchronousiterator_cascade_callbackslimit]
+    - [Method `map`][heading__method_synchronousiterator_cascade_callbacksmap]
+    - [Method `next`][heading__method_synchronousiterator_cascade_callbacksnext]
+    - [Method `skip`][heading__method_synchronousiterator_cascade_callbacksskip]
+    - [Method `step`][heading__method_synchronousiterator_cascade_callbacksstep]
+    - [Method `take`][heading__method_synchronousiterator_cascade_callbackstake]
 
-  - [Class `Iterator_Cascade_Callbacks_Asynchronously`][heading__class_iterator_cascade_callbacks_asynchronously]
-    - [Method `constructor`][heading__method_iterator_cascade_callbacks_asynchronouslyconstructor]
-    - [Static Method `zip`][heading__static_method_iterator_cascade_callbacks_asynchronouslyzip]
-    - [Method `collect`][heading__method_iterator_cascade_callbacks_asynchronouslycollect]
-    - [Method `collectToArray`][heading__method_iterator_cascade_callbacks_asynchronouslycollecttoarray]
-    - [Method `collectToFunction`][heading__method_iterator_cascade_callbacks_asynchronouslycollecttofunction]
-    - [Method `collectToObject`][heading__method_iterator_cascade_callbacks_asynchronouslycollecttoobject]
-    - [Method `entries`][heading__method_iterator_cascade_callbacks_asynchronouslyentries]
-    - [Method `filter`][heading__method_iterator_cascade_callbacks_asynchronouslyfilter]
-    - [Method `forEach`][heading__method_iterator_cascade_callbacks_asynchronouslyforeach]
-    - [Method `inspect`][heading__method_iterator_cascade_callbacks_asynchronouslyinspect]
-    - [Method `limit`][heading__method_iterator_cascade_callbacks_asynchronouslylimit]
-    - [Method `map`][heading__method_iterator_cascade_callbacks_asynchronouslymap]
-    - [Method `next`][heading__method_iterator_cascade_callbacks_asynchronouslynext]
-    - [Method `skip`][heading__method_iterator_cascade_callbacks_asynchronouslyskip]
-    - [Method `step`][heading__method_iterator_cascade_callbacks_asynchronouslystep]
+  - [Class `Asynchronous.Callback_Object`][heading__class_asynchronouscallback_object]
+    - [Method `Asynchronous.Callback_Object.constructor`][heading__method_asynchronouscallback_objectconstructor]
+    - [Method `Asynchronous.Callback_Object.call`][heading__method_asynchronouscallback_objectcall]
 
-    - [Method `take`][heading__method_iterator_cascade_callbacks_asynchronouslytake]
+  - [Class `Asynchronous.Iterator_Cascade_Callbacks`][heading__class_asynchronousiterator_cascade_callbacks]
+    - [Method `constructor`][heading__method_asynchronousiterator_cascade_callbacksconstructor]
+    - [Static Method `zip`][heading__static_method_asynchronousiterator_cascade_callbackszip]
+    - [Method `collect`][heading__method_asynchronousiterator_cascade_callbackscollect]
+    - [Method `collectToArray`][heading__method_asynchronousiterator_cascade_callbackscollecttoarray]
+    - [Method `collectToFunction`][heading__method_asynchronousiterator_cascade_callbackscollecttofunction]
+    - [Method `collectToObject`][heading__method_asynchronousiterator_cascade_callbackscollecttoobject]
+    - [Method `entries`][heading__method_asynchronousiterator_cascade_callbacksentries]
+    - [Method `filter`][heading__method_asynchronousiterator_cascade_callbacksfilter]
+    - [Method `forEach`][heading__method_asynchronousiterator_cascade_callbacksforeach]
+    - [Method `inspect`][heading__method_asynchronousiterator_cascade_callbacksinspect]
+    - [Method `limit`][heading__method_asynchronousiterator_cascade_callbackslimit]
+    - [Method `map`][heading__method_asynchronousiterator_cascade_callbacksmap]
+    - [Method `next`][heading__method_asynchronousiterator_cascade_callbacksnext]
+    - [Method `skip`][heading__method_asynchronousiterator_cascade_callbacksskip]
+    - [Method `step`][heading__method_asynchronousiterator_cascade_callbacksstep]
+    - [Method `take`][heading__method_asynchronousiterator_cascade_callbackstake]
 
   - [Custom Interfaces][heading__custom_interfaces]
-    - [Interface `Callback_Object`][heading__interface_callback_object]
+    - [Interface `Synchronous.Callback_Object`][heading__interface_synchronouscallback_object]
+    - [Interface `Asynchronous.Callback_Object`][heading__interface_asynchronouscallback_object]
 
   - [Custom Types][heading__custom_types]
-    - [Type `Callback_Function`][heading__type_callback_function]
-    - [Type `Callback_Function_References`][heading__type_callback_function_references]
-    - [Type `Callback_Wrapper`][heading__type_callback_wrapper]
-    - [Type `Collect_To_Function`][heading__type_collect_to_function]
-    - [Type `Comparison_Results`][heading__type_comparisonresults]
-    - [Type `Dictionary`][heading__type_dictionary]
-    - [Type `Generator_Function_Instance`][heading__type_generator_function_instance]
-    - [Type `Index_Or_Key`][heading__type_index_or_key]
-    - [Type `Yielded_Tuple`][heading__type_yielded_tuple]
-    - [Type `Yielded_Result`][heading__type_yielded_result]
+    - [Type `Synchronous.Callback_Function`][heading__typesynchronouscallback_function]
+    - [Type `Synchronous.Callback_Function_References`][heading__typesynchronouscallback_function_references]
+    - [Type `Synchronous.Callback_Wrapper`][heading__typesynchronouscallback_wrapper]
+    - [Type `Synchronous.Collect_To_Function`][heading__type_synchronouscollect_to_function]
+    - [Type `Shared.Dictionary`][heading__type_shareddictionary]
+    - [Type `Shared.Generator_Function_Instance`][heading__type_sharedgenerator_function_instance]
+    - [Type `Shared.Index_Or_Key`][heading__type_sharedindex_or_key]
+    - [Type `Shared.Yielded_Data`][heading__type_sharedyielded_data]
+    - [Type `Shared.Yielded_Result`][heading__type_sharedyielded_result]
 
 - [&#x1F5D2; Notes][heading__notes]
 
@@ -284,12 +288,7 @@ ______
 
 'use strict';
 
-const {
-  Callback_Object,
-  Iterator_Cascade_Callbacks,
-  Stop_Iteration,
-  Pause_Iteration,
-} = require('iterator-cascade-callbacks');
+const { Synchronous } = require('./targets/es2021/synchronous');
 
 /**
  * Generator that produces Fibonacci sequence
@@ -308,7 +307,7 @@ function* fibonacci() {
   }
 }
 
-const icc = new Iterator_Cascade_Callbacks(fibonacci)
+const icc = new Synchronous.Iterator_Cascade_Callbacks(fibonacci)
   .filter((value) => {
     return value % 2 === 0;
   })
@@ -330,7 +329,7 @@ result, divides results by two, limits iteration to five results, and finally
 collects values to an array.
 
 To achieve the same output but without
-[`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks]
+[`Synchronous.Iterator_Cascade_Callbacks`][heading__class_synchronousiterator_cascade_callbacks]
 class, code may be similar to...
 
 
@@ -385,7 +384,7 @@ console.log(collection);
     <code>
       const counter = new Counter(<span id="code__span__counter__start">0</span>);
       <br>
-      const icc = new Iterator_Cascade_Callbacks(counter);
+      const icc = new Synchronous.Iterator_Cascade_Callbacks(counter);
       <br>
       <br>
 
@@ -505,7 +504,7 @@ window.addEventListener('load', () => {
     code__span__take_amount.innerText = take_amount;
 
     const counter = new Counter(count_start);
-    const icc = new Iterator_Cascade_Callbacks(counter);
+    const icc = new Synchronous.Iterator_Cascade_Callbacks(counter);
 
     icc
       .filter((value) => {
@@ -558,7 +557,7 @@ Custom error type to permanently stop iteration prematurely
 
 
 ```javascript
-const icc = new Iterator_Cascade_Callbacks([1, 2, 3, 4]);
+const icc = new Synchronous.Iterator_Cascade_Callbacks([1, 2, 3, 4]);
 
 const collection = icc
   .map((value, index_or_key) => {
@@ -616,58 +615,58 @@ Custom error type to temporarily stop iteration prematurely
 ---
 
 
-### Class `Callback_Object`
-[heading__class_callback_object]:
-  #class-callback_object
+### Class `Synchronous.Callback_Object`
+[heading__class_synchronouscallback_object]:
+  #class-synchronouscallback_object
   "Classy object for storing wrapper function state between iterations"
 
 
 Classy object for storing wrapper function state between iterations
 
 
-#### Method `Callback_Object.constructor`
-[heading__method_callback_objectconstructor]:
-  #method-callback_objectconstructor
-  "Builds new instance of `Callback_Object` to append to `Iterator_Cascade_Callbacks.callbacks` list"
+#### Method `Synchronous.Callback_Object.constructor`
+[heading__method_synchronouscallback_objectconstructor]:
+  #method-synchronouscallback_objectconstructor
+  "Builds new instance of `Synchronous.Callback_Object` to append to `Synchronous.Iterator_Cascade_Callbacks.callbacks` list"
 
 
-Builds new instance of `Callback_Object` to append to
-`Iterator_Cascade_Callbacks.callbacks` list
+Builds new instance of `Synchronous.Callback_Object` to append to
+`Synchronous.Iterator_Cascade_Callbacks.callbacks` list
 
 
 **Parameters**
 
 
-- [**{Callback_Wrapper}**][heading__type_callback_wrapper] `callback_wrapper`
+- [**{Callback_Wrapper}**][heading__typesynchronouscallback_wrapper] `callback_wrapper`
   -- Function wrapper that handles input/output between
-  [`Callback_Function`][heading__type_callback_function] and
-  [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks]
+  [`Callback_Function`][heading__typesynchronouscallback_function] and
+  [`Synchronous.Iterator_Cascade_Callbacks`][heading__class_synchronousiterator_cascade_callbacks]
 
 
-#### Method `Callback_Object.call`
-[heading__method_callback_objectcall]:
-  #method-callback_objectcall
-  "Calls `this.wrapper` function with reference to this `Callback_Object` and `Iterator_Cascade_Callbacks`"
+#### Method `Synchronous.Callback_Object.call`
+[heading__method_synchronouscallback_objectcall]:
+  #method-synchronouscallback_objectcall
+  "Calls `this.wrapper` function with reference to this `Synchronous.Callback_Object` and `Synchronous.Iterator_Cascade_Callbacks`"
 
 
-Calls `this.wrapper` function with reference to this `Callback_Object` and
-[`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks]
+Calls `this.wrapper` function with reference to this `Synchronous.Callback_Object` and
+[`Synchronous.Iterator_Cascade_Callbacks`][heading__class_synchronousiterator_cascade_callbacks]
 
 
 **Parameters**
 
 
-- [**{Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks]
+- [**{Iterator_Cascade_Callbacks}**][heading__class_synchronousiterator_cascade_callbacks]
   `iterator_cascade_callbacks` -- Reference to
-  [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks]
+  [`Synchronous.Iterator_Cascade_Callbacks`][heading__class_synchronousiterator_cascade_callbacks]
   instance
 
 
 ---
 
 
-### Class `Iterator_Cascade_Callbacks`
-[heading__class_iterator_cascade_callbacks]:
+### Class `Synchronous.Iterator_Cascade_Callbacks`
+[heading__class_synchronousiterator_cascade_callbacks]:
   #class-iterator_cascade_callbacks
   "Iterator that chains callback function execution"
 
@@ -678,22 +677,22 @@ Iterator that chains callback function execution
 **Properties**
 
 
-- [**{Dictionary}**][heading__type_dictionary] `state` -- Data shared between
-  [`Callback_Wrapper`][heading__type_callback_wrapper] functions on each
+- [**{Shared.Dictionary}**][heading__type_shareddictionary] `state` -- Data shared between
+  [`Callback_Wrapper`][heading__typesynchronouscallback_wrapper] functions on each
   iteration
 
-- [**{Dictionary}**][heading__type_dictionary] `storage` -- Data shared between
-  [`Callback_Function`][heading__type_callback_function] for each iteration
+- [**{Shared.Dictionary}**][heading__type_shareddictionary] `storage` -- Data shared between
+  [`Callback_Function`][heading__typesynchronouscallback_function] for each iteration
 
 
-#### Method `Iterator_Cascade_Callbacks.constructor`
-[heading__method_iterator_cascade_callbacksconstructor]:
-  #method-iterator_cascade_callbacksconstructor
-  "Instantiates new instance of `Iterator_Cascade_Callbacks` from `iterable` input&#10;&#10;new Iterator_Cascade_Callbacks(iterable: any) =&gt; Iterator_Cascade_Callbacks"
+#### Method `Synchronous.Iterator_Cascade_Callbacks.constructor`
+  [heading__method_synchronousiterator_cascade_callbacksconstructor]:
+  #method-synchronousiterator_cascade_callbacksconstructor
+  "Instantiates new instance of `Synchronous.Iterator_Cascade_Callbacks` from `iterable` input&#10;&#10;new Synchronous.Iterator_Cascade_Callbacks(iterable: any) =&gt; Iterator_Cascade_Callbacks"
 
 
 Instantiates new instance of
-[`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks] from
+[`Synchronous.Iterator_Cascade_Callbacks`][heading__class_synchronousiterator_cascade_callbacks] from
 `iterable` input
 
 
@@ -704,14 +703,14 @@ Instantiates new instance of
   iterator type
 
 
-#### Static Method `Iterator_Cascade_Callbacks.zip`
-[heading__static_method_iterator_cascade_callbackszip]:
-  #static-method-iterator_cascade_callbackszip
-  "Returns new instance of `Iterator_Cascade_Callbacks` that yields lists of values from each iteration"
+#### Static Method `Synchronous.Iterator_Cascade_Callbacks.zip`
+  [heading__static_method_synchronousiterator_cascade_callbackszip]:
+  #static-method-synchronousiterator_cascade_callbackszip
+  "Returns new instance of `Synchronous.Iterator_Cascade_Callbacks` that yields lists of values from each iteration"
 
 
 Returns new instance of
-[`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks] that
+[`Synchronous.Iterator_Cascade_Callbacks`][heading__class_synchronousiterator_cascade_callbacks] that
 yields lists of values from each iteration
 
 
@@ -719,15 +718,15 @@ yields lists of values from each iteration
 
 
 - **{any[]}** `iterables` -- List of Generators, Iterators, and/or instances of
-  [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks]
+  [`Synchronous.Iterator_Cascade_Callbacks`][heading__class_synchronousiterator_cascade_callbacks]
 
 
 **Example** Equal Length Iterables
 
 
 ```javascript
-const icc_one = new Iterator_Cascade_Callbacks([1, 2, 3]);
-const icc_two = new Iterator_Cascade_Callbacks([4, 5, 6]);
+const icc_one = new Synchronous.Iterator_Cascade_Callbacks([1, 2, 3]);
+const icc_two = new Synchronous.Iterator_Cascade_Callbacks([4, 5, 6]);
 
 const icc_zip = Iterator_Cascade_Callbacks.zip(icc_one, icc_two);
 
@@ -740,10 +739,10 @@ for (let values of icc_zip) {
 ```
 
 
-#### Method `Iterator_Cascade_Callbacks.collect`
-[heading__method_iterator_cascade_callbackscollect]:
-  #method-iterator_cascade_callbackscollect
-  "Collects results from `this` to either an Array or Object&#10;&#10;collect(&#10;  target: (any[] | Dictionary | any),&#10;  callback_or_amount?: (Collect_To_Function | number),&#10;  amount?: number&#10;) =&gt; (any[] | Dictionary | undefined))"
+#### Method `Synchronous.Iterator_Cascade_Callbacks.collect`
+[heading__method_synchronousiterator_cascade_callbackscollect]:
+  #method-synchronousiterator_cascade_callbackscollect
+  "Collects results from `this` to either an Array or Object&#10;&#10;collect(&#10;  target: (any[] | Shared.Dictionary | any),&#10;  callback_or_amount?: (Collect_To_Function | number),&#10;  amount?: number&#10;) =&gt; (any[] | Shared.Dictionary | undefined))"
 
 
 Collects results from `this` to either an Array or Object
@@ -756,19 +755,19 @@ Collects results from `this` to either an Array or Object
   pushed, when `target` is Object key value pares are assigned, `callback` is
   required for other types
 
-- [**{Collect_To_Function?|number?}**][heading__type_collect_to_function]
+- [**{Collect_To_Function?|number?}**][heading__type_synchronouscollect_to_function]
   `callback_or_amount` -- Callback function for collecting to custom type, or
   amount to limit known collection object types to
 
 - **{number?}** `amount` - Limit collection to no more than amount
 
 
-Returns **{any[] | Dictionary | undefined}**
+Returns **{any[] | Shared.Dictionary | undefined}**
 
 
-#### Method `Iterator_Cascade_Callbacks.collectToArray`
-[heading__method_iterator_cascade_callbackscollecttoarray]:
-  #method-iterator_cascade_callbackscollecttoarray
+#### Method `Synchronous.Iterator_Cascade_Callbacks.collectToArray`
+[heading__method_synchronousiterator_cascade_callbackscollecttoarray]:
+  #method-synchronousiterator_cascade_callbackscollecttoarray
   "Collects results from `this.next()` to an Array&#10;&#10;collectToArray(target: any[], amount?: number) =&gt; any[]"
 
 
@@ -790,7 +789,7 @@ Returns **{any[]}**
 
 
 ```javascript
-const icc = new Iterator_Cascade_Callbacks([5, 6, 7, 8, 9]);
+const icc = new Synchronous.Iterator_Cascade_Callbacks([5, 6, 7, 8, 9]);
 
 const collection = icc
   .filter((value) => {
@@ -803,9 +802,9 @@ console.log(collection);
 ```
 
 
-#### Method `Iterator_Cascade_Callbacks.collectToFunction`
-[heading__method_iterator_cascade_callbackscollecttofunction]:
-  #method-iterator_cascade_callbackscollecttofunction
+#### Method `Synchronous.Iterator_Cascade_Callbacks.collectToFunction`
+[heading__method_synchronousiterator_cascade_callbackscollecttofunction]:
+  #method-synchronousiterator_cascade_callbackscollecttofunction
   "Collects results from `this.next()` to a callback function target&#10;&#10;collectToFunction(target: any, callback: Collect_To_Function, amount?: number) =&gt; any"
 
 
@@ -828,7 +827,7 @@ Collects results from `this.next()` to a callback function target
 
 
 ```javascript
-const icc = new Iterator_Cascade_Callbacks({ spam: 'flavored', canned: 'ham' });
+const icc = new Synchronous.Iterator_Cascade_Callbacks({ spam: 'flavored', canned: 'ham' });
 
 const map = new Map();
 
@@ -841,10 +840,10 @@ console.log(collection);
 ```
 
 
-#### Method `Iterator_Cascade_Callbacks.collectToObject`
-[heading__method_iterator_cascade_callbackscollecttoobject]:
-  #method-iterator_cascade_callbackscollecttoobject
-  "Collects results from `this.next()` to an Object&#10;&#10;collectToObject(target: Dictionary, amount?: number) =&gt; Dictionary"
+#### Method `Synchronous.Iterator_Cascade_Callbacks.collectToObject`
+[heading__method_synchronousiterator_cascade_callbackscollecttoobject]:
+  #method-synchronousiterator_cascade_callbackscollecttoobject
+  "Collects results from `this.next()` to an Object&#10;&#10;collectToObject(target: Shared.Dictionary, amount?: number) =&gt; Shared.Dictionary"
 
 
 Collects results from `this.next()` to an Object
@@ -854,7 +853,7 @@ Collects results from `this.next()` to an Object
 **Parameters**
 
 
-- **{Object}** `target` -- Dictionary like object to assign key value pares to
+- **{Object}** `target` -- Shared.Dictionary like object to assign key value pares to
 
 - **{number?}** `amount` -- Limit collection to no more than amount
 
@@ -866,7 +865,7 @@ Returns dictionary-like object
 
 
 ```javascript
-const icc = new Iterator_Cascade_Callbacks({ spam: 'flavored', canned: 'ham' });
+const icc = new Synchronous.Iterator_Cascade_Callbacks({ spam: 'flavored', canned: 'ham' });
 
 const collection = icc.collectToObject({});
 
@@ -875,14 +874,14 @@ console.log(collection);
 ```
 
 
-#### Method `copyCallbacksOnto`
-[heading__method_copycallbacksonto]:
-  #method-copycallbacksonto
-  "Returns new instance of `Iterator_Cascade_Callbacks` with copy of callbacks&#10;&#10;copyCallbacksOnto(iterable: any) =&gt; Iterator_Cascade_Callbacks"
+#### Method `Synchronous.Iterator_Cascade_Callbacks.copyCallbacksOnto`
+[heading__method_synchronousiterator_cascade_callbackscopycallbacksonto]:
+  #method-synchronousiterator_cascade_callbackscopycallbacksonto
+  "Returns new instance of `Synchronous.Iterator_Cascade_Callbacks` with copy of callbacks&#10;&#10;copyCallbacksOnto(iterable: any) =&gt; Iterator_Cascade_Callbacks"
 
 
 Returns new instance of
-[`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks] with
+[`Synchronous.Iterator_Cascade_Callbacks`][heading__class_synchronousiterator_cascade_callbacks] with
 copy of callbacks
 
 
@@ -900,7 +899,7 @@ copy of callbacks
 const iterable_one = [1, 2, 3, 4, 5];
 const iterable_two = [9, 8, 7, 6, 5];
 
-const icc_one = new Iterator_Cascade_Callbacks(iterable_one)
+const icc_one = new Synchronous.Iterator_Cascade_Callbacks(iterable_one)
   .filter((value) => {
     return value % 2 === 0;
   })
@@ -917,9 +916,9 @@ console.log('Collection Two ->', icc_two.collect([]));
 ```
 
 
-#### Method `Iterator_Cascade_Callbacks.entries`
-[heading__method_iterator_cascade_callbacksentries]:
-  #method-iterator_cascade_callbacksentries
+#### Method `Synchronous.Iterator_Cascade_Callbacks.entries`
+[heading__method_synchronousiterator_cascade_callbacksentries]:
+  #method-synchronousiterator_cascade_callbacksentries
   "Sets `this.value` to `Yielded_Entry` which contains `[this.yielded_data.index_or_key, this.yielded_data.content]`&#10;&#10;entries(): Iterator_Cascade_Callbacks"
 
 
@@ -927,14 +926,14 @@ Sets `this.value` to `Yielded_Entry` which contains
 `[this.yielded_data.index_or_key, this.yielded_data.content]`
 
 Returns `this`
-[**{Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks]
+[**{Iterator_Cascade_Callbacks}**][heading__class_synchronousiterator_cascade_callbacks]
 
 
 **Example**
 
 
 ```javascript
-const icc = new Iterator_Cascade_Callbacks([9, 8, 7, 6, 5]);
+const icc = new Synchronous.Iterator_Cascade_Callbacks([9, 8, 7, 6, 5]);
 
 const collection = icc
   .filter(([index, value]) => {
@@ -947,9 +946,9 @@ console.log(collection);
 ```
 
 
-#### Method `Iterator_Cascade_Callbacks.filter`
-[heading__method_iterator_cascade_callbacksfilter]:
-  #method-iterator_cascade_callbacksfilter
+#### Method `Synchronous.Iterator_Cascade_Callbacks.filter`
+[heading__method_synchronousiterator_cascade_callbacksfilter]:
+  #method-synchronousiterator_cascade_callbacksfilter
   "Sets `this.value` if callback function returns _truthy_, else consumes `this.iterator` and recomputes value for callback to test&#10;&#10;filter(callback: Callback_Function, ...parameters: any[]) =&gt; Iterator_Cascade_Callbacks"
 
 
@@ -960,7 +959,7 @@ Sets `this.value` if callback function returns _truthy_, else consumes
 **Parameters**
 
 
-- [**{Callback_Function}**][heading__type_callback_function] `callback` --
+- [**{Callback_Function}**][heading__typesynchronouscallback_function] `callback` --
   Function that determines truth of `value` and/or `index_or_key` for each
   iteration
 
@@ -969,14 +968,14 @@ Sets `this.value` if callback function returns _truthy_, else consumes
 
 
 Returns `this`
-[**{Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks]
+[**{Iterator_Cascade_Callbacks}**][heading__class_synchronousiterator_cascade_callbacks]
 
 
 **Example**
 
 
 ```javascript
-const icc = new Iterator_Cascade_Callbacks([9, 8, 7, 6, 5]);
+const icc = new Synchronous.Iterator_Cascade_Callbacks([9, 8, 7, 6, 5]);
 
 const collection = icc
   .filter((value) => {
@@ -989,9 +988,9 @@ console.log(collection);
 ```
 
 
-#### Method `Iterator_Cascade_Callbacks.forEach`
-[heading__method_iterator_cascade_callbacksforeach]:
-  #method-iterator_cascade_callbacksforeach
+#### Method `Synchronous.Iterator_Cascade_Callbacks.forEach`
+[heading__method_synchronousiterator_cascade_callbacksforeach]:
+  #method-synchronousiterator_cascade_callbacksforeach
   "Executes callback for each iteration&#10;&#10;forEach(callback: Callback_Function, ...paramaters: any[]) =&gt; Iterator_Cascade_Callbacks"
 
 
@@ -1001,9 +1000,9 @@ Executes callback for each iteration
 **Parameters**
 
 
-- [**{Callback_Function}**][heading__type_callback_function] `callback` --
+- [**{Callback_Function}**][heading__typesynchronouscallback_function] `callback` --
   Function that generally does not mutate `value` or `index_or_key` for
-  [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks]
+  [`Synchronous.Iterator_Cascade_Callbacks`][heading__class_synchronousiterator_cascade_callbacks]
   instance
 
 - **{...any[]}** `parameters` -- List of arguments that are passed to callback
@@ -1011,14 +1010,14 @@ Executes callback for each iteration
 
 
 Returns `this`
-[**{Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks]
+[**{Iterator_Cascade_Callbacks}**][heading__class_synchronousiterator_cascade_callbacks]
 
 
 **Example**
 
 
 ```javascript
-const icc = new Iterator_Cascade_Callbacks([9, 8, 7, 6, 5]);
+const icc = new Synchronous.Iterator_Cascade_Callbacks([9, 8, 7, 6, 5]);
 
 const collection = icc
   .forEach((value) => {
@@ -1041,9 +1040,9 @@ console.log(collection);
   Objects
 
 
-#### Method `Iterator_Cascade_Callbacks.inspect`
-[heading__method_iterator_cascade_callbacksinspect]:
-  #method-iterator_cascade_callbacksinspect
+#### Method `Synchronous.Iterator_Cascade_Callbacks.inspect`
+  [heading__method_synchronousiterator_cascade_callbacksinspect]:
+  #method-synchronousiterator_cascade_callbacksinspect
   "Useful for debugging and inspecting iteration state&#10;&#10;inspect(callback: Callback_Function, ...paramaters: any[]) =&gt; Iterator_Cascade_Callbacks"
 
 
@@ -1053,7 +1052,7 @@ Useful for debugging and inspecting iteration state
 **Parameters**
 
 
-- [**{Callback_Function}**][heading__type_callback_function] `callback` --
+- [**{Callback_Function}**][heading__typesynchronouscallback_function] `callback` --
   Function that logs something about each iteration
 
 - **{...any[]}** `parameters` -- List of arguments that are passed to callback
@@ -1076,7 +1075,7 @@ function inspector(
   console.log('iterator_cascade_callbacks ->', iterator_cascade_callbacks);
 }
 
-const icc = new Iterator_Cascade_Callbacks([9, 8, 7, 6, 5]);
+const icc = new Synchronous.Iterator_Cascade_Callbacks([9, 8, 7, 6, 5]);
 
 const collection = icc
   .filter((value) => {
@@ -1091,9 +1090,9 @@ const collection = icc
 ```
 
 
-#### Method `Iterator_Cascade_Callbacks.limit`
-[heading__method_iterator_cascade_callbackslimit]:
-  #method-iterator_cascade_callbackslimit
+#### Method `Synchronous.Iterator_Cascade_Callbacks.limit`
+[heading__method_synchronousiterator_cascade_callbackslimit]:
+  #method-synchronousiterator_cascade_callbackslimit
   "Stops iteration when limit is reached&#10;&#10;limit(amount: number) =&gt; Iterator_Cascade_Callbacks"
 
 
@@ -1107,14 +1106,14 @@ Stops iteration when limit is reached
 
 
 Returns `this`
-[**{Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks]
+[**{Iterator_Cascade_Callbacks}**][heading__class_synchronousiterator_cascade_callbacks]
 
 
 **Example**
 
 
 ```javascript
-const icc = new Iterator_Cascade_Callbacks([1, 2, 3, 4]);
+const icc = new Synchronous.Iterator_Cascade_Callbacks([1, 2, 3, 4]);
 
 const collection = icc.limit(2).collect([]);
 
@@ -1134,9 +1133,9 @@ console.log(collection);
   `Stop_Iteration`
 
 
-#### Method `Iterator_Cascade_Callbacks.map`
-[heading__method_iterator_cascade_callbacksmap]:
-  #method-iterator_cascade_callbacksmap
+#### Method `Synchronous.Iterator_Cascade_Callbacks.map`
+  [heading__method_synchronousiterator_cascade_callbacksmap]:
+  #method-synchronousiterator_cascade_callbacksmap
   "Applies `callback` to modify `value` and/or `index_or_key` for each iteration&#10;&#10;map(callback: Callback_Function, ...parameters: any[]) =&gt; Iterator_Cascade_Callbacks"
 
 
@@ -1146,7 +1145,7 @@ Applies `callback` to modify `value` and/or `index_or_key` for each iteration
 **Parameters**
 
 
-- [**{Callback_Function}**][heading__type_callback_function] `callback` --
+- [**{Callback_Function}**][heading__typesynchronouscallback_function] `callback` --
   Function may modify `value` and/or `index_or_key`
 
 - **{...any[]}** `parameters` -- List of arguments that are passed to callback
@@ -1154,14 +1153,14 @@ Applies `callback` to modify `value` and/or `index_or_key` for each iteration
 
 
 Returns `this`
-[**{Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks]
+[**{Iterator_Cascade_Callbacks}**][heading__class_synchronousiterator_cascade_callbacks]
 
 
 **Example**
 
 
 ```javascript
-const icc = new Iterator_Cascade_Callbacks([9, 8, 7, 6, 5]);
+const icc = new Synchronous.Iterator_Cascade_Callbacks([9, 8, 7, 6, 5]);
 
 const collection = icc
   .filter((value) => {
@@ -1180,13 +1179,13 @@ console.log(collection);
 **Notes**
 
 
-- If callback does **not** return `Yielded_Tuple` (array), then results from
+- If callback does **not** return `Yielded_Data` (array), then results from
   callback are used as `value` and initial `index_or_key` is reused
 
 
-#### Method `Iterator_Cascade_Callbacks.next`
-[heading__method_iterator_cascade_callbacksnext]:
-  #method-iterator_cascade_callbacksnext
+#### Method `Synchronous.Iterator_Cascade_Callbacks.next`
+  [heading__method_synchronousiterator_cascade_callbacksnext]:
+  #method-synchronousiterator_cascade_callbacksnext
   "Updates `this.value` from chaining `this.callbacks` list, and `this.done` from `this.iterator.next()`&#10;&#10;next() =&gt; Iterator_Cascade_Callbacks"
 
 
@@ -1195,14 +1194,14 @@ Updates `this.value` from chaining `this.callbacks` list, and `this.done` from
 
 
 Returns `this`
-[**{Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks]
+[**{Iterator_Cascade_Callbacks}**][heading__class_synchronousiterator_cascade_callbacks]
 
 
 **Example**
 
 
 ```javascript
-const icc = new Iterator_Cascade_Callbacks([1, 2, 3, 4]);
+const icc = new Synchronous.Iterator_Cascade_Callbacks([1, 2, 3, 4]);
 
 for (let value of icc) {
   console.log('value ->', value);
@@ -1214,9 +1213,9 @@ for (let value of icc) {
 ```
 
 
-#### Method `Iterator_Cascade_Callbacks.skip`
-[heading__method_iterator_cascade_callbacksskip]:
-  #method-iterator_cascade_callbacksskip
+#### Method `Synchronous.Iterator_Cascade_Callbacks.skip`
+[heading__method_synchronousiterator_cascade_callbacksskip]:
+  #method-synchronousiterator_cascade_callbacksskip
   "Skip number of iterations&#10;&#10;skip(amount: number) =&gt; Iterator_Cascade_Callbacks"
 
 
@@ -1230,14 +1229,14 @@ Skip number of iterations
 
 
 Returns `this`
-[**{Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks]
+[**{Iterator_Cascade_Callbacks}**][heading__class_synchronousiterator_cascade_callbacks]
 
 
 **Example**
 
 
 ```javascript
-const icc = new Iterator_Cascade_Callbacks([0, 1, 2, 3, 4, 5]);
+const icc = new Synchronous.Iterator_Cascade_Callbacks([0, 1, 2, 3, 4, 5]);
 
 const collection = icc.skip(2).collect([]);
 
@@ -1246,9 +1245,9 @@ console.log(collection);
 ```
 
 
-#### Method `Iterator_Cascade_Callbacks.step`
-[heading__method_iterator_cascade_callbacksstep]:
-  #method-iterator_cascade_callbacksstep
+#### Method `Synchronous.Iterator_Cascade_Callbacks.step`
+[heading__method_synchronousiterator_cascade_callbacksstep]:
+  #method-synchronousiterator_cascade_callbacksstep
   "Step over every _n_ iterations&#10;&#10;step(amount: number) =&gt; Iterator_Cascade_Callbacks"
 
 
@@ -1262,14 +1261,14 @@ Step over every _n_ iterations
 
 
 Returns `this`
-[**{Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks]
+[**{Iterator_Cascade_Callbacks}**][heading__class_synchronousiterator_cascade_callbacks]
 
 
 **Example**
 
 
 ```javascript
-const icc = new Iterator_Cascade_Callbacks([0, 1, 2, 3, 4, 5]);
+const icc = new Synchronous.Iterator_Cascade_Callbacks([0, 1, 2, 3, 4, 5]);
 
 const collection = icc.step(1).collect([]);
 
@@ -1278,9 +1277,9 @@ console.log(collection);
 ```
 
 
-#### Method `Iterator_Cascade_Callbacks.take`
-[heading__method_iterator_cascade_callbackstake]:
-  #method-iterator_cascade_callbackstake
+#### Method `Synchronous.Iterator_Cascade_Callbacks.take`
+[heading__method_synchronousiterator_cascade_callbackstake]:
+  #method-synchronousiterator_cascade_callbackstake
   "Pauses/breaks iteration when limit is reached&#10;&#10;take(amount: number) =&gt; Iterator_Cascade_Callbacks"
 
 
@@ -1294,7 +1293,7 @@ Pauses/breaks iteration when limit is reached
 
 
 Returns `this`
-[**{Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks]
+[**{Iterator_Cascade_Callbacks}**][heading__class_synchronousiterator_cascade_callbacks]
 
 
 Throws [**{Pause_Iteration}**][heading__class_pause_iteration]
@@ -1304,7 +1303,7 @@ Throws [**{Pause_Iteration}**][heading__class_pause_iteration]
 
 
 ```javascript
-const icc = new Iterator_Cascade_Callbacks([1, 2, 3, 4]);
+const icc = new Synchronous.Iterator_Cascade_Callbacks([1, 2, 3, 4]);
 
 icc.take(2);
 
@@ -1328,8 +1327,59 @@ console.log(collection_two);
 ---
 
 
-### Class `Iterator_Cascade_Callbacks_Asynchronously`
-[heading__class_iterator_cascade_callbacks_asynchronously]:
+### Class `Asynchronous.Callback_Object`
+[heading__class_asynchronouscallback_object]:
+  #class-asynchronouscallback_object
+  "Classy object for storing wrapper function state between iterations"
+
+
+Classy object for storing wrapper function state between iterations
+
+
+#### Method `Asynchronous.Callback_Object.constructor`
+[heading__method_asynchronouscallback_objectconstructor]:
+  #method-asynchronouscallback_objectconstructor
+  "Builds new instance of `Asynchronous.Callback_Object` to append to `Asynchronous.Iterator_Cascade_Callbacks.callbacks` list"
+
+
+Builds new instance of `Asynchronous.Callback_Object` to append to
+`Asynchronous.Iterator_Cascade_Callbacks.callbacks` list
+
+
+**Parameters**
+
+
+- [**{Callback_Wrapper}**][heading__typesynchronouscallback_wrapper] `callback_wrapper`
+  -- Function wrapper that handles input/output between
+  [`Callback_Function`][heading__typesynchronouscallback_function] and
+  [`Asynchronous.Iterator_Cascade_Callbacks`][heading__class_asynchronousiterator_cascade_callbacks]
+
+
+#### Method `Asynchronous.Callback_Object.call`
+[heading__method_asynchronouscallback_objectcall]:
+  #method-asynchronouscallback_objectcall
+  "Calls `this.wrapper` function with reference to this `Asynchronous.Callback_Object` and `Asynchronous.Iterator_Cascade_Callbacks`"
+
+
+Calls `this.wrapper` function with reference to this
+`Asynchronous.Callback_Object` and
+[`Asynchronous.Iterator_Cascade_Callbacks`][heading__class_asynchronousiterator_cascade_callbacks]
+
+
+**Parameters**
+
+
+- [**{Iterator_Cascade_Callbacks}**][heading__class_asynchronousiterator_cascade_callbacks]
+  `iterator_cascade_callbacks` -- Reference to
+  [`Asynchronous.Iterator_Cascade_Callbacks`][heading__class_asynchronousiterator_cascade_callbacks]
+  instance
+
+
+---
+
+
+### Class `Asynchronous.Iterator_Cascade_Callbacks`
+[heading__class_asynchronousiterator_cascade_callbacks]:
   #class-iterator_cascade_callbacks_asynchronously
   "Iterator that chains asynchronous iterables and/or callback function execution"
 
@@ -1337,14 +1387,14 @@ console.log(collection_two);
 Iterator that chains asynchronous iterables and/or callback function execution
 
 
-#### Method `Iterator_Cascade_Callbacks_Asynchronously.constructor`
-[heading__method_iterator_cascade_callbacks_asynchronouslyconstructor]:
-  #method-iterator_cascade_callbacks_asynchronouslyconstructor
-  "Instantiates new instance of `Iterator_Cascade_Callbacks_Asynchronously` from `iterable` input&#10;&#10;new Iterator_Cascade_Callbacks_Asynchronously(iterable: any) =&gt; Iterator_Cascade_Callbacks_Asynchronously"
+#### Method `Asynchronous.Iterator_Cascade_Callbacks.constructor`
+[heading__method_asynchronousiterator_cascade_callbacksconstructor]:
+  #method-asynchronousiterator_cascade_callbacksconstructor
+  "Instantiates new instance of `Asynchronous.Iterator_Cascade_Callbacks` from `iterable` input&#10;&#10;new Asynchronous.Iterator_Cascade_Callbacksiterable: any) =&gt; Asynchronous.Iterator_Cascade_Callbacks"
 
 
 Instantiates new instance of
-[`Iterator_Cascade_Callbacks_Asynchronously`][heading__class_iterator_cascade_callbacks_asynchronously]
+[`Asynchronous.Iterator_Cascade_Callbacks`][heading__class_asynchronousiterator_cascade_callbacks]
 from `iterable` input
 
 
@@ -1355,14 +1405,14 @@ from `iterable` input
   iterator type
 
 
-#### Static Method `Iterator_Cascade_Callbacks_Asynchronously.zip`
-[heading__static_method_iterator_cascade_callbacks_asynchronouslyzip]:
-  #static-method-iterator_cascade_callbacks_asynchronouslyzip
-  "Returns new instance of `Iterator_Cascade_Callbacks_Asynchronously` that yields promised lists of values from each iteration"
+#### Static Method `Asynchronous.Iterator_Cascade_Callbacks.zip`
+  [heading__static_method_asynchronousiterator_cascade_callbackszip]:
+  #static-method-asynchronousiterator_cascade_callbackszip
+  "Returns new instance of `Asynchronous.Iterator_Cascade_Callbacks` that yields promised lists of values from each iteration"
 
 
 Returns new instance of
-[`Iterator_Cascade_Callbacks_Asynchronously`][heading__class_iterator_cascade_callbacks_asynchronously]
+[`Asynchronous.Iterator_Cascade_Callbacks`][heading__class_asynchronousiterator_cascade_callbacks]
 that yields promised lists of values from each iteration
 
 
@@ -1377,10 +1427,10 @@ that yields promised lists of values from each iteration
 
 
 ```javascript
-const icca_one = new Iterator_Cascade_Callbacks_Asynchronously([1, 2, 3]);
-const icca_two = new Iterator_Cascade_Callbacks_Asynchronously([4, 5, 6]);
+const icca_one = new Asynchronous.Iterator_Cascade_Callbacks[1, 2, 3]);
+const icca_two = new Asynchronous.Iterator_Cascade_Callbacks[4, 5, 6]);
 
-const icca_zip = Iterator_Cascade_Callbacks_Asynchronously.zip(icca_one, icca_two);
+const icca_zip = Asynchronous.Iterator_Cascade_Callbacks.zip(icca_one, icca_two);
 
 (async () => {
   for await (let values of icca_zip) {
@@ -1397,10 +1447,10 @@ const icca_zip = Iterator_Cascade_Callbacks_Asynchronously.zip(icca_one, icca_tw
 
 
 ```javascript
-const icca_three = new Iterator_Cascade_Callbacks_Asynchronously([7, 8, 9]);
-const icca_four = new Iterator_Cascade_Callbacks_Asynchronously([10, 11]);
+const icca_three = new Asynchronous.Iterator_Cascade_Callbacks[7, 8, 9]);
+const icca_four = new Asynchronous.Iterator_Cascade_Callbacks[10, 11]);
 
-const icca_zip = Iterator_Cascade_Callbacks_Asynchronously.zip(icca_three, icca_four);
+const icca_zip = Asynchronous.Iterator_Cascade_Callbacks.zip(icca_three, icca_four);
 
 (async () => {
   for await (let values of icca_zip) {
@@ -1413,10 +1463,10 @@ const icca_zip = Iterator_Cascade_Callbacks_Asynchronously.zip(icca_three, icca_
 ```
 
 
-#### Method `Iterator_Cascade_Callbacks_Asynchronously.collect`
-[heading__method_iterator_cascade_callbacks_asynchronouslycollect]:
-  #method-iterator_cascade_callbacks_asynchronouslycollect
-  "Collects results from `this` to either an Array or Object&#10;&#10;collect(&#10;  target: (any[] | Dictionary | any),&#10;  callback_or_amount?: (Collect_To_Function | number),&#10;  amount?: number&#10;) =&gt; (any[] | Dictionary | undefined))"
+#### Method `Asynchronous.Iterator_Cascade_Callbacks.collect`
+[heading__method_asynchronousiterator_cascade_callbackscollect]:
+  #method-asynchronousiterator_cascade_callbackscollect
+  "Collects results from `this` to either an Array or Object&#10;&#10;collect(&#10;  target: (any[] | Shared.Dictionary | any),&#10;  callback_or_amount?: (Collect_To_Function | number),&#10;  amount?: number&#10;) =&gt; (any[] | Shared.Dictionary | undefined))"
 
 
 Collects results from `this` to either an Array or Object
@@ -1429,19 +1479,19 @@ Collects results from `this` to either an Array or Object
   pushed, when `target` is Object key value pares are assigned, `callback` is
   required for other types
 
-- [**{Collect_To_Function?|number?}**][heading__type_collect_to_function]
+- [**{Collect_To_Function?|number?}**][heading__type_synchronouscollect_to_function]
   `callback_or_amount` -- Callback function for collecting to custom type, or
   amount to limit known collection object types to
 
 - **{number?}** `amount` -- Limit collection to no more than amount
 
 
-Returns **{any[] | Dictionary | undefined}**
+Returns **{any[] | Shared.Dictionary | undefined}**
 
 
-#### Method `Iterator_Cascade_Callbacks_Asynchronously.collectToFunction`
-[heading__method_iterator_cascade_callbacks_asynchronouslycollecttofunction]:
-  #method-iterator_cascade_callbacks_asynchronouslycollecttofunction
+#### Method `Asynchronous.Iterator_Cascade_Callbacks.collectToFunction`
+[heading__method_asynchronousiterator_cascade_callbackscollecttofunction]:
+  #method-asynchronousiterator_cascade_callbackscollecttofunction
   "Collects results from `this.next()` to a callback function target&#10;&#10;collectToFunction(target: any, callback: Collect_To_Function, amount?: number) =&gt; any"
 
 
@@ -1464,7 +1514,7 @@ Collects results from `this.next()` to a callback function target
 
 
 ```javascript
-const icca = new Iterator_Cascade_Callbacks_Asynchronously({ spam: 'flavored', canned: 'ham' });
+const icca = new Asynchronous.Iterator_Cascade_Callbacks{ spam: 'flavored', canned: 'ham' });
 
 const map = new Map();
 
@@ -1479,10 +1529,10 @@ const map = new Map();
 ```
 
 
-#### Method `Iterator_Cascade_Callbacks_Asynchronously.collectToObject`
-[heading__method_iterator_cascade_callbacks_asynchronouslycollecttoobject]:
-  #method-iterator_cascade_callbacks_asynchronouslycollecttoobject
-  "Collects results from `this.next()` to an Object&#10;&#10;collectToObject(target: Dictionary, amount?: number) =&gt; Dictionary"
+#### Method `Asynchronous.Iterator_Cascade_Callbacks.collectToObject`
+[heading__method_asynchronousiterator_cascade_callbackscollecttoobject]:
+  #method-asynchronousiterator_cascade_callbackscollecttoobject
+  "Collects results from `this.next()` to an Object&#10;&#10;collectToObject(target: Shared.Dictionary, amount?: number) =&gt; Shared.Dictionary"
 
 
 Collects results from `this.next()` to an Object
@@ -1492,7 +1542,7 @@ Collects results from `this.next()` to an Object
 **Parameters**
 
 
-- **{Object}** `target` -- Dictionary like object to assign key value pares to
+- **{Object}** `target` -- Shared.Dictionary like object to assign key value pares to
 
 - **{number?}** `amount` -- Limit collection to no more than amount
 
@@ -1504,7 +1554,7 @@ Returns dictionary-like object
 
 
 ```javascript
-const icca = new Iterator_Cascade_Callbacks_Asynchronously({ spam: 'flavored', canned: 'ham' });
+const icca = new Asynchronous.Iterator_Cascade_Callbacks{ spam: 'flavored', canned: 'ham' });
 
 (async () => {
   const collection = await icca.collectToObject({});
@@ -1515,24 +1565,24 @@ const icca = new Iterator_Cascade_Callbacks_Asynchronously({ spam: 'flavored', c
 ```
 
 
-#### Method `Iterator_Cascade_Callbacks_Asynchronously.entries`
-[heading__method_iterator_cascade_callbacks_asynchronouslyentries]:
-  #method-iterator_cascade_callbacks_asynchronouslyentries
-  "Sets `this.value` to `Yielded_Entry` which contains `[this.yielded_data.index_or_key, this.yielded_data.content]`&#10;&#10;entries(): Iterator_Cascade_Callbacks_Asynchronously"
+#### Method `Asynchronous.Iterator_Cascade_Callbacks.entries`
+[heading__method_asynchronousiterator_cascade_callbacksentries]:
+  #method-asynchronousiterator_cascade_callbacksentries
+  "Sets `this.value` to `Yielded_Entry` which contains `[this.yielded_data.index_or_key, this.yielded_data.content]`&#10;&#10;entries(): Asynchronous.Iterator_Cascade_Callbacks"
 
 
 Sets `this.value` to `Yielded_Entry` which contains
 `[this.yielded_data.index_or_key, this.yielded_data.content]`
 
 Returns `this`
-[**{Iterator_Cascade_Callbacks_Asynchronously}**][heading__class_iterator_cascade_callbacks_asynchronously]
+[**{Asynchronous.Iterator_Cascade_Callbacks}**][heading__class_asynchronousiterator_cascade_callbacks]
 
 
 **Example**
 
 
 ```javascript
-const icca = new Iterator_Cascade_Callbacks_Asynchronously([9, 8, 7, 6, 5]);
+const icca = new Asynchronous.Iterator_Cascade_Callbacks[9, 8, 7, 6, 5]);
 
 (async () => {
   const collection = await icca
@@ -1548,10 +1598,10 @@ const icca = new Iterator_Cascade_Callbacks_Asynchronously([9, 8, 7, 6, 5]);
 ```
 
 
-#### Method `Iterator_Cascade_Callbacks_Asynchronously.filter`
-[heading__method_iterator_cascade_callbacks_asynchronouslyfilter]:
-  #method-iterator_cascade_callbacks_asynchronouslyfilter
-  "Sets `this.value` if callback function returns _truthy_, else consumes `this.iterator` and recomputes value for callback to test&#10;&#10;filter(callback: Callback_Function, ...parameters: any[]) =&gt; Iterator_Cascade_Callbacks_Asynchronously"
+#### Method `Asynchronous.Iterator_Cascade_Callbacks.filter`
+[heading__method_asynchronousiterator_cascade_callbacksfilter]:
+  #method-asynchronousiterator_cascade_callbacksfilter
+  "Sets `this.value` if callback function returns _truthy_, else consumes `this.iterator` and recomputes value for callback to test&#10;&#10;filter(callback: Callback_Function, ...parameters: any[]) =&gt; Asynchronous.Iterator_Cascade_Callbacks"
 
 
 Sets `this.value` if callback function returns _truthy_, else consumes
@@ -1561,7 +1611,7 @@ Sets `this.value` if callback function returns _truthy_, else consumes
 **Parameters**
 
 
-- [**{Callback_Function}**][heading__type_callback_function] `callback` --
+- [**{Callback_Function}**][heading__typesynchronouscallback_function] `callback` --
   Function that determines truth of `value` and/or `index_or_key` for each
   iteration
 
@@ -1570,14 +1620,14 @@ Sets `this.value` if callback function returns _truthy_, else consumes
 
 
 Returns `this`
-[**{Iterator_Cascade_Callbacks_Asynchronously}**][heading__class_iterator_cascade_callbacks_asynchronously]
+[**{Asynchronous.Iterator_Cascade_Callbacks}**][heading__class_asynchronousiterator_cascade_callbacks]
 
 
 **Example**
 
 
 ```javascript
-const icca = new Iterator_Cascade_Callbacks_Asynchronously([9, 8, 7, 6, 5]);
+const icca = new Asynchronous.Iterator_Cascade_Callbacks[9, 8, 7, 6, 5]);
 
 (async () => {
   const collection = icca
@@ -1592,10 +1642,10 @@ const icca = new Iterator_Cascade_Callbacks_Asynchronously([9, 8, 7, 6, 5]);
 ```
 
 
-#### Method `Iterator_Cascade_Callbacks_Asynchronously.forEach`
-[heading__method_iterator_cascade_callbacks_asynchronouslyforeach]:
-  #method-iterator_cascade_callbacks_asynchronouslyforeach
-  "Executes callback for each iteration&#10;&#10;forEach(callback: Callback_Function, ...paramaters: any[]) =&gt; Iterator_Cascade_Callbacks_Asynchronously"
+#### Method `Asynchronous.Iterator_Cascade_Callbacks.forEach`
+[heading__method_asynchronousiterator_cascade_callbacksforeach]:
+  #method-asynchronousiterator_cascade_callbacksforeach
+  "Executes callback for each iteration&#10;&#10;forEach(callback: Callback_Function, ...paramaters: any[]) =&gt; Asynchronous.Iterator_Cascade_Callbacks"
 
 
 Executes callback for each iteration
@@ -1604,9 +1654,9 @@ Executes callback for each iteration
 **Parameters**
 
 
-- [**{Callback_Function}**][heading__type_callback_function] `callback` --
+- [**{Callback_Function}**][heading__typesynchronouscallback_function] `callback` --
   Function that generally does not mutate `value` or `index_or_key` for
-  [`Iterator_Cascade_Callbacks_Asynchronously`][heading__class_iterator_cascade_callbacks_asynchronously]
+  [`Asynchronous.Iterator_Cascade_Callbacks`][heading__class_asynchronousiterator_cascade_callbacks]
   instance
 
 - **{...any[]}** `parameters` -- List of arguments that are passed to callback
@@ -1614,14 +1664,14 @@ Executes callback for each iteration
 
 
 Returns `this`
-[**{Iterator_Cascade_Callbacks_Asynchronously}**][heading__class_iterator_cascade_callbacks_asynchronously]
+[**{Asynchronous.Iterator_Cascade_Callbacks}**][heading__class_asynchronousiterator_cascade_callbacks]
 
 
 **Example**
 
 
 ```javascript
-const icca = new Iterator_Cascade_Callbacks_Asynchronously([9, 8, 7, 6, 5]);
+const icca = new Asynchronous.Iterator_Cascade_Callbacks[9, 8, 7, 6, 5]);
 
 (async () => {
   const collection = await icca
@@ -1646,10 +1696,10 @@ const icca = new Iterator_Cascade_Callbacks_Asynchronously([9, 8, 7, 6, 5]);
   Objects
 
 
-#### Method `Iterator_Cascade_Callbacks_Asynchronously.inspect`
-[heading__method_iterator_cascade_callbacks_asynchronouslyinspect]:
-  #method-iterator_cascade_callbacks_asynchronouslyinspect
-  "Useful for debugging and inspecting iteration state&#10;&#10;inspect(callback: Callback_Function, ...paramaters: any[]) =&gt; Iterator_Cascade_Callbacks_Asynchronously"
+#### Method `Asynchronous.Iterator_Cascade_Callbacks.inspect`
+  [heading__method_asynchronousiterator_cascade_callbacksinspect]:
+  #method-asynchronousiterator_cascade_callbacksinspect
+  "Useful for debugging and inspecting iteration state&#10;&#10;inspect(callback: Callback_Function, ...paramaters: any[]) =&gt; Asynchronous.Iterator_Cascade_Callbacks"
 
 
 Useful for debugging and inspecting iteration state
@@ -1658,7 +1708,7 @@ Useful for debugging and inspecting iteration state
 **Parameters**
 
 
-- [**{Callback_Function}**][heading__type_callback_function] `callback` --
+- [**{Callback_Function}**][heading__typesynchronouscallback_function] `callback` --
   Function that logs something about each iteration
 
 - **{...any[]}** `parameters` -- List of arguments that are passed to callback
@@ -1681,7 +1731,7 @@ function inspector(
   console.log('iterator_cascade_callbacks ->', iterator_cascade_callbacks);
 }
 
-const icca = new Iterator_Cascade_Callbacks_Asynchronously([9, 8, 7, 6, 5]);
+const icca = new Asynchronous.Iterator_Cascade_Callbacks[9, 8, 7, 6, 5]);
 
 (async () => {
   const collection = await icca
@@ -1698,10 +1748,10 @@ const icca = new Iterator_Cascade_Callbacks_Asynchronously([9, 8, 7, 6, 5]);
 ```
 
 
-#### Method `Iterator_Cascade_Callbacks_Asynchronously.limit`
-[heading__method_iterator_cascade_callbacks_asynchronouslylimit]:
-  #method-iterator_cascade_callbacks_asynchronouslylimit
-  "Stops iteration when limit is reached&#10;&#10;limit(amount: number) =&gt; Iterator_Cascade_Callbacks_Asynchronously"
+#### Method `Asynchronous.Iterator_Cascade_Callbacks.limit`
+[heading__method_asynchronousiterator_cascade_callbackslimit]:
+  #method-asynchronousiterator_cascade_callbackslimit
+  "Stops iteration when limit is reached&#10;&#10;limit(amount: number) =&gt; Asynchronous.Iterator_Cascade_Callbacks"
 
 
 Stops iteration when limit is reached
@@ -1714,14 +1764,14 @@ Stops iteration when limit is reached
 
 
 Returns `this`
-[**{Iterator_Cascade_Callbacks_Asynchronously}**][heading__class_iterator_cascade_callbacks_asynchronously]
+[**{Asynchronous.Iterator_Cascade_Callbacks}**][heading__class_asynchronousiterator_cascade_callbacks]
 
 
 **Example**
 
 
 ```javascript
-const icca = new Iterator_Cascade_Callbacks_Asynchronously([1, 2, 3, 4]);
+const icca = new Asynchronous.Iterator_Cascade_Callbacks[1, 2, 3, 4]);
 
 (async () => {
   const collection = await icca.limit(2).collect([]);
@@ -1743,10 +1793,10 @@ const icca = new Iterator_Cascade_Callbacks_Asynchronously([1, 2, 3, 4]);
   `Stop_Iteration`
 
 
-#### Method `Iterator_Cascade_Callbacks_Asynchronously.map`
-[heading__method_iterator_cascade_callbacks_asynchronouslymap]:
-  #method-iterator_cascade_callbacks_asynchronouslymap
-  "Applies `callback` to modify `value` and/or `index_or_key` for each iteration&#10;&#10;map(callback: Callback_Function, ...parameters: any[]) =&gt; Iterator_Cascade_Callbacks_Asynchronously"
+#### Method `Asynchronous.Iterator_Cascade_Callbacks.map`
+  [heading__method_asynchronousiterator_cascade_callbacksmap]:
+  #method-asynchronousiterator_cascade_callbacksmap
+  "Applies `callback` to modify `value` and/or `index_or_key` for each iteration&#10;&#10;map(callback: Callback_Function, ...parameters: any[]) =&gt; Asynchronous.Iterator_Cascade_Callbacks"
 
 
 Applies `callback` to modify `value` and/or `index_or_key` for each iteration
@@ -1755,7 +1805,7 @@ Applies `callback` to modify `value` and/or `index_or_key` for each iteration
 **Parameters**
 
 
-- [**{Callback_Function}**][heading__type_callback_function] `callback` --
+- [**{Callback_Function}**][heading__typesynchronouscallback_function] `callback` --
   Function may modify `value` and/or `index_or_key`
 
 - **{...any[]}** `parameters` -- List of arguments that are passed to callback
@@ -1763,14 +1813,14 @@ Applies `callback` to modify `value` and/or `index_or_key` for each iteration
 
 
 Returns `this`
-[**{Iterator_Cascade_Callbacks_Asynchronously}**][heading__class_iterator_cascade_callbacks_asynchronously]
+[**{Asynchronous.Iterator_Cascade_Callbacks}**][heading__class_asynchronousiterator_cascade_callbacks]
 
 
 **Example**
 
 
 ```javascript
-const icca = new Iterator_Cascade_Callbacks_Asynchronously([9, 8, 7, 6, 5]);
+const icca = new Asynchronous.Iterator_Cascade_Callbacks[9, 8, 7, 6, 5]);
 
 (async () => {
   const collection = await icca
@@ -1791,14 +1841,14 @@ const icca = new Iterator_Cascade_Callbacks_Asynchronously([9, 8, 7, 6, 5]);
 **Notes**
 
 
-- If callback does **not** return `Yielded_Data` (array), then results from
+- If callback does **not** return `Shared.Yielded_Data` (array), then results from
   callback are used as `value` and initial `index_or_key` is reused
 
 
-#### Method `Iterator_Cascade_Callbacks_Asynchronously.next`
-[heading__method_iterator_cascade_callbacks_asynchronouslynext]:
-  #method-iterator_cascade_callbacks_asynchronouslynext
-  "Updates `this.value` from chaining `this.callbacks` list, and `this.done` from `this.iterator.next()`&#10;&#10;next() =&gt; Iterator_Cascade_Callbacks_Asynchronously"
+#### Method `Asynchronous.Iterator_Cascade_Callbacks.next`
+  [heading__method_asynchronousiterator_cascade_callbacksnext]:
+  #method-asynchronousiterator_cascade_callbacksnext
+  "Updates `this.value` from chaining `this.callbacks` list, and `this.done` from `this.iterator.next()`&#10;&#10;next() =&gt; Asynchronous.Iterator_Cascade_Callbacks"
 
 
 Updates `this.value` from chaining `this.callbacks` list, and `this.done` from
@@ -1806,14 +1856,14 @@ Updates `this.value` from chaining `this.callbacks` list, and `this.done` from
 
 
 Returns `this`
-[**{Iterator_Cascade_Callbacks_Asynchronously}**][heading__class_iterator_cascade_callbacks_asynchronously]
+[**{Asynchronous.Iterator_Cascade_Callbacks}**][heading__class_asynchronousiterator_cascade_callbacks]
 
 
 **Example**
 
 
 ```javascript
-const icca = new Iterator_Cascade_Callbacks_Asynchronously([1, 2, 3, 4]);
+const icca = new Asynchronous.Iterator_Cascade_Callbacks[1, 2, 3, 4]);
 
 (async () => {
   for await (let value of icca) {
@@ -1827,10 +1877,10 @@ const icca = new Iterator_Cascade_Callbacks_Asynchronously([1, 2, 3, 4]);
 ```
 
 
-#### Method `Iterator_Cascade_Callbacks_Asynchronously.skip`
-[heading__method_iterator_cascade_callbacks_asynchronouslyskip]:
-  #method-iterator_cascade_callbacks_asynchronouslyskip
-  "Skip number of iterations&#10;&#10;skip(amount: number) =&gt; Iterator_Cascade_Callbacks_Asynchronously"
+#### Method `Asynchronous.Iterator_Cascade_Callbacks.skip`
+[heading__method_asynchronousiterator_cascade_callbacksskip]:
+  #method-asynchronousiterator_cascade_callbacksskip
+  "Skip number of iterations&#10;&#10;skip(amount: number) =&gt; Asynchronous.Iterator_Cascade_Callbacks"
 
 
 Skip number of iterations
@@ -1843,14 +1893,14 @@ Skip number of iterations
 
 
 Returns `this`
-[**{Iterator_Cascade_Callbacks_Asynchronously}**][heading__class_iterator_cascade_callbacks_asynchronously]
+[**{Asynchronous.Iterator_Cascade_Callbacks}**][heading__class_asynchronousiterator_cascade_callbacks]
 
 
 **Example**
 
 
 ```javascript
-const icca = new Iterator_Cascade_Callbacks_Asynchronously([0, 1, 2, 3, 4, 5]);
+const icca = new Asynchronous.Iterator_Cascade_Callbacks[0, 1, 2, 3, 4, 5]);
 
 (async () => {
   const collection = await icca.skip(2).collect([]);
@@ -1861,10 +1911,10 @@ const icca = new Iterator_Cascade_Callbacks_Asynchronously([0, 1, 2, 3, 4, 5]);
 ```
 
 
-#### Method `Iterator_Cascade_Callbacks_Asynchronously.step`
-[heading__method_iterator_cascade_callbacks_asynchronouslystep]:
-  #method-iterator_cascade_callbacks_asynchronouslystep
-  "Step over every _n_ iterations&#10;&#10;step(amount: number) =&gt; Iterator_Cascade_Callbacks_Asynchronously"
+#### Method `Asynchronous.Iterator_Cascade_Callbacks.step`
+[heading__method_asynchronousiterator_cascade_callbacksstep]:
+  #method-asynchronousiterator_cascade_callbacksstep
+  "Step over every _n_ iterations&#10;&#10;step(amount: number) =&gt; Asynchronous.Iterator_Cascade_Callbacks"
 
 
 Step over every _n_ iterations
@@ -1877,14 +1927,14 @@ Step over every _n_ iterations
 
 
 Returns `this`
-[**{Iterator_Cascade_Callbacks_Asynchronously}**][heading__class_iterator_cascade_callbacks_asynchronously]
+[**{Asynchronous.Iterator_Cascade_Callbacks}**][heading__class_asynchronousiterator_cascade_callbacks]
 
 
 **Example**
 
 
 ```javascript
-const icca = new Iterator_Cascade_Callbacks_Asynchronously([0, 1, 2, 3, 4, 5]);
+const icca = new Asynchronous.Iterator_Cascade_Callbacks[0, 1, 2, 3, 4, 5]);
 
 (async () => {
   const collection = await icca.step(1).collect([]);
@@ -1895,10 +1945,10 @@ const icca = new Iterator_Cascade_Callbacks_Asynchronously([0, 1, 2, 3, 4, 5]);
 ```
 
 
-#### Method `Iterator_Cascade_Callbacks_Asynchronously.take`
-[heading__method_iterator_cascade_callbacks_asynchronouslytake]:
-  #method-iterator_cascade_callbacks_asynchronouslytake
-  "Pauses/breaks iteration when limit is reached&#10;&#10;take(amount: number) =&gt; Iterator_Cascade_Callbacks_Asynchronously"
+#### Method `Asynchronous.Iterator_Cascade_Callbacks.take`
+[heading__method_asynchronousiterator_cascade_callbackstake]:
+  #method-asynchronousiterator_cascade_callbackstake
+  "Pauses/breaks iteration when limit is reached&#10;&#10;take(amount: number) =&gt; Asynchronous.Iterator_Cascade_Callbacks"
 
 
 Pauses/breaks iteration when limit is reached
@@ -1911,7 +1961,7 @@ Pauses/breaks iteration when limit is reached
 
 
 Returns `this`
-[**{Iterator_Cascade_Callbacks_Asynchronously}**][heading__class_iterator_cascade_callbacks_asynchronously]
+[**{Asynchronous.Iterator_Cascade_Callbacks}**][heading__class_asynchronousiterator_cascade_callbacks]
 
 
 Throws [**{Pause_Iteration}**][heading__class_pause_iteration]
@@ -1921,7 +1971,7 @@ Throws [**{Pause_Iteration}**][heading__class_pause_iteration]
 
 
 ```javascript
-const icca = new Iterator_Cascade_Callbacks_Asynchronously([1, 2, 3, 4]);
+const icca = new Asynchronous.Iterator_Cascade_Callbacks[1, 2, 3, 4]);
 
 icca.take(2);
 
@@ -1956,10 +2006,10 @@ icca.take(2);
 > Descriptions of data structures and generic behaviour
 
 
-#### Interface `Callback_Object`
-[heading__interface_callback_object]:
-  #interface-callback_object
-  "Classy object for storing wrapper function state between iterations&#10;&#10;{&#10;  wrapper: Callback_Wrapper,&#10;  storage: Dictionary&#10;}"
+#### Interface `Synchronous.Callback_Object`
+[heading__interface_synchronouscallback_object]:
+  #interface-synchronouscallback_object
+  "Classy object for storing wrapper function state between iterations&#10;&#10;{&#10;  wrapper: Callback_Wrapper,&#10;  storage: Shared.Dictionary&#10;}"
 
 
 Classy object for storing wrapper function state between iterations
@@ -1968,10 +2018,29 @@ Classy object for storing wrapper function state between iterations
 **Properties**
 
 
-- [**{Callback_Wrapper}**][heading__type_callback_wrapper] `wrapper` -- Wrapper
+- [**{Callback_Wrapper}**][heading__typesynchronouscallback_wrapper] `wrapper` -- Wrapper
   for callback function that parses inputs and outputs
 
-- [**{Dictionary}**][heading__type_dictionary] `storage` -- Generic dictionary
+- [**{Shared.Dictionary}**][heading__type_shareddictionary] `storage` -- Generic dictionary
+  like object
+
+
+#### Interface `Asynchronous.Callback_Object`
+[heading__interface_asynchronouscallback_object]:
+  #interface-asynchronouscallback_object
+  "Classy object for storing wrapper function state between iterations&#10;&#10;{&#10;  wrapper: Callback_Wrapper,&#10;  storage: Shared.Dictionary&#10;}"
+
+
+Classy object for storing wrapper function state between iterations
+
+
+**Properties**
+
+
+- [**{Callback_Wrapper}**][heading__typesynchronouscallback_wrapper] `wrapper` -- Wrapper
+  for callback function that parses inputs and outputs
+
+- [**{Shared.Dictionary}**][heading__type_shareddictionary] `storage` -- Generic dictionary
   like object
 
 
@@ -1987,10 +2056,10 @@ Classy object for storing wrapper function state between iterations
 > Documentation for custom type definitions
 
 
-#### Type `Callback_Function`
-[heading__type_callback_function]:
-  #type-callback_function
-  "Generic callback function for parsing and/or mutating iterator data&#10;&#10;(value: any, index_or_key: Index_Or_Key, references: Callback_Function_References, ...parameters: any[]) =&gt; any"
+#### Type`Synchronous.Callback_Function`
+[heading__typesynchronouscallback_function]:
+  #typesynchronouscallback_function
+  "Generic callback function for parsing and/or mutating iterator data&#10;&#10;(value: any, index_or_key: Shared.Index_Or_Key, references: Callback_Function_References, ...parameters: any[]) =&gt; any"
 
 
 Generic callback function for parsing and/or mutating iterator data
@@ -2002,24 +2071,24 @@ Generic callback function for parsing and/or mutating iterator data
 - **{any}** `value` -- First half of `Yielded_Tuple` stored in `this.value` or
   `value` from `this.iterator.next()`
 
-- [**{Index_Or_Key}**][heading__type_index_or_key] `index_or_key` -- Either a
+- [**{Shared.Index_Or_Key}**][heading__type_sharedindex_or_key] `index_or_key` -- Either a
   `string` or `number` depending upon iterable type
 
-- [**{Callback_Function_References}**][heading__type_callback_function_references]
-  `references` -- Dictionary with reference to _`this`_
+- [**{Callback_Function_References}**][heading__typesynchronouscallback_function_references]
+  `references` -- Shared.Dictionary with reference to _`this`_
   [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks] and
-  _`this`_ `Callback_Object`
+  _`this`_ `Synchronous.Callback_Object`
 
 
-#### Type `Callback_Function_References`
-[heading__type_callback_function_references]:
-  #type-callback_function_references
-  "Object with references to `Iterator_Cascade_Callbacks` and `Callback_Object` instances&#10;&#10;{&#10;  iterator_cascade_callbacks: Iterator_Cascade_Callbacks,&#10;  callback_object: Callback_Object,&#10;}"
+#### Type`Synchronous.Callback_Function_References`
+[heading__typesynchronouscallback_function_references]:
+  #typesynchronouscallback_function_references
+  "Object with references to `Iterator_Cascade_Callbacks` and `Synchronous.Callback_Object` instances&#10;&#10;{&#10;  iterator_cascade_callbacks: Iterator_Cascade_Callbacks,&#10;  callback_object: Synchronous.Callback_Object,&#10;}"
 
 
 Object with references to
 [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks] and
-`Callback_Object` instances
+`Synchronous.Callback_Object` instances
 
 
 **Properties**
@@ -2029,14 +2098,14 @@ Object with references to
   `iterator_cascade_callbacks` -- Instance reference to `this` of
   [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks]
 
-- [**{Callback_Object}**][heading__interface_callback_object] `callback_object`
-  -- Instance reference to `this` of `Callback_Object`
+- [**{Synchronous.Callback_Object}**][heading__interface_synchronouscallback_object] `callback_object`
+  -- Instance reference to `this` of `Synchronous.Callback_Object`
 
 
-#### Type `Callback_Wrapper`
-[heading__type_callback_wrapper]:
-  #type-callback_wrapper
-  "Wrapper for callback function that parses inputs and outputs&#10;&#10;(callback_object: Callback_Object, iterator_cascade_callbacks: Iterator_Cascade_Callbacks) =&gt; void"
+#### Type`Synchronous.Callback_Wrapper`
+[heading__typesynchronouscallback_wrapper]:
+  #typesynchronouscallback_wrapper
+  "Wrapper for callback function that parses inputs and outputs&#10;&#10;(callback_object: Synchronous.Callback_Object, iterator_cascade_callbacks: Synchronous.Iterator_Cascade_Callbacks) =&gt; void"
 
 
 Wrapper for callback function that parses inputs and outputs
@@ -2045,18 +2114,18 @@ Wrapper for callback function that parses inputs and outputs
 **Parameters**
 
 
-- [**{Callback_Object}**][heading__interface_callback_object] `callback_object`
-  -- Instance reference to `this` of `Callback_Object`
+- [**{Synchronous.Callback_Object}**][heading__interface_synchronouscallback_object] `callback_object`
+  -- Instance reference to `this` of `Synchronous.Callback_Object`
 
 - [**{Iterator_Cascade_Callbacks}**][heading__class_iterator_cascade_callbacks]
   `iterator_cascade_callbacks` -- Instance reference to `this` of
   [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks]
 
 
-#### Type `Collect_To_Function`
-[heading__type_collect_to_function]:
-  #type-collect_to_function
-  "Callback function for custom collection algorithms&#10;&#10;(target: any, value: any, index_or_key: Index_Or_Key, iterator_cascade_callbacks: Iterator_Cascade_Callbacks) =&gt; any"
+#### Type `Synchronous.Collect_To_Function`
+[heading__type_synchronouscollect_to_function]:
+  #type-synchronouscollect_to_function
+  "Callback function for custom collection algorithms&#10;&#10;(target: any, value: any, index_or_key: Shared.Index_Or_Key, iterator_cascade_callbacks: Iterator_Cascade_Callbacks) =&gt; any"
 
 
 Callback function for custom collection algorithms
@@ -2082,7 +2151,7 @@ Callback function for custom collection algorithms
 
 
 ```javascript
-const icc = new Iterator_Cascade_Callbacks({ spam: 'flavored', canned: 'ham' });
+const icc = new Synchronous.Iterator_Cascade_Callbacks({ spam: 'flavored', canned: 'ham' });
 
 const map = new Map();
 
@@ -2095,9 +2164,9 @@ console.log(collection);
 ```
 
 
-#### Type `Dictionary`
-[heading__type_dictionary]:
-  #type-dictionary
+#### Type `Shared.Dictionary`
+[heading__type_shareddictionary]:
+  #type-shareddictionary
   "Generic dictionary like object&#10;&#10;{ [key: string]: any }"
 
 
@@ -2107,14 +2176,14 @@ Generic dictionary like object
 **Example**
 
 
-```javascript
-const data: Dictionary = { key: 'value' };
+```typescript
+const data: Shared.Dictionary = { key: 'value' };
 ```
 
 
-#### Type `Generator_Function_Instance`
-[heading__type_generator_function_instance]:
-  #type-generator_function_instance
+#### Type `Shared.Generator_Function_Instance`
+[heading__type_sharedgenerator_function_instance]:
+  #type-sharedgenerator_function_instance
   "Generator function that has not been initialized&#10;&#10;(...args: any[]) =&gt; Generator&lt;unknown, any, unknown&gt;"
 
 
@@ -2124,10 +2193,10 @@ Generator function that has not been initialized
 **Example** As Function Parameter
 
 
-```javascript
+```typescript
 function* gen() { for (let i = 0; i < 10; i++;) { yield i; } }
 
-function collect(generator: Generator_Function_Instance): any[] {
+function collect(generator: Shared.Generator_Function_Instance): any[] {
   let collection = [];
   const iterable = generator();
   for (const value of iterable) {
@@ -2138,9 +2207,9 @@ function collect(generator: Generator_Function_Instance): any[] {
 ```
 
 
-#### Type `Index_Or_Key`
-[heading__type_index_or_key]:
-  #type-index_or_key
+#### Type `Shared.Index_Or_Key`
+[heading__type_sharedindex_or_key]:
+  #type-sharedindex_or_key
   "Array `index` or Object `key` or Generator `count`&#10;&#10;number | string"
 
 
@@ -2151,15 +2220,32 @@ Array `index` or Object `key` or Generator `count`
 
 
 ```typescript
-const key: Index_Or_Key = 'key';
-const index: Index_Or_Key = 42;
+const key: Shared.Index_Or_Key = 'key';
+const index: Shared.Index_Or_Key = 42;
 ```
 
 
-#### Type `Yielded_Result`
-[heading__type_yielded_result]:
-  #type-yielded_result
-  "Results from Generator/Iterator function/class&#10;&#10;{ done: boolean, value?: Yielded_Tuple }"
+#### Type `Shared.Yielded_Data`
+[heading__type_sharedyielded_data]:
+  #type-sharedyielded_data
+  "Classy object with `value` and `index_or_key` entries"
+
+
+Classy object with `content` and `index_or_key` entries
+
+
+**Example**
+
+
+```typescript
+const result: Yielded_Data = new Yielded_Data({ content: 'spam', index_or_key: 3 });
+```
+
+
+#### Type `Shared.Yielded_Result`
+[heading__type_sharedyielded_result]:
+  #type-sharedyielded_result
+  "Results from Generator/Iterator function/class&#10;&#10;{ done: boolean, value?: Yielded_Data }"
 
 
 Results from Generator/Iterator function/class
@@ -2177,7 +2263,7 @@ Results from Generator/Iterator function/class
 
 
 ```javascript
-const icc = new Iterator_Cascade_Callbacks([1, 2, 3]);
+const icc = new Synchronous.Iterator_Cascade_Callbacks([1, 2, 3]);
 
 let results = icc.next();
 while (!results.done) {
@@ -2238,7 +2324,7 @@ items via Pull Request for merging, or new Git Tag for publishing.
 **`@types/iterator-cascade-callbacks/iterator-cascade-callbacks.d.ts`**
 
 
-- [X] [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks]
+- [X] [`Synchronous.Iterator_Cascade_Callbacks`][heading__class_synchronousiterator_cascade_callbacks]
   -- Define `static` method types in a way that TypeScript understands and
   produce errors **only** if used improperly
    > Achieved via experimental TypeScript decorator features
@@ -2254,8 +2340,8 @@ items via Pull Request for merging, or new Git Tag for publishing.
   `step`, methods to throw such error type
 
 - [X] `zipCompareValues` - Fix `any` usage to utilize the correct type hint of
-  [`Iterator_Cascade_Callbacks`][heading__class_iterator_cascade_callbacks]
-   > **Fixed** by changing _`any`_ to _`Iterator_Cascade_Callbacks`_, after
+  [`Synchronous.Iterator_Cascade_Callbacks`][heading__class_synchronousiterator_cascade_callbacks]
+   > **Fixed** by changing _`any`_ to _`Synchronous.Iterator_Cascade_Callbacks`_, after
    > enabling experimental TypeScript decorator features, and adjusting
    > _`interface`s_
 

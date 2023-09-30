@@ -16,7 +16,7 @@ const AsyncGeneratorFunction = async function* () {}.constructor;
  * @see {link} https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncIterator
  * @TODO: Investigate following files
  * - ../__tests__/tests-iterator-cascade-callbacks-asynchronously_constructor.ts
- * > Iterator_Cascade_Callbacks_Asynchronously.constructor -> Uninitialized classes with [Symbol.asyncIterator] defined supported?
+ * > Iterator_Cascade_Callbacks.constructor -> Uninitialized classes with [Symbol.asyncIterator] defined supported?
  *
  * - ../iterator-cascade-callbacks-asynchronously.ts
  * > constructor
@@ -37,7 +37,7 @@ const Static_Contract =
 /***/
 class Yielded_Data implements Shared.Yielded_Data {
 	content: any;
-	index_or_key: any;
+	index_or_key: Shared.Index_Or_Key;
 	constructor({ content, index_or_key }: Shared.Yielded_Data) {
 		this.content = content;
 		this.index_or_key = index_or_key;
@@ -55,4 +55,10 @@ if (typeof module !== 'undefined') {
 	};
 }
 
-export { GeneratorFunction, AsyncGeneratorFunction, AsyncGeneratorClass, Static_Contract, Yielded_Data };
+export {
+	GeneratorFunction,
+	AsyncGeneratorFunction,
+	AsyncGeneratorClass,
+	Static_Contract,
+	Yielded_Data,
+};

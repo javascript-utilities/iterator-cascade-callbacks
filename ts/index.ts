@@ -34,11 +34,9 @@
  * ```
  */
 
-import { Iterator_Cascade_Callbacks } from './iterator-cascade-callbacks.js';
-import { Iterator_Cascade_Callbacks_Asynchronously } from './iterator-cascade-callbacks-asynchronously.js';
-export { Iterator_Cascade_Callbacks, Iterator_Cascade_Callbacks_Asynchronously };
+import * as Synchronous from './synchronous.js';
+import * as Asynchronous from './asynchronous.js';
 
-import { Callback_Object, Callback_Object_Asynchronously } from './lib/callback-objects.js';
 import { Stop_Iteration, Pause_Iteration } from './lib/errors.js';
 import { Iterator_From } from './lib/iterator-from.js';
 import {
@@ -50,17 +48,8 @@ import {
 
 // @ts-ignore
 window.ICC = {
-	Synchronous: {
-		Iterator_Cascade_Callbacks,
-		GeneratorFunction,
-		Callback_Object,
-	},
-	Asynchronous: {
-		Iterator_Cascade_Callbacks_Asynchronously,
-		AsyncGeneratorFunction,
-		AsyncGeneratorClass,
-		Callback_Object_Asynchronously,
-	},
+	Synchronous,
+	Asynchronous,
 	Shared: {
 		Iterator_From,
 		Stop_Iteration,

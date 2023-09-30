@@ -1,8 +1,8 @@
 // vim: noexpandtab
 
 import { Errors } from './errors';
-import { ICC } from './iterator-cascade-callbacks';
-import { ICCA } from './iterator-cascade-callbacks-asynchronously';
+import { Synchronous } from './iterator-cascade-callbacks';
+import { Asynchronous } from './iterator-cascade-callbacks-asynchronously';
 
 declare global {
 	export namespace Shared {
@@ -27,11 +27,13 @@ declare global {
 		 * Classy object with `value` and `index_or_key` entries
 		 * @typedef Yielded_Data
 		 * @example
-		 * const result: Yielded_Data = new Yielded_Data({ value: 'spam', index_or_key: 3 });
+		 * ```typescript
+		 * const result: Yielded_Data = new Yielded_Data({ content: 'spam', index_or_key: 3 });
+		 * ```
 		 */
 		export type Yielded_Data = {
 			content: any;
-			index_or_key: Index_Or_Key;
+			index_or_key: Shared.Index_Or_Key;
 		};
 
 		/**
@@ -98,4 +100,4 @@ declare global {
 	}
 }
 
-export { Errors, ICC, ICCA, Shared };
+export { Errors, Synchronous, Asynchronous, Shared };
