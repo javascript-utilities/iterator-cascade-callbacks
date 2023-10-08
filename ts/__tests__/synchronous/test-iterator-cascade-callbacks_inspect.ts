@@ -15,16 +15,26 @@ test('Iterator_Cascade_Callbacks.inspect -> Is it possible to inspect before and
 	const icc = new Iterator_Cascade_Callbacks(Synchronous.array_input);
 	icc
 		.inspect(
-			(value, index_or_key, { callback_object, iterator_cascade_callbacks }, ...paramaters) => {
+			(
+				value: any,
+				index_or_key: Shared.Index_Or_Key,
+				references: Synchronous.Callback_Function_References,
+				...paramaters: any[]
+			) => {
 				expect(value).toStrictEqual(paramaters[0].shift());
 			},
 			expected_one
 		)
-		.map((value) => {
+		.map((value: any) => {
 			return value * 2;
 		})
 		.inspect(
-			(value, index_or_key, { callback_object, iterator_cascade_callbacks }, ...paramaters) => {
+			(
+				value: any,
+				index_or_key: Shared.Index_Or_Key,
+				references: Synchronous.Callback_Function_References,
+				...paramaters: any[]
+			) => {
 				expect(value).toStrictEqual(paramaters[0].shift());
 			},
 			expected_two
@@ -35,7 +45,12 @@ test('Iterator_Cascade_Callbacks.inspect ->', () => {
 	const icc = new Iterator_Cascade_Callbacks(Synchronous.array_input);
 
 	icc.inspect(
-		(value, index_or_key, references, ...paramaters) => {
+		(
+			value: any,
+			index_or_key: Shared.Index_Or_Key,
+			references: Synchronous.Callback_Function_References,
+			...paramaters: any[]
+		) => {
 			expect(paramaters).toBeInstanceOf(Array);
 		},
 		'foo',

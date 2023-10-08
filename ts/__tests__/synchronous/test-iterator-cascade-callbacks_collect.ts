@@ -21,6 +21,12 @@ test('Iterator_Cascade_Callbacks.collect -> Is Object collection target recogniz
 test('Iterator_Cascade_Callbacks.collect -> Is a custom collector function recognized correctly?', () => {
 	const collectToDictionary: Synchronous.Collect_To_Function = (target, value, index_or_key) => {
 		if (!target.hasOwnProperty(index_or_key)) {
+			/**
+			 * @dev we can ignore `error TS2538` because `.next()` behavior breaks
+			 * when inner iterator reports `{ done: true }` _should_ protect us from
+			 * `Shared.Yielded_Data['index_or_key']` ever being undefined
+			 */
+			/* @ts-ignore: Type 'undefined' cannot be used as an index type. */
 			target[index_or_key] = value;
 		}
 	};

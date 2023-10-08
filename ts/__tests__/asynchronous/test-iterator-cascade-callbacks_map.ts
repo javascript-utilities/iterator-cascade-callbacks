@@ -11,7 +11,7 @@ test('Iterator_Cascade_Callbacks.map -> Does chaining one callback break anythin
 	const icca = new Iterator_Cascade_Callbacks(Synchronous.array_input);
 
 	const collection = await icca
-		.map((value) => {
+		.map((value: number) => {
 			return value * 2;
 		})
 		.collect([]);
@@ -29,13 +29,13 @@ test('Iterator_Cascade_Callbacks.map -> Can multiple map callbacks be chained as
 	const icca = new Iterator_Cascade_Callbacks(iterable);
 
 	const collection = await icca
-		.map((value) => {
+		.map((value: number) => {
 			return value * 2;
 		})
-		.map((doubled) => {
+		.map((doubled: number) => {
 			return doubled ** 2;
 		})
-		.map((squared) => {
+		.map((squared: number) => {
 			return squared / 3;
 		})
 		.collect([]);
@@ -58,7 +58,7 @@ test('Iterator_Cascade_Callbacks.map -> Is it okay for map callbacks to return `
 	const icca = new Iterator_Cascade_Callbacks(Synchronous.array_input);
 
 	const collection = await icca
-		.map((value, index_or_key) => {
+		.map((value: number, index_or_key: Shared.Index_Or_Key) => {
 			return new Yielded_Data({
 				content: (index_or_key as number) % 2 === 0,
 				index_or_key,

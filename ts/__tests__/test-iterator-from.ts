@@ -3,7 +3,7 @@
 
 'use strict';
 
-import { Iterator_From } from '../lib/iterator-from';
+import * as Iterator_From from '../lib/iterator-from';
 
 import { Asynchronous, Synchronous } from './lib/example-iterables';
 

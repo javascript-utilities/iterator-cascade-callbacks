@@ -9,7 +9,7 @@ import { Synchronous } from '../lib/example-iterables';
 test('Iterator_Cascade_Callbacks.collectToFunction -> Are custom collecter callback functions suported?', () => {
 	const map = new Map();
 	const collectToMap: Synchronous.Collect_To_Function = (target, value, index_or_key) => {
-		(target as Map<number | string, any>).set(index_or_key, value);
+		(target as Map<Shared.Index_Or_Key, any>).set(index_or_key, value);
 	};
 
 	const icc = new Iterator_Cascade_Callbacks(Synchronous.object_input);
@@ -28,7 +28,7 @@ test('Iterator_Cascade_Callbacks.collectToFunction -> Is it possible to limit co
 
 	const collection_one = icc.collectToFunction(
 		[],
-		(target, value) => {
+		(target: any[], value: number) => {
 			target.push(value);
 			return target;
 		},
@@ -39,7 +39,7 @@ test('Iterator_Cascade_Callbacks.collectToFunction -> Is it possible to limit co
 
 	const collection_two = icc.collectToFunction(
 		[],
-		(target, value) => {
+		(target: any[], value: number) => {
 			target.push(value);
 			return target;
 		},

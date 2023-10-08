@@ -25,7 +25,7 @@ test('Iterator_Cascade_Callbacks -- tests Error States -> `.map()` -- Does `.nex
 
 	const error_message = 'Please re-throw this `.next()` method!';
 
-	icca.map((value) => {
+	icca.map((value: any) => {
 		throw new Error(error_message);
 	});
 

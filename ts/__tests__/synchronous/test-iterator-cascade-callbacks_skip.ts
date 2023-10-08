@@ -24,7 +24,7 @@ test('Iterator_Cascade_Callbacks.skip -> What about stepping over first even res
 	const icc = new Iterator_Cascade_Callbacks(iterable);
 
 	const collection = icc
-		.filter((value) => {
+		.filter((value: number) => {
 			return value % 2 === 0;
 		})
 		.skip(1)

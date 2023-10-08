@@ -45,7 +45,7 @@ test('Iterator_Cascade_Callbacks.take -> Is anything broken by callbacks prior t
 	const icc = new Iterator_Cascade_Callbacks(iterable);
 
 	icc
-		.map((value) => {
+		.map((value: number) => {
 			return value * 2;
 		})
 		.take(page_size);
@@ -64,7 +64,7 @@ test('Iterator_Cascade_Callbacks.take -> Is anything broken by callbacks prior t
 });
 
 test('Iterator_Cascade_Callbacks.take -> Is anything broken by callbacks after taking?', () => {
-	const page_size = 4;
+	const page_size: number = 4;
 
 	const iterable = Array(20)
 		.fill(undefined)
@@ -72,7 +72,7 @@ test('Iterator_Cascade_Callbacks.take -> Is anything broken by callbacks after t
 
 	const icc = new Iterator_Cascade_Callbacks(iterable);
 
-	icc.take(page_size).map((value) => {
+	icc.take(page_size).map((value: number) => {
 		return value * 2;
 	});
 

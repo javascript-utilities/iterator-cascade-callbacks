@@ -20,12 +20,12 @@ test('Iterator_Cascade_Callbacks.zip -> Is it possible to zip number and charact
 
 test('Iterator_Cascade_Callbacks.zip -> Is it possible to zip instances of Iterator_Cascade_Callbacks?', () => {
 	const icc_one = new Iterator_Cascade_Callbacks([1, 2, 3]);
-	icc_one.map((value) => {
+	icc_one.map((value: number) => {
 		return value * 2;
 	});
 
 	const icc_two = new Iterator_Cascade_Callbacks([9, 8, 7]);
-	icc_two.map((value) => {
+	icc_two.map((value: number) => {
 		return value * 2;
 	});
 

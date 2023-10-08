@@ -14,12 +14,20 @@ test('Iterator_Cascade_Callbacks.forEach -> Is it fead values in the proper orde
 	const icca = new Iterator_Cascade_Callbacks(Synchronous.array_input);
 
 	await icca
-		.map((value) => {
+		.map((value: number) => {
 			return value * 2;
 		})
-		.forEach((value, index_or_key, { callback_object, iterator_cascade_callbacks }, expected) => {
-			expect(value).toStrictEqual(expected.shift());
-		}, expected)
+		.forEach(
+			(
+				value: any,
+				index_or_key: Shared.Index_Or_Key,
+				references: Synchronous.Callback_Function_References,
+				...paramaters: any[]
+			) => {
+				expect(value).toStrictEqual(expected.shift());
+			},
+			expected
+		)
 		.collect([]);
 });
 

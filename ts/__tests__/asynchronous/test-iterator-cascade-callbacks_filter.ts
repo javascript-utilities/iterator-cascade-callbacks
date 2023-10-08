@@ -10,7 +10,7 @@ test('Iterator_Cascade_Callbacks.filter -> Will filtering for even numbers break
 	const icca = new Iterator_Cascade_Callbacks(Synchronous.array_input);
 
 	const collection = await icca
-		.filter((value) => {
+		.filter((value: number) => {
 			return value % 2 === 0;
 		})
 		.collect([]);
@@ -26,10 +26,10 @@ test('Iterator_Cascade_Callbacks.filter -> What if filter returns `true` for all
 	const icca = new Iterator_Cascade_Callbacks(Synchronous.array_input);
 
 	const collection = await icca
-		.map((value) => {
+		.map((value: number) => {
 			return value * 2;
 		})
-		.filter((value) => {
+		.filter((value: number) => {
 			return value % 2 === 0;
 		})
 		.collect([]);
@@ -49,7 +49,7 @@ test('Iterator_Cascade_Callbacks.filter -> What if filter returns `false` for al
 	const icca = new Iterator_Cascade_Callbacks(Synchronous.array_input);
 
 	const collection = await icca
-		.filter((value) => {
+		.filter((value: number) => {
 			return isNaN(value);
 		})
 		.collect([]);
@@ -65,13 +65,13 @@ test('Iterator_Cascade_Callbacks.filter -> Can `.filter()` and `.map()` be chain
 	const icca = new Iterator_Cascade_Callbacks(Synchronous.array_input);
 
 	const collection = await icca
-		.map((value) => {
+		.map((value: number) => {
 			return value + 1;
 		})
-		.filter((value) => {
+		.filter((value: number) => {
 			return value % 2 === 0;
 		})
-		.map((value) => {
+		.map((value: number) => {
 			return value - 1;
 		})
 		.collect([]);

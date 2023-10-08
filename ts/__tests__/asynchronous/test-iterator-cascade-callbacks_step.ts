@@ -34,7 +34,7 @@ test('Iterator_Cascade_Callbacks.step -> Is it posible to step over every other 
 	const icca = new Iterator_Cascade_Callbacks(iterable);
 
 	const collection = await icca
-		.filter((value) => {
+		.filter((value: number) => {
 			return value % 2 === 0;
 		})
 		.step(1)

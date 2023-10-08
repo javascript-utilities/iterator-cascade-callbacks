@@ -19,7 +19,7 @@ test('Iterator_Cascade_Callbacks.iterator -> Will pre-filtering cause any issues
 	const icca = new Iterator_Cascade_Callbacks(Synchronous.array_input);
 
 	const collection = await icca
-		.filter((value) => {
+		.filter((value: number) => {
 			return value % 2 === 0;
 		})
 		.limit(2)
@@ -39,7 +39,7 @@ test('Iterator_Cascade_Callbacks.iterator -> Do callbacks after `.limit()` get c
 
 	const collection = await icca
 		.limit(2)
-		.map((value) => {
+		.map((value: number) => {
 			return value * 2;
 		})
 		.collect([]);

@@ -6,35 +6,43 @@
 import { Callback_Object } from '../../asynchronous';
 import { Yielded_Data } from '../../lib/runtime-types';
 
+import type { Asynchronous, Shared } from '../../../@types/iterator-cascade-callbacks/';
+import type { Iterator_Cascade_Callbacks } from '../../asynchronous';
+
 class Test__Callback_Object {
 	callback_wrapper: Asynchronous.Callback_Wrapper;
 	callback_parameters: any[];
+	callback_function: Asynchronous.Callback_Function;
 
 	/**
 	 *
 	 */
 	constructor() {
-		this.callback_wrapper = async (callback_object, iterator_cascade_callbacks) => {
-			const callback: Asynchronous.Callback_Function = (
-				value,
-				index_or_key,
-				{ callback_object, iterator_cascade_callbacks },
-				parameters
-			) => {
-				return [value, index_or_key];
-			};
+		this.callback_function = (
+			value: any,
+			index_or_key: Shared.Index_Or_Key,
+			references: Asynchronous.Callback_Function_References,
+			parameters: any[]
+		) => {
+			return Promise.resolve([value, index_or_key]);
+		};
 
-			const { value, index_or_key } = iterator_cascade_callbacks.yielded_data;
-			const results = await callback(
-				value,
+		/* @TODO: Make wrapper behave similar to real wrappers */
+		this.callback_wrapper = async (
+			callback_object: Callback_Object,
+			iterator_cascade_callbacks: Iterator_Cascade_Callbacks
+		) => {
+			const { content, index_or_key } = iterator_cascade_callbacks.yielded_data;
+			const results = await this.callback_function(
+				content,
 				index_or_key,
-				{ callback_object, iterator_cascade_callbacks },
+				{ iterator_cascade_callbacks, callback_object },
 				...callback_object.parameters
 			);
 			if (results instanceof Yielded_Data) {
 				iterator_cascade_callbacks.yielded_data = results;
 			} else {
-				iterator_cascade_callbacks.yielded_data.value = results;
+				iterator_cascade_callbacks.yielded_data.content = results;
 			}
 		};
 
@@ -58,7 +66,9 @@ class Test__Callback_Object {
 			const callback_object = new Callback_Object({
 				wrapper: this.callback_wrapper,
 				name,
-				callback: () => {},
+				callback: () => {
+					return Promise.reject('Should not be called during runtime');
+				},
 				parameters: this.callback_parameters,
 			});
 
@@ -70,8 +80,13 @@ class Test__Callback_Object {
 		test('Callback_Object.constructor -> Do `.parameters` default to an empty array if undefined?', async () => {
 			const name = 'empty_parameters';
 
-			/* @ts-ignore */
-			const callback_object = new Callback_Object(this.callback_wrapper, name, undefined);
+			const callback_object = new Callback_Object({
+				wrapper: this.callback_wrapper,
+				name,
+				/* @ts-ignore: Type 'undefined' is not assignable to type 'any[]'. */
+				parameters: undefined,
+				callback: this.callback_function,
+			});
 			expect(callback_object.parameters).toStrictEqual([]);
 		});
 

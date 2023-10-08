@@ -10,7 +10,7 @@ test('Iterator_Cascade_Callbacks.filter -> Will filtering for even numbers break
 	const icc = new Iterator_Cascade_Callbacks(Synchronous.array_input);
 
 	const collection = icc
-		.filter((value) => {
+		.filter((value: number) => {
 			return value % 2 === 0;
 		})
 		.collect([]);
@@ -26,10 +26,10 @@ test('Iterator_Cascade_Callbacks.filter -> What if filter returns `true` for all
 	const icc = new Iterator_Cascade_Callbacks(Synchronous.array_input);
 
 	const collection = icc
-		.map((value) => {
+		.map((value: number) => {
 			return value * 2;
 		})
-		.filter((value) => {
+		.filter((value: number) => {
 			return value % 2 === 0;
 		})
 		.collect([]);
@@ -49,7 +49,7 @@ test('Iterator_Cascade_Callbacks.filter -> What if filter returns `false` for al
 	const icc = new Iterator_Cascade_Callbacks(Synchronous.array_input);
 
 	const collection = icc
-		.filter((value) => {
+		.filter((value: number) => {
 			return isNaN(value);
 		})
 		.collect([]);
@@ -65,13 +65,13 @@ test('Iterator_Cascade_Callbacks.filter -> Can `.filter()` and `.map()` be chain
 	const icc = new Iterator_Cascade_Callbacks(Synchronous.array_input);
 
 	const collection = icc
-		.map((value) => {
+		.map((value: number) => {
 			return value + 1;
 		})
-		.filter((value) => {
+		.filter((value: number) => {
 			return value % 2 === 0;
 		})
-		.map((value) => {
+		.map((value: number) => {
 			return value - 1;
 		})
 		.collect([]);
@@ -94,13 +94,13 @@ test('Iterator_Cascade_Callbacks.filter -> Will filtering twice confuse first fi
 	const icc = new Iterator_Cascade_Callbacks(Synchronous.array_input);
 
 	const collection = icc
-		.filter((value) => {
+		.filter((value: number) => {
 			return value % 2 === 0;
 		})
-		.map((value) => {
+		.map((value: number) => {
 			return value + 1;
 		})
-		.filter((value) => {
+		.filter((value: number) => {
 			return value % 3 === 0;
 		})
 		.collect([]);

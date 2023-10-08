@@ -23,7 +23,7 @@ test('Iterator_Cascade_Callbacks -- tests Error States -> `.collect()` -- Will a
 test('Iterator_Cascade_Callbacks -- tests Error States -> `.map()` -- Does `.next()` re-throw errors from callbacks?', () => {
 	const icc = new Iterator_Cascade_Callbacks(Synchronous.array_input);
 
-	icc.map((value) => {
+	icc.map((value: number) => {
 		throw new Error('Please re-throw this `.next()` method!');
 	});
 
