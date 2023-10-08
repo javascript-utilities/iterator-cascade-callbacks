@@ -5,7 +5,7 @@
 /**
  * Custom error type to temporarily stop iteration prematurely
  */
-class Pause_Iteration extends Error implements Pause_Iteration {
+class Pause_Iteration extends Error {
 	/**
 	 * Builds new instance of `Pause_Iteration` for throwing
 	 * @param {string?} message - Error message to print
@@ -37,7 +37,7 @@ class Pause_Iteration extends Error implements Pause_Iteration {
  * console.log(collection);
  * //> [ 1, 2, 3 ]
  */
-class Stop_Iteration extends Error implements Stop_Iteration {
+class Stop_Iteration extends Error {
 	/**
 	 * Builds new instance of `Stop_Iteration` for throwing
 	 * @param {string?} message - Error message to print
@@ -54,14 +54,6 @@ class Stop_Iteration extends Error implements Stop_Iteration {
 	}
 }
 
-/* istanbul ignore next */
-if (typeof module !== 'undefined') {
-	exports = module.exports = {
-		Pause_Iteration,
-		Stop_Iteration,
-	};
-}
-
 export { Pause_Iteration, Stop_Iteration };
 
 /**
@@ -70,6 +62,8 @@ export { Pause_Iteration, Stop_Iteration };
  * ===========================================================================
  */
 
-interface Pause_Iteration extends Errors.Pause_Iteration {}
-
-interface Stop_Iteration extends Errors.Stop_Iteration {}
+/**
+ * Enable calling `new` and other non-instance methods
+ */
+export type Pause_Iteration__Staic = typeof Pause_Iteration;
+export type Stop_Iteration__Static = typeof Stop_Iteration;
