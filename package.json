@@ -1,19 +1,35 @@
 {
   "name": "iterator-cascade-callbacks",
   "version": "0.0.6",
-  "description": "Iterator helper methods that enable chaining",
-  "main": "iterator-cascade-callbacks.js",
+  "description": "JavaScript/TypeScript Iterables with Rust-like ergonomics: `.filter`, `.map`, and more!",
+  "main": "./targets/mjs/index.mjs",
+  "module": "./targets/mjs/index.mjs",
+  "types": "./targets/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./targets/mjs/index.mjs",
+      "require": "./targets/cjs/index.cjs",
+      "types": "./targets/types/index.d.ts"
+    }
+  },
   "scripts": {
-    "ts-build:ci-cd": "tsc --build",
-    "ts-build:es2021": "tsc --project tsconfig.es2021.json",
-    "ts-build:esnext": "tsc --project tsconfig.esnext.json",
-    "ts-build:mjs-index": "tsc --project tsconfig.mjs-index.json",
-    "ts-build:all": "npm run ts-build:ci-cd && npm run ts-build:es2021 && npm run ts-build:esnext && npm run ts-build:mjs-index",
-    "ts-clean": "rm -r targets/ci-cd targets/es2021 targets/esnext targets/mjs-index",
-    "ts-watch": "tsc --watch",
-    "ci-test": "jest --coverage",
-    "ci-build": "npm run ts-build:ci-cd && npm run ci-test",
-    "ci-watch": "jest --coverage --watchAll"
+    "tsup:cjs:all": "npm run tsup:cjs:index && npm run tsup:cjs:synchronous && npm run tsup:cjs:asynchronous",
+    "tsup:cjs:index": "tsup --config .config/tsup/tsup.cjs.config.index.ts",
+    "tsup:cjs:asynchronous": "tsup --config .config/tsup/tsup.cjs.config.asynchronous.ts",
+    "tsup:cjs:synchronous": "tsup --config .config/tsup/tsup.cjs.config.synchronous.ts",
+    "tsup:mjs:all": "npm run tsup:mjs:index && npm run tsup:mjs:synchronous && npm run tsup:mjs:asynchronous",
+    "tsup:mjs:index": "tsup --config .config/tsup/tsup.mjs.config.index.ts",
+    "tsup:mjs:asynchronous": "tsup --config .config/tsup/tsup.mjs.config.asynchronous.ts",
+    "tsup:mjs:synchronous": "tsup --config .config/tsup/tsup.mjs.config.synchronous.ts",
+    "tsup:all": "npm run tsup:cjs:all && npm run tsup:mjs:all",
+    "ts:ci-cd": "tsc  --project tsconfig.json",
+    "clean:all": "npm run clean:cjs ; npm run clean:mjs ; npm run clean:ci-cd",
+    "clean:cjs": "rm -r targets/cjs",
+    "clean:mjs": "rm -r targets/mjs",
+    "clean:ci-cd": "rm -r targets/mjs",
+    "ci:build": "npm run ci:lint && npm run ts:ci-cd && npm run ci:test",
+    "ci:lint": "eslint ts",
+    "ci:test": "jest --coverage"
   },
   "jest": {
     "verbose": true,
@@ -22,8 +38,8 @@
       "targets/ci-cd/__tests__"
     ],
     "collectCoverageFrom": [
-      "targets/ci-cd/iterator-cascade-callbacks.js",
-      "targets/ci-cd/iterator-cascade-callbacks-asynchronously.js",
+      "targets/ci-cd/asynchronous/*.js",
+      "targets/ci-cd/synchronous/*.js",
       "targets/ci-cd/lib/**/*.js"
     ],
     "coveragePathIgnorePatterns": [
@@ -38,11 +54,43 @@
         "branches": 100,
         "functions": 100,
         "lines": 100
+      },
+      "./*/lib/runtime-types*": {
+        "statements": 0,
+        "branches": 0,
+        "functions": 0,
+        "lines": 0
       }
     },
     "coverageReporters": [
       "text"
     ]
+  },
+  "eslintConfig": {
+    "reportUnusedDisableDirectives": true,
+    "ignorePatterns": [],
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:@typescript-eslint/recommended-requiring-type-checking",
+      "plugin:@typescript-eslint/strict",
+      "prettier"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "tsconfigRootDir": ".",
+      "project": [
+        "./tsconfig.json"
+      ]
+    },
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "root": true,
+    "ignorePatterns": [
+      "*/__tests__/**/*"
+    ],
+    "rules": {}
   },
   "repository": {
     "type": "git",
@@ -63,9 +111,14 @@
   "devDependencies": {
     "@types/jest": "^29.5.4",
     "@types/node": "^20.5.9",
+    "@typescript-eslint/eslint-plugin": "^6.7.4",
+    "@typescript-eslint/parser": "^6.7.4",
+    "eslint": "^8.51.0",
+    "eslint-config-prettier": "^9.0.0",
     "jest": "^29.6.4",
     "jest-environment-jsdom": "^29.6.4",
     "ts-jest": "^29.1.1",
+    "tsup": "^7.2.0",
     "typescript": "^5.2.2"
   }
 }
