@@ -1,6 +1,5 @@
 {
 	"comments": ["This file is intended for use by IDE and CI/CD servers"],
-	"extends": "./.config/type-script/base.json",
 	"compilerOptions": {
 		"target": "ES2021",
 		"module": "Node16",
@@ -8,8 +7,19 @@
 		"outDir": "targets/ci-cd",
 		"sourceMap": true,
 		"removeComments": false,
-		"moduleResolution": "Node16"
+		"moduleResolution": "Node16",
+		"sourceMap": true,
+		"strictBindCallApply": true,
+		"strictFunctionTypes": true,
+		"strictNullChecks": true,
+		"strictPropertyInitialization": true,
+		"noImplicitAny": true,
+		"removeComments": true,
+		"experimentalDecorators": true,
+		"skipLibCheck": true,
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true
 	},
 	"include": ["ts/**/*", "@types/**/*"],
-	"exclude": ["ts/index*"]
+	"exclude": []
 }
