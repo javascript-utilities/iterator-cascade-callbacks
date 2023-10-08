@@ -2500,6 +2500,8 @@ ______
 
 - [StackOverflow -- How can I add new line/linebreak character in title attribute in HTML](https://stackoverflow.com/questions/18606877/)
 
+- [Anthony Fu -- Ship ESM & CJS in one Package](https://antfu.me/posts/publish-esm-and-cjs)
+
 
 ______
 
