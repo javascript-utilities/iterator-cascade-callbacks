@@ -22,14 +22,15 @@
     "tsup:mjs:asynchronous": "tsup --config .config/tsup/tsup.mjs.config.asynchronous.ts",
     "tsup:mjs:synchronous": "tsup --config .config/tsup/tsup.mjs.config.synchronous.ts",
     "tsup:all": "npm run tsup:cjs:all && npm run tsup:mjs:all",
-    "ts:ci-cd": "tsc  --project tsconfig.json",
     "clean:all": "npm run clean:cjs ; npm run clean:mjs ; npm run clean:ci-cd",
     "clean:cjs": "rm -r targets/cjs",
     "clean:mjs": "rm -r targets/mjs",
     "clean:ci-cd": "rm -r targets/mjs",
-    "ci:build": "npm run ci:lint && npm run ts:ci-cd && npm run ci:test",
+    "ci:all": "npm run ci:lint && npm run ts:ci-cd && npm run ci:test",
+    "ci:build": "tsc  --project tsconfig.json",
     "ci:lint": "eslint ts",
-    "ci:test": "jest --coverage"
+    "ci:test": "jest --coverage",
+    "py-serve": "python3 -m http.server --bind 127.0.0.1 9080"
   },
   "jest": {
     "verbose": true,
