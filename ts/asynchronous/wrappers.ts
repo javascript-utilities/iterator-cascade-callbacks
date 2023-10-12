@@ -2,14 +2,20 @@
 
 'use strict';
 
-import type { Asynchronous, Shared } from '../../@types/iterator-cascade-callbacks/';
-import type { Iterator_Cascade_Callbacks__Static, Iterator_Cascade_Callbacks } from './iterator-cascade-callbacks';
+import type { Shared } from '../../@types/iterator-cascade-callbacks/';
+
+import type {
+	Iterator_Cascade_Callbacks__Static,
+	Iterator_Cascade_Callbacks,
+} from './iterator-cascade-callbacks';
+
+import type { Callback_Object } from './callback-object';
 
 import { Stop_Iteration, Pause_Iteration } from '../lib/errors.js';
 import { Yielded_Data } from '../lib/runtime-types.js';
 
 /**
- * @file Namespace of callback wrappers and similar functions for `Iterator_Cascade_Callbacks`
+ * @file Namespace of callback wrappers and similar functions for `Asynchronous.Iterator_Cascade_Callbacks`
  * @author S0AndS0
  * @license AGPL-3.0
  */
@@ -48,16 +54,16 @@ export async function* zip(
 }
 
 /**
- * @param {Asynchronous.Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
+ * @param {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
  * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
  */
 export function entries<
 	Value = unknown,
-	Result = unknown,
+	// Result = unknown,
 	Parameters extends unknown[] = unknown[],
 	Key = Shared.Index_Or_Key
 >(
-	callback_object: Asynchronous.Callback_Object<Value, Result, Parameters, Key>,
+	callback_object: Callback_Object<Value, void, Parameters, Key>,
 	iterator_cascade_callbacks: Iterator_Cascade_Callbacks
 ) {
 	iterator_cascade_callbacks.yielded_data.content = [
@@ -67,7 +73,7 @@ export function entries<
 }
 
 /**
- * @param {Asynchronous.Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
+ * @param {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
  * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
  */
 export async function filter<
@@ -76,15 +82,15 @@ export async function filter<
 	Parameters extends unknown[] = unknown[],
 	Key = Shared.Index_Or_Key
 >(
-	callback_object: Asynchronous.Callback_Object<Value, boolean, Parameters, Key>,
+	callback_object: Callback_Object<Value, boolean, Parameters, Key>,
 	iterator_cascade_callbacks: Iterator_Cascade_Callbacks
 ) {
-	let results: boolean = await callback_object.callback(
+	let results: boolean = await Promise.resolve(callback_object.callback(
 		iterator_cascade_callbacks.yielded_data.content as Value,
 		iterator_cascade_callbacks.yielded_data.index_or_key as Key,
 		{ iterator_cascade_callbacks, callback_object },
 		...callback_object.parameters
-	);
+	));
 	if (results) {
 		return;
 	}
@@ -109,8 +115,8 @@ export async function filter<
 		}
 
 		for (const callback_other of iterator_cascade_callbacks.callbacks) {
-			if (callback_other === callback_object) {
-				results = (await callback_object.callback(
+			if (callback_other === callback_object as unknown as Callback_Object<unknown, unknown, unknown[], unknown>) {
+				results = await Promise.resolve(callback_object.callback(
 					iterator_cascade_callbacks.yielded_data.content as Value,
 					iterator_cascade_callbacks.yielded_data.index_or_key as Key,
 					{ iterator_cascade_callbacks, callback_object },
@@ -127,7 +133,7 @@ export async function filter<
 			await callback_other.call(iterator_cascade_callbacks);
 
 			/* @TODO: do we really need/want the following? */
-			results = (await callback_object.callback(
+			results = await Promise.resolve(callback_object.callback(
 				iterator_cascade_callbacks.yielded_data.content as Value,
 				iterator_cascade_callbacks.yielded_data.index_or_key as Key,
 				{ iterator_cascade_callbacks, callback_object },
@@ -138,59 +144,59 @@ export async function filter<
 }
 
 /**
- * @param {Asynchronous.Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
+ * @param {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
  * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
  */
 export async function forEach<
 	Value = unknown,
-	Result = unknown,
+	// Result = unknown,
 	Parameters extends unknown[] = unknown[],
 	Key = Shared.Index_Or_Key
 >(
-	callback_object: Asynchronous.Callback_Object<Value, Result, Parameters, Key>,
+	callback_object: Callback_Object<Value, void, Parameters, Key>,
 	iterator_cascade_callbacks: Iterator_Cascade_Callbacks
 ) {
-	await callback_object.callback(
+	await Promise.resolve(callback_object.callback(
 		iterator_cascade_callbacks.yielded_data.content as Value,
 		iterator_cascade_callbacks.yielded_data.index_or_key as Key,
 		{ callback_object, iterator_cascade_callbacks },
 		...callback_object.parameters
-	);
+	));
 }
 
 /**
- * @param {Asynchronous.Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
+ * @param {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
  * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
  */
 export async function inspect<
 	Value = unknown,
-	Result = unknown,
+	// Result = unknown,
 	Parameters extends unknown[] = unknown[],
 	Key = Shared.Index_Or_Key
 >(
-	callback_object: Asynchronous.Callback_Object<Value, Result, Parameters, Key>,
+	callback_object: Callback_Object<Value, void, Parameters, Key>,
 	iterator_cascade_callbacks: Iterator_Cascade_Callbacks
 ) {
-	await callback_object.callback(
+	await Promise.resolve(callback_object.callback(
 		iterator_cascade_callbacks.yielded_data.content as Value,
 		iterator_cascade_callbacks.yielded_data.index_or_key as Key,
 		{ callback_object, iterator_cascade_callbacks },
 		...callback_object.parameters
-	);
+	));
 }
 
 /**
- * @param {Asynchronous.Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
+ * @param {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
  * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
  * @note this expects `callback_object.parameters[0]` to contain the limit
  */
 export async function limit<
 	Value = unknown,
-	Result = unknown,
+	// Result = unknown,
 	Parameters extends unknown[] = [number, ...unknown[]],
 	Key = Shared.Index_Or_Key
 >(
-	callback_object: Asynchronous.Callback_Object<Value, Result, [number, ...Parameters[]], Key>,
+	callback_object: Callback_Object<Value, void, [number, ...Parameters[]], Key>,
 	iterator_cascade_callbacks: Iterator_Cascade_Callbacks
 ) {
 	if (isNaN((callback_object.storage as Shared.Dictionary<number>).count)) {
@@ -217,7 +223,7 @@ export async function limit<
 }
 
 /**
- * @param {Asynchronous.Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
+ * @param {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
  * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
  */
 export async function map<
@@ -226,10 +232,10 @@ export async function map<
 	Parameters extends unknown[] = unknown[],
 	Key = Shared.Index_Or_Key
 >(
-	callback_object: Asynchronous.Callback_Object<Value, Result, Parameters, Key>,
+	callback_object: Callback_Object<Value, Result, Parameters, Key>,
 	iterator_cascade_callbacks: Iterator_Cascade_Callbacks
 ) {
-	const results: unknown = await callback_object.callback(
+	const results = await Promise.resolve(callback_object.callback(
 		iterator_cascade_callbacks.yielded_data.content as Value,
 		iterator_cascade_callbacks.yielded_data.index_or_key as Key,
 		{
@@ -237,7 +243,7 @@ export async function map<
 			callback_object,
 		},
 		...callback_object.parameters
-	);
+	));
 
 	if (results instanceof Yielded_Data) {
 		iterator_cascade_callbacks.yielded_data = results;
@@ -247,17 +253,17 @@ export async function map<
 }
 
 /**
- * @param {Asynchronous.Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
+ * @param {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
  * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
  * @note this expects `callback_object.parameters[0]` to contain the limit
  */
 export async function skip<
 	Value = unknown,
-	Result = unknown,
+	// Result = unknown,
 	Parameters extends unknown[] = [number, ...unknown[]],
 	Key = Shared.Index_Or_Key
 >(
-	callback_object: Asynchronous.Callback_Object<Value, Result, [number, ...Parameters[]], Key>,
+	callback_object: Callback_Object<Value, void, [number, ...Parameters[]], Key>,
 	iterator_cascade_callbacks: Iterator_Cascade_Callbacks
 ) {
 	if (isNaN((callback_object.storage as Shared.Dictionary<number>).count)) {
@@ -296,17 +302,17 @@ export async function skip<
 }
 
 /**
- * @param {Asynchronous.Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
+ * @param {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
  * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
  * @note this expects `callback_object.parameters[0]` to contain the limit
  */
 export async function step<
 	Value = unknown,
-	Result = unknown,
+	// Result = unknown,
 	Parameters extends unknown[] = [number, ...unknown[]],
 	Key = Shared.Index_Or_Key
 >(
-	callback_object: Asynchronous.Callback_Object<Value, Result, [number, ...Parameters[]], Key>,
+	callback_object: Callback_Object<Value, void, [number, ...Parameters[]], Key>,
 	iterator_cascade_callbacks: Iterator_Cascade_Callbacks
 ) {
 	if (isNaN((callback_object.storage as Shared.Dictionary<number>).count)) {
@@ -347,17 +353,17 @@ export async function step<
 }
 
 /**
- * @param {Asynchronous.Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
+ * @param {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
  * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
  * @note this expects `callback_object.parameters[0]` to contain the limit
  */
 export async function take<
 	Value = unknown,
-	Result = unknown,
+	// Result = unknown,
 	Parameters extends unknown[] = [number, ...unknown[]],
 	Key = Shared.Index_Or_Key
 >(
-	callback_object: Asynchronous.Callback_Object<Value, Result, [number, ...Parameters[]], Key>,
+	callback_object: Callback_Object<Value, void, [number, ...Parameters[]], Key>,
 	iterator_cascade_callbacks: Iterator_Cascade_Callbacks
 ) {
 	if (isNaN((callback_object.storage as Shared.Dictionary<number>).count)) {

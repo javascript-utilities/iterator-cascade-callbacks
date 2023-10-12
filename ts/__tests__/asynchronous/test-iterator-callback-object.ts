@@ -34,7 +34,7 @@ class Test__Callback_Object {
 			Parameters extends unknown[] = unknown[],
 			Key = Shared.Index_Or_Key
 		>(
-			callback_object: Asynchronous.Callback_Object<Value, Result, Parameters, Key>,
+			callback_object: Callback_Object<Value, Result, Parameters, Key>,
 			iterator_cascade_callbacks: Iterator_Cascade_Callbacks
 		) => {
 			await (

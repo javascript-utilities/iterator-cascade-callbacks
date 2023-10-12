@@ -2,7 +2,7 @@
 
 'use strict';
 
-import type { Asynchronous, Synchronous, Shared } from '../../@types/iterator-cascade-callbacks/';
+import type { Asynchronous, Shared } from '../../@types/iterator-cascade-callbacks/';
 import type { Iterator_Cascade_Callbacks } from './iterator-cascade-callbacks';
 
 /**
@@ -15,16 +15,12 @@ class Callback_Object<
 	Result = unknown,
 	Parameters extends unknown[] = unknown[],
 	Key = Shared.Index_Or_Key
-> implements Asynchronous.Callback_Object<Value, Result, Parameters, Key>
-{
+> {
 	wrapper: Asynchronous.Callback_Wrapper<Value, Result, Parameters, Key>;
 
 	name: string;
 
-	callback:
-		| Asynchronous.Callback_Function<Value, Result, Parameters, Key>
-		| Synchronous.Callback_Function;
-	// | Synchronous.Callback_Function<Value, Result, Parameters, Key>
+	callback: Asynchronous.Callback_Function<Value, Result, Parameters, Key>;
 
 	parameters: Parameters;
 
@@ -46,10 +42,7 @@ class Callback_Object<
 	}: {
 		wrapper: Asynchronous.Callback_Wrapper<Value, Result, Parameters, Key>;
 		name: string;
-		callback:
-			| Asynchronous.Callback_Function<Value, Result, Parameters, Key>
-			| Synchronous.Callback_Function;
-		// | Synchronous.Callback_Function<Value, Result, Parameters, Key>;
+		callback: Asynchronous.Callback_Function<Value, Result, Parameters, Key>;
 		parameters: Parameters;
 	}) {
 		this.wrapper = wrapper;

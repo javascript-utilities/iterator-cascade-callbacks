@@ -11,45 +11,6 @@ import { Synchronous } from './synchronous';
  */
 export namespace Asynchronous {
 	/**
-	 * Classy object for storing wrapper function state between iterations
-	 * @typedef {Asynchronous.Callback_Object}
-	 */
-	export interface Callback_Object<Value, Result, Parameters, Key> {
-		/**
-		 * @property {Asynchronous.Callback_Wrapper} wrapper - Wrapper for callback function that parses inputs and outputs
-		 */
-		wrapper: Asynchronous.Callback_Wrapper;
-
-		/**
-		 * @property {string} name - Method name that instantiated callback, eg. `filter`
-		 */
-		name: string;
-
-		/**
-		 * @property {Asynchronous.Callback_Wrapper|Synchronous.Callback_Function} callback - Asynchronous callback wrapper Function to call
-		 */
-		callback:
-			| Asynchronous.Callback_Function<Value, Result, Parameters, Key>
-			| Synchronous.Callback_Function;
-
-		/**
-		 * @property {any[]} parameters - List of arguments that are passed to callback on each iteration
-		 */
-		parameters: Parameters;
-
-		/**
-		 * @property {Shared.Dictionary} storage - Generic dictionary like object
-		 */
-		storage: Shared.Dictionary;
-
-		/**
-		 * Calls `this.wrapper` function with reference to this `Callback_Object` and `Iterator_Cascade_Callbacks`
-		 * @param {Asynchronous.Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Reference to `Iterator_Cascade_Callbacks` instance
-		 */
-		call: (iterator_cascade_callbacks: Asynchronous.Iterator_Cascade_Callbacks) => Promise<void>;
-	}
-
-	/**
 	 * Object with references to `Iterator_Cascade_Callbacks` and `Callback_Object` instances
 	 * @property {Asynchronous.Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
 	 * @property {Asynchronous.Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
