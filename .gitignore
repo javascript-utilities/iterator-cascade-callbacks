@@ -4,6 +4,9 @@ dev
 ## NodeJS
 node_modules
 
+## CI/CD
+coverage
+
 ## TypeScript
 tsconfig.tsbuildinfo
 
