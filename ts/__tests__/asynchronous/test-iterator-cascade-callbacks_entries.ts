@@ -6,6 +6,8 @@
 import { Iterator_Cascade_Callbacks } from '../../asynchronous';
 import { Synchronous, Asynchronous } from '../lib/example-iterables';
 
+import type { Shared } from '../../../@types/iterator-cascade-callbacks/';
+
 test('Iterator_Cascade_Callbacks.entries() -> Handles array-like iterable input as expected?', async () => {
 	const icc = new Iterator_Cascade_Callbacks(Synchronous.array_input);
 	const collection = await icc.entries().collect([]);

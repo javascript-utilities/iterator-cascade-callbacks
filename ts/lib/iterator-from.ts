@@ -58,9 +58,3 @@ export async function* asyncGenerator<T = unknown>(
 		index_or_key++;
 	}
 }
-
-/**
- * ===========================================================================
- *                  Custom TypeScript interfaces and types
- * ===========================================================================
- */

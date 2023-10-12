@@ -6,8 +6,13 @@
 import { Callback_Object } from '../../synchronous';
 import { Yielded_Data } from '../../lib/runtime-types';
 
+import type {
+	Shared,
+	Synchronous as Synchronous_Types,
+} from '../../../@types/iterator-cascade-callbacks/';
+
 class Test__Callback_Object {
-	callback_wrapper: Synchronous.Callback_Wrapper;
+	callback_wrapper: Synchronous_Types.Callback_Wrapper;
 	callback_parameters: any[];
 
 	/**
@@ -15,7 +20,7 @@ class Test__Callback_Object {
 	 */
 	constructor() {
 		this.callback_wrapper = (callback_object, iterator_cascade_callbacks) => {
-			const callback: Synchronous.Callback_Function = (
+			const callback: Synchronous_Types.Callback_Function = (
 				value,
 				index_or_key,
 				{ callback_object, iterator_cascade_callbacks },

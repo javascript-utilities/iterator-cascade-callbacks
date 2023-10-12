@@ -7,6 +7,8 @@ import { Iterator_Cascade_Callbacks } from '../../synchronous';
 import { Synchronous } from '../lib/example-iterables';
 import { Yielded_Data } from '../../lib/runtime-types.js';
 
+	import type { Shared } from '../../../@types/iterator-cascade-callbacks/'
+
 test('Iterator_Cascade_Callbacks.map -> Does chaining one callback break anything?', () => {
 	const icc = new Iterator_Cascade_Callbacks(Synchronous.array_input);
 

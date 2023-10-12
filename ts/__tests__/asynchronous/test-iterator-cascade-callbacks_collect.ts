@@ -6,6 +6,11 @@
 import { Iterator_Cascade_Callbacks } from '../../asynchronous';
 import { Synchronous } from '../lib/example-iterables';
 
+import type {
+	Shared,
+	Synchronous as Synchronous_Types,
+} from '../../../@types/iterator-cascade-callbacks/';
+
 test('Iterator_Cascade_Callbacks.collect -> Is Array collection target recognized correctly?', async () => {
 	const icca = new Iterator_Cascade_Callbacks(Synchronous.array_input);
 	const collection = await icca.collect([]);
@@ -19,7 +24,11 @@ test('Iterator_Cascade_Callbacks.collect -> Is Object collection target recogniz
 });
 
 test('Iterator_Cascade_Callbacks.collect -> Is a custom collector function recognized correctly?', async () => {
-	const collectToDictionary: Synchronous.Collect_To_Function = (target, value, index_or_key) => {
+	const collectToDictionary: Synchronous_Types.Collect_To_Function = (
+		target,
+		value,
+		index_or_key
+	) => {
 		if (!target.hasOwnProperty(index_or_key)) {
 			/**
 			 * @dev we can ignore `error TS2538` because `.next()` behavior breaks

@@ -7,6 +7,8 @@ import type {
 	Iterator_Cascade_Callbacks,
 } from './iterator-cascade-callbacks';
 
+import type { Shared } from '../../@types/iterator-cascade-callbacks/';
+
 import type { Callback_Object } from './callback-object';
 
 import { Stop_Iteration, Pause_Iteration } from '../lib/errors.js';
@@ -177,7 +179,10 @@ export function limit(
 
 	(callback_object.storage as Shared.Dictionary<number>).count++;
 
-	if ((callback_object.storage as Shared.Dictionary<number>).count > (callback_object.parameters as [number, ...unknown[]])[0]) {
+	if (
+		(callback_object.storage as Shared.Dictionary<number>).count >
+		(callback_object.parameters as [number, ...unknown[]])[0]
+	) {
 		let found_self = false;
 		for (const callback_other of iterator_cascade_callbacks.callbacks) {
 			if (found_self) {
@@ -232,7 +237,8 @@ export function skip(
 		done: false,
 	};
 	while (
-		(callback_object.storage as Shared.Dictionary<number>).count < (callback_object.parameters as [number, ...unknown[]])[0]
+		(callback_object.storage as Shared.Dictionary<number>).count <
+		(callback_object.parameters as [number, ...unknown[]])[0]
 	) {
 		next_data = iterator_cascade_callbacks.iterator.next() as IteratorResult<
 			Shared.Yielded_Data,

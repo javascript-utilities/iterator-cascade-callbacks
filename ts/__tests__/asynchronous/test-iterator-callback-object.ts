@@ -10,9 +10,9 @@ import type { Asynchronous, Shared } from '../../../@types/iterator-cascade-call
 import type { Iterator_Cascade_Callbacks } from '../../asynchronous';
 
 class Test__Callback_Object {
-	callback_wrapper: Asynchronous.Callback_Wrapper;
+	callback_wrapper: Asynchronous.Callback_Wrapper<any, any, any[], Shared.Index_Or_Key>;
 	callback_parameters: any[];
-	callback_function: Asynchronous.Callback_Function;
+	callback_function: Asynchronous.Callback_Function<any, any, any[], Shared.Index_Or_Key>;
 
 	/**
 	 *
@@ -21,29 +21,30 @@ class Test__Callback_Object {
 		this.callback_function = (
 			value: any,
 			index_or_key: Shared.Index_Or_Key,
-			references: Asynchronous.Callback_Function_References,
+			references: Asynchronous.Callback_Function_References<any, any, any[], Shared.Index_Or_Key>,
 			parameters: any[]
 		) => {
 			return Promise.resolve([value, index_or_key]);
 		};
 
-		/* @TODO: Make wrapper behave similar to real wrappers */
-		this.callback_wrapper = async (
-			callback_object: Callback_Object,
+		/* Yoinked from `.inspect` */
+		this.callback_wrapper = async <
+			Value = unknown,
+			Result = unknown,
+			Parameters extends unknown[] = unknown[],
+			Key = Shared.Index_Or_Key
+		>(
+			callback_object: Asynchronous.Callback_Object<Value, Result, Parameters, Key>,
 			iterator_cascade_callbacks: Iterator_Cascade_Callbacks
 		) => {
-			const { content, index_or_key } = iterator_cascade_callbacks.yielded_data;
-			const results = await this.callback_function(
-				content,
-				index_or_key,
-				{ iterator_cascade_callbacks, callback_object },
+			await (
+				callback_object.callback as Asynchronous.Callback_Function<Value, Result, Parameters, Key>
+			)(
+				iterator_cascade_callbacks.yielded_data.content as Value,
+				iterator_cascade_callbacks.yielded_data.index_or_key as Key,
+				{ callback_object, iterator_cascade_callbacks },
 				...callback_object.parameters
 			);
-			if (results instanceof Yielded_Data) {
-				iterator_cascade_callbacks.yielded_data = results;
-			} else {
-				iterator_cascade_callbacks.yielded_data.content = results;
-			}
 		};
 
 		this.callback_parameters = ['first', 'second', 'third'];
@@ -63,7 +64,7 @@ class Test__Callback_Object {
 		test('Callback_Object.constructor -> Are object properties assigned as designed?', async () => {
 			const name = 'noOpp';
 
-			const callback_object = new Callback_Object({
+			const callback_object = new Callback_Object<any, any, any[], Shared.Index_Or_Key>({
 				wrapper: this.callback_wrapper,
 				name,
 				callback: () => {

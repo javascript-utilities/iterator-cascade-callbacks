@@ -65,5 +65,5 @@ export { Pause_Iteration, Stop_Iteration };
 /**
  * Enable calling `new` and other non-instance methods
  */
-export type Pause_Iteration__Staic = typeof Pause_Iteration;
+export type Pause_Iteration__Static = typeof Pause_Iteration;
 export type Stop_Iteration__Static = typeof Stop_Iteration;

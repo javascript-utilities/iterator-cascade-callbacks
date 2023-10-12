@@ -6,6 +6,11 @@
 import { Iterator_Cascade_Callbacks } from '../../asynchronous';
 import { Synchronous } from '../lib/example-iterables';
 
+import type {
+	Shared,
+	Synchronous as Synchronous_Types,
+} from '../../../@types/iterator-cascade-callbacks/';
+
 test('Iterator_Cascade_Callbacks.inspect -> Is it possible to inspect before and after `map` callback?', async () => {
 	const expected_one = [...Synchronous.array_input];
 	const expected_two = Synchronous.array_input.map((value) => {
@@ -19,7 +24,7 @@ test('Iterator_Cascade_Callbacks.inspect -> Is it possible to inspect before and
 			(
 				value: any,
 				index_or_key: Shared.Index_Or_Key,
-				references: Synchronous.Callback_Function_References,
+				references: Synchronous_Types.Callback_Function_References,
 				...paramaters: any[]
 			) => {
 				expect(value).toStrictEqual(paramaters[0].shift());
@@ -33,7 +38,7 @@ test('Iterator_Cascade_Callbacks.inspect -> Is it possible to inspect before and
 			(
 				value: any,
 				index_or_key: Shared.Index_Or_Key,
-				references: Synchronous.Callback_Function_References,
+				references: Synchronous_Types.Callback_Function_References,
 				...paramaters: any[]
 			) => {
 				expect(value).toStrictEqual(paramaters[0].shift());
@@ -51,7 +56,7 @@ test('Iterator_Cascade_Callbacks.inspect ->', async () => {
 		(
 			value: any,
 			index_or_key: Shared.Index_Or_Key,
-			references: Synchronous.Callback_Function_References,
+			references: Synchronous_Types.Callback_Function_References,
 			...paramaters: any[]
 		) => {
 			expect(paramaters).toBeInstanceOf(Array);

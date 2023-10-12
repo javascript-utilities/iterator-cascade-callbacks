@@ -2,7 +2,7 @@
 
 'use strict';
 
-import type { Synchronous } from '../../@types/iterator-cascade-callbacks/';
+import type { Shared, Synchronous } from '../../@types/iterator-cascade-callbacks/'
 
 import { Stop_Iteration, Pause_Iteration } from '../lib/errors.js';
 import * as Iterator_From from '../lib/iterator-from.js';

@@ -5,8 +5,13 @@
 
 import { Iterator_Cascade_Callbacks } from '../../synchronous';
 
+import type {
+	Shared,
+	Synchronous as Synchronous_Types,
+} from '../../../@types/iterator-cascade-callbacks/';
+
 test('Iterator_Cascade_Callbacks -- tests Edge Cases -> What happens when extra parameters are provided?', () => {
-	const map_callback: Synchronous.Callback_Function = (
+	const map_callback: Synchronous_Types.Callback_Function = (
 		value: any,
 		index_or_key: Shared.Index_Or_Key,
 		{ callback_object, iterator_cascade_callbacks },

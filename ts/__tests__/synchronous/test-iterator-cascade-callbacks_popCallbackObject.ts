@@ -6,9 +6,11 @@
 import { Callback_Object, Iterator_Cascade_Callbacks } from '../../synchronous';
 import { Synchronous } from '../lib/example-iterables';
 
+import type { Synchronous as Synchronous_Types } from '../../../@types/iterator-cascade-callbacks/'
+
 test('Iterator_Cascade_Callbacks.popCallbackObject -> Does popping defined callback return an instance of `Callback_Object`?', () => {
 	const icc = new Iterator_Cascade_Callbacks(['1', 2, NaN]);
-	const map_callback: Synchronous.Callback_Function = (value, index_or_key, references, ...parameters) => {
+	const map_callback: Synchronous_Types.Callback_Function = (value, index_or_key, references, ...parameters) => {
 		return value;
 	};
 

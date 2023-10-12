@@ -43,12 +43,12 @@ const Static_Contract =
  * const result: Yielded_Data = new Yielded_Data({ content: 'spam', index_or_key: 3 });
  * ```
  */
-class Yielded_Data {
-	content: unknown;
+class Yielded_Data<T = unknown, K = Shared.Index_Or_Key> implements Shared.Yielded_Data<T, K> {
+	content: T;
 
-	index_or_key: Shared.Index_Or_Key;
+	index_or_key: K;
 
-	constructor({ content, index_or_key }: Shared.Yielded_Data) {
+	constructor({ content, index_or_key }: Shared.Yielded_Data<T, K>) {
 		this.content = content;
 		this.index_or_key = index_or_key;
 	}
