@@ -222,12 +222,14 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 * @this {Iterator_Cascade_Callbacks}
 	 * @example
 	 * const icca = new Asynchronous.Iterator_Cascade_Callbacks([5, 6, 7, 8, 9]);
-	 *
+	 * 
 	 * (async () => {
-	 *   const collection = await icca.filter((value) => {
-	 *     return value % 2 === 0;
-	 *   }).collectToArray([1, 2, 3]);
-	 *
+	 *   const collection = await icca
+	 *     .filter((value) => {
+	 *       return value % 2 === 0;
+	 *     })
+	 *     .collectToArray([1, 2, 3]);
+	 * 
 	 *   console.log(collection);
 	 *   //> [ 1, 2, 3, 6, 8 ]
 	 * })();
