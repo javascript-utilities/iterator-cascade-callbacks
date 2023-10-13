@@ -8,7 +8,7 @@ import { Synchronous } from '../lib/example-iterables';
 
 import type {
 	Shared,
-	Synchronous as Synchronous_Types,
+	Asynchronous as Asynchronous_Types,
 } from '../../../@types/iterator-cascade-callbacks/';
 
 test('Iterator_Cascade_Callbacks.collect -> Is Array collection target recognized correctly?', async () => {
@@ -24,7 +24,7 @@ test('Iterator_Cascade_Callbacks.collect -> Is Object collection target recogniz
 });
 
 test('Iterator_Cascade_Callbacks.collect -> Is a custom collector function recognized correctly?', async () => {
-	const collectToDictionary: Synchronous_Types.Collect_To_Function = (
+	const collectToDictionary: Asynchronous_Types.Collect_To_Function = (
 		target,
 		value,
 		index_or_key

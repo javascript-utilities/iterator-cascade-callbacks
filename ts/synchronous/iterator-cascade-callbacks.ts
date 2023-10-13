@@ -225,7 +225,12 @@ class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	): unknown {
 		let count = 0;
 		for (const value of this) {
-			callback(target, value, this.yielded_data.index_or_key, this);
+			callback(
+				target,
+				value,
+				this.yielded_data.index_or_key,
+				this as Iterator_Cascade_Callbacks<unknown>
+			);
 			count++;
 			if (count >= (amount as number)) {
 				break;

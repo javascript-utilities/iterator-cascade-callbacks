@@ -18,7 +18,7 @@ export namespace Asynchronous {
 	 * @typedef {Asynchronous.Callback_Function_References}
 	 */
 	export type Callback_Function_References<Value, Result, Parameters extends Array<unknown>, Key> = {
-		iterator_cascade_callbacks: Iterator_Cascade_Callbacks;
+		iterator_cascade_callbacks: Iterator_Cascade_Callbacks<unknown>;
 		callback_object: Callback_Object<Value, Result, Parameters, Key>;
 	};
 
@@ -33,7 +33,7 @@ export namespace Asynchronous {
 	export type Callback_Function<Value, Result, Parameters extends Array<unknown>, Key> = (
 		value: Value,
 		index_or_key: Key,
-		references: Asynchronous.Callback_Function_References<Value, Result, Parameters, Key>,
+		references: Asynchronous.Callback_Function_References,
 		...parameters: Parameters
 	) => Result;
 
@@ -45,7 +45,7 @@ export namespace Asynchronous {
 	 */
 	export type Callback_Wrapper<Value, Result, Parameters extends Array<unknown>, Key> = (
 		callback_object: Callback_Object<Value, Result, Parameters, Key>,
-		iterator_cascade_callbacks: Iterator_Cascade_Callbacks
+		iterator_cascade_callbacks: Iterator_Cascade_Callbacks<unknown>
 	) => Promise<void> | void;
 
 	/**
@@ -70,8 +70,8 @@ export namespace Asynchronous {
 	export type Collect_To_Function = (
 		target: any,
 		value: any,
-		index_or_key: Shared.Index_Or_Key,
-		iterator_cascade_callbacks: Iterator_Cascade_Callbacks
+		index_or_key: Shared.Index_Or_Key<unknown>,
+		iterator_cascade_callbacks: Iterator_Cascade_Callbacks<unknown>
 	) => Promise<any> | any;
 }
 

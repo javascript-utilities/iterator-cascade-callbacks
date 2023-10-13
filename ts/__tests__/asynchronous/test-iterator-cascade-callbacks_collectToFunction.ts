@@ -8,12 +8,12 @@ import { Synchronous } from '../lib/example-iterables';
 
 import type {
 	Shared,
-	Synchronous as Synchronous_Types,
+	Asynchronous as Asynchronous_Types,
 } from '../../../@types/iterator-cascade-callbacks/';
 
 test('Iterator_Cascade_Callbacks.collectToFunction -> Are custom collecter callback functions suported?', async () => {
 	const map = new Map();
-	const collectToMap: Synchronous_Types.Collect_To_Function = (target, value, index_or_key) => {
+	const collectToMap: Asynchronous_Types.Collect_To_Function = (target, value, index_or_key) => {
 		(target as Map<Shared.Index_Or_Key, any>).set(index_or_key, value);
 	};
 

@@ -19,8 +19,8 @@ export namespace Synchronous {
 	 * @typedef {Synchronous.Callback_Function_References}
 	 */
 	export type Callback_Function_References<Value, Result, Parameters extends Array<unknown>, Key> = {
-		iterator_cascade_callbacks: Synchronous.Iterator_Cascade_Callbacks;
-		callback_object: Synchronous.Callback_Object<Value, Result, Parameters, Key>;
+		iterator_cascade_callbacks: Iterator_Cascade_Callbacks<unknown>;
+		callback_object: Callback_Object<Value, Result, Parameters, Key>;
 	};
 
 	/**
@@ -45,8 +45,8 @@ export namespace Synchronous {
 	 * @typedef Callback_Wrapper
 	 */
 	export type Callback_Wrapper<Value, Result, Parameters extends Array<unknown>, Key> = (
-		callback_object: Synchronous.Callback_Object<Value, Result, Parameters, Key>,
-		iterator_cascade_callbacks: Synchronous.Iterator_Cascade_Callbacks
+		callback_object: Callback_Object<Value, Result, Parameters, Key>,
+		iterator_cascade_callbacks: Iterator_Cascade_Callbacks<unknown>
 	) => void;
 
 	/**
@@ -72,7 +72,7 @@ export namespace Synchronous {
 		target: any,
 		value: any,
 		index_or_key: Shared.Index_Or_Key,
-		iterator_cascade_callbacks: Synchronous.Iterator_Cascade_Callbacks
+		iterator_cascade_callbacks: Iterator_Cascade_Callbacks<unknown>
 	) => any;
 }
 
