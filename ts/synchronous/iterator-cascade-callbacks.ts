@@ -151,19 +151,20 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 * @throws {TypeError}
 	 * @this {Iterator_Cascade_Callbacks}
 	 */
-	collect(
+	collect<
 		/* eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents */
-		target: unknown[] | Shared.Dictionary | unknown,
-		callback_or_amount?: Synchronous.Collect_To_Function | number,
-		amount?: number
-		/* eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents */
-	): unknown[] | Shared.Dictionary | undefined | unknown {
+		Target extends unknown[] | Shared.Dictionary<unknown> | unknown = unknown,
+		Callback_Or_Amount extends Synchronous.Collect_To_Function | number | undefined = undefined
+	>(target: Target, callback_or_amount?: Callback_Or_Amount, amount?: number): Target {
 		if (typeof callback_or_amount === 'function') {
 			return this.collectToFunction(target, callback_or_amount, amount);
 		} else if (Array.isArray(target)) {
 			return this.collectToArray(target, callback_or_amount as number);
 		} else if (typeof target === 'object') {
-			return this.collectToObject(target as Shared.Dictionary, callback_or_amount as number);
+			return this.collectToObject(
+				target as Shared.Dictionary,
+				callback_or_amount as number
+			) as Target;
 		} else {
 			throw new TypeError(`Unsuported type for collect target -> ${typeof target}`);
 		}
@@ -187,7 +188,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 * console.log(collection);
 	 * //> [ 1, 2, 3, 6, 8 ]
 	 */
-	collectToArray(target: unknown[], amount?: number): unknown[] {
+	collectToArray<Target extends unknown[] = unknown[]>(target: Target, amount?: number): Target {
 		let count = 0;
 		for (const value of this) {
 			target.push(value);
@@ -218,11 +219,10 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 * console.log(collection);
 	 * //> Map(2) { 'spam' => 'flavored', 'canned' => 'ham' }
 	 */
-	collectToFunction(
-		target: unknown,
-		callback: Synchronous.Collect_To_Function,
-		amount?: number
-	): unknown {
+	collectToFunction<
+		Target = unknown,
+		Callback extends Synchronous.Collect_To_Function = Synchronous.Collect_To_Function
+	>(target: Target, callback: Callback, amount?: number): Target {
 		let count = 0;
 		for (const value of this) {
 			callback(
@@ -253,7 +253,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 * console.log(collection);
 	 * //> { spam: 'flavored', canned: 'ham' }
 	 */
-	collectToObject(target: Shared.Dictionary, amount?: number): Shared.Dictionary {
+	collectToObject<Target extends Shared.Dictionary>(target: Target, amount?: number): Target {
 		let count = 0;
 		for (const value of this) {
 			/**

@@ -189,26 +189,31 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 
 	/**
 	 * Collects results from `this` to either an Array or Object
-	 * @param {unknown[]|Object|unknown} target - When target is Array values are pushed, when target is Object key value pares are assigned, callback is required for other types
+	 * @param {unknown[]|Shared.Dictionary|unknown} target - When target is Array values are pushed, when target is Object key value pares are assigned, callback is required for other types
 	 * @param {Collect_To_Function?|number?} callback_or_amount - Callback function for collecting to custom type, or number to limit collection to
 	 * @param {number?} amount - Limit collection to no more than amount
 	 * @return {Promise<unknown[]|Object|unknown>}
 	 * @throws {TypeError}
 	 * @this {Iterator_Cascade_Callbacks}
 	 */
-	async collect(
+	async collect<
 		/* eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents */
-		target: unknown[] | Shared.Dictionary | unknown,
-		callback_or_amount?: Asynchronous.Collect_To_Function | number,
+		Target extends unknown[] | Shared.Dictionary<unknown> | unknown = unknown,
+		Callback_Or_Amount extends Asynchronous.Collect_To_Function | number | undefined = undefined,
+	>(
+		target: Target,
+		callback_or_amount?: Callback_Or_Amount,
 		amount?: number
-		/* eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents */
-	): Promise<unknown[] | Shared.Dictionary | undefined | unknown> {
+	): Promise<Target> {
 		if (typeof callback_or_amount === 'function') {
 			return await this.collectToFunction(target, callback_or_amount, amount);
 		} else if (Array.isArray(target)) {
 			return await this.collectToArray(target, callback_or_amount as number);
 		} else if (typeof target === 'object') {
-			return this.collectToObject(target as Shared.Dictionary, callback_or_amount as number);
+			return await this.collectToObject(
+				target as Shared.Dictionary,
+				callback_or_amount as number
+			) as Target;
 		} else {
 			throw new TypeError(`Unsuported type for collect target -> ${typeof target}`);
 		}
@@ -222,19 +227,22 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 * @this {Iterator_Cascade_Callbacks}
 	 * @example
 	 * const icca = new Asynchronous.Iterator_Cascade_Callbacks([5, 6, 7, 8, 9]);
-	 * 
+	 *
 	 * (async () => {
 	 *   const collection = await icca
 	 *     .filter((value) => {
 	 *       return value % 2 === 0;
 	 *     })
 	 *     .collectToArray([1, 2, 3]);
-	 * 
+	 *
 	 *   console.log(collection);
 	 *   //> [ 1, 2, 3, 6, 8 ]
 	 * })();
 	 */
-	async collectToArray(target: unknown[], amount?: number): Promise<unknown[]> {
+	async collectToArray<Target extends unknown[] = unknown[]>(
+		target: Target,
+		amount?: number
+	): Promise<Target> {
 		let count = 0;
 		for await (const value of this) {
 			target.push(value);
@@ -249,7 +257,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	/**
 	 * Collects results from `this.next()` to a callback function target
 	 * @param {unknown} target - Any object or primitive, will be passed to `callback` function along with `value` and `index_or_key`
-	 * @param {Function} callback - Custom callback function for collecting iterated values
+	 * @param {Asynchronous.Collect_To_Function} callback - Custom callback function for collecting iterated values
 	 * @param {number?} amount - Limit collection to no more than amount
 	 * @return {Promise<unknown>} target - The object that callback function has mutated
 	 * @this {Iterator_Cascade_Callbacks}
@@ -267,11 +275,14 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 *   //> Map(2) { 'spam' => 'flavored', 'canned' => 'ham' }
 	 * })();
 	 */
-	async collectToFunction(
-		target: unknown,
-		callback: Asynchronous.Collect_To_Function,
+	async collectToFunction<
+		Target = unknown,
+		Callback extends Asynchronous.Collect_To_Function = Asynchronous.Collect_To_Function,
+	>(
+		target: Target,
+		callback: Callback,
 		amount?: number
-	): Promise<unknown> {
+	): Promise<Target> {
 		let count = 0;
 		for await (const value of this) {
 			await callback(
@@ -304,7 +315,10 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 *   //> { spam: 'flavored', canned: 'ham' }
 	 * })();
 	 */
-	async collectToObject(target: Shared.Dictionary, amount?: number): Promise<Shared.Dictionary> {
+	async collectToObject<Target extends Shared.Dictionary>(
+		target: Target,
+		amount?: number
+	): Promise<Target> {
 		let count = 0;
 		for await (const value of this) {
 			/**
