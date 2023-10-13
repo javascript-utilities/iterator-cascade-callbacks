@@ -26,7 +26,7 @@
     "clean:cjs": "rm -r targets/cjs",
     "clean:mjs": "rm -r targets/mjs",
     "clean:ci-cd": "rm -r targets/mjs",
-    "ci:all": "npm run ci:lint && npm run ts:ci-cd && npm run ci:test",
+    "ci:all": "npm run ci:lint && npm run ci:build && npm run ci:test",
     "ci:build": "tsc  --project tsconfig.json",
     "ci:lint": "eslint ts",
     "ci:test": "jest --coverage",
