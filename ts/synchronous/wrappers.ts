@@ -15,13 +15,13 @@ import { Stop_Iteration, Pause_Iteration } from '../lib/errors.js';
 import { Yielded_Data } from '../lib/runtime-types.js';
 
 /**
- * @file Callback wrappers and similar export functions for `Synchronous.Iterator_Cascade_Callbacks`
+ * @file Namespace of callback wrappers and similar functions for `Synchronous.Iterator_Cascade_Callbacks`
  * @author S0AndS0
  * @license AGPL-3.0
  */
 
 /**
- * @param {any[]} iterables - Almost anything that implements `[Symbol.iterator]`
+ * @param {any[]} iterables - Almost anything that implements `[Symbol.iterator]` or [Symbol.iterator]
  * @param {Iterator_Cascade_Callbacks__Static} iterator_cascade_callbacks - Uninitialized class that is, or inherits from, `Iterator_Cascade_Callbacks`
  */
 export function* zip(
@@ -38,7 +38,7 @@ export function* zip(
 	while (true) {
 		const results: Shared.Yielded_Result[] = [];
 		for (const iterator of iterators) {
-			results.push(iterator.next() as Shared.Yielded_Result);
+			results.push((iterator.next()) as Shared.Yielded_Result);
 		}
 
 		if (results.every(({ done }) => done === true)) {
@@ -57,8 +57,12 @@ export function* zip(
  * @param {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
  * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
  */
-export function entries(
-	callback_object: Callback_Object,
+export function entries<
+	Value = unknown,
+	Parameters extends unknown[] = unknown[],
+	Key = Shared.Index_Or_Key
+>(
+	callback_object: Callback_Object<Value, void, Parameters, Key>,
 	iterator_cascade_callbacks: Iterator_Cascade_Callbacks
 ) {
 	iterator_cascade_callbacks.yielded_data.content = [
@@ -71,16 +75,20 @@ export function entries(
  * @param {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
  * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
  */
-export function filter(
-	callback_object: Callback_Object,
+export function filter<
+	Value = unknown,
+	Parameters extends unknown[] = unknown[],
+	Key = Shared.Index_Or_Key
+>(
+	callback_object: Callback_Object<Value, boolean, Parameters, Key>,
 	iterator_cascade_callbacks: Iterator_Cascade_Callbacks
 ) {
 	let results: boolean = callback_object.callback(
-		iterator_cascade_callbacks.yielded_data.content,
-		iterator_cascade_callbacks.yielded_data.index_or_key,
+		iterator_cascade_callbacks.yielded_data.content as Value,
+		iterator_cascade_callbacks.yielded_data.index_or_key as Key,
 		{ iterator_cascade_callbacks, callback_object },
 		...callback_object.parameters
-	) as boolean;
+	);
 	if (results) {
 		return;
 	}
@@ -90,7 +98,7 @@ export function filter(
 		done: false,
 	};
 	while (!results) {
-		next_data = iterator_cascade_callbacks.iterator.next() as IteratorResult<
+		next_data = (iterator_cascade_callbacks.iterator.next()) as IteratorResult<
 			Shared.Yielded_Data,
 			undefined
 		>;
@@ -105,17 +113,18 @@ export function filter(
 		}
 
 		for (const callback_other of iterator_cascade_callbacks.callbacks) {
-			if (callback_other === callback_object) {
+			if (callback_other === callback_object as unknown as Callback_Object<unknown, unknown, unknown[], unknown>) {
 				results = callback_object.callback(
-					iterator_cascade_callbacks.yielded_data.content,
-					iterator_cascade_callbacks.yielded_data.index_or_key,
+					iterator_cascade_callbacks.yielded_data.content as Value,
+					iterator_cascade_callbacks.yielded_data.index_or_key as Key,
 					{ iterator_cascade_callbacks, callback_object },
 					...callback_object.parameters
-				) as boolean;
+				);
 
 				if (results) {
 					return;
 				}
+
 				break;
 			}
 
@@ -123,11 +132,11 @@ export function filter(
 
 			/* @TODO: do we really need/want the following? */
 			results = callback_object.callback(
-				iterator_cascade_callbacks.yielded_data.content,
-				iterator_cascade_callbacks.yielded_data.index_or_key,
+				iterator_cascade_callbacks.yielded_data.content as Value,
+				iterator_cascade_callbacks.yielded_data.index_or_key as Key,
 				{ iterator_cascade_callbacks, callback_object },
 				...callback_object.parameters
-			) as boolean;
+			);
 		}
 	}
 }
@@ -136,13 +145,17 @@ export function filter(
  * @param {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
  * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
  */
-export function forEach(
-	callback_object: Callback_Object,
+export function forEach<
+	Value = unknown,
+	Parameters extends unknown[] = unknown[],
+	Key = Shared.Index_Or_Key
+>(
+	callback_object: Callback_Object<Value, void, Parameters, Key>,
 	iterator_cascade_callbacks: Iterator_Cascade_Callbacks
 ) {
 	callback_object.callback(
-		iterator_cascade_callbacks.yielded_data.content,
-		iterator_cascade_callbacks.yielded_data.index_or_key,
+		iterator_cascade_callbacks.yielded_data.content as Value,
+		iterator_cascade_callbacks.yielded_data.index_or_key as Key,
 		{ callback_object, iterator_cascade_callbacks },
 		...callback_object.parameters
 	);
@@ -152,13 +165,17 @@ export function forEach(
  * @param {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
  * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
  */
-export function inspect(
-	callback_object: Callback_Object,
+export function inspect<
+	Value = unknown,
+	Parameters extends unknown[] = unknown[],
+	Key = Shared.Index_Or_Key
+>(
+	callback_object: Callback_Object<Value, void, Parameters, Key>,
 	iterator_cascade_callbacks: Iterator_Cascade_Callbacks
 ) {
 	callback_object.callback(
-		iterator_cascade_callbacks.yielded_data.content,
-		iterator_cascade_callbacks.yielded_data.index_or_key,
+		iterator_cascade_callbacks.yielded_data.content as Value,
+		iterator_cascade_callbacks.yielded_data.index_or_key as Key,
 		{ callback_object, iterator_cascade_callbacks },
 		...callback_object.parameters
 	);
@@ -169,19 +186,23 @@ export function inspect(
  * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
  * @note this expects `callback_object.parameters[0]` to contain the limit
  */
-export function limit(
-	callback_object: Callback_Object,
+export function limit<
+	Value = unknown,
+	// Result = unknown,
+	Parameters extends unknown[] = [number, ...unknown[]],
+	Key = Shared.Index_Or_Key
+>(
+	callback_object: Callback_Object<Value, void, [number, ...Parameters[]], Key>,
 	iterator_cascade_callbacks: Iterator_Cascade_Callbacks
 ) {
-	if (isNaN(callback_object.storage.count as number)) {
+	if (isNaN((callback_object.storage as Shared.Dictionary<number>).count)) {
 		callback_object.storage.count = 0;
 	}
 
 	(callback_object.storage as Shared.Dictionary<number>).count++;
 
 	if (
-		(callback_object.storage as Shared.Dictionary<number>).count >
-		(callback_object.parameters as [number, ...unknown[]])[0]
+		(callback_object.storage as Shared.Dictionary<number>).count > callback_object.parameters[0]
 	) {
 		let found_self = false;
 		for (const callback_other of iterator_cascade_callbacks.callbacks) {
@@ -201,14 +222,22 @@ export function limit(
  * @param {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
  * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
  */
-export function map(
-	callback_object: Callback_Object,
+export function map<
+	Value = unknown,
+	Result = unknown,
+	Parameters extends unknown[] = unknown[],
+	Key = Shared.Index_Or_Key
+>(
+	callback_object: Callback_Object<Value, Result, Parameters, Key>,
 	iterator_cascade_callbacks: Iterator_Cascade_Callbacks
 ) {
-	const results: unknown = callback_object.callback(
-		iterator_cascade_callbacks.yielded_data.content,
-		iterator_cascade_callbacks.yielded_data.index_or_key,
-		{ iterator_cascade_callbacks, callback_object },
+	const results = callback_object.callback(
+		iterator_cascade_callbacks.yielded_data.content as Value,
+		iterator_cascade_callbacks.yielded_data.index_or_key as Key,
+		{
+			iterator_cascade_callbacks,
+			callback_object,
+		},
 		...callback_object.parameters
 	);
 
@@ -224,11 +253,15 @@ export function map(
  * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
  * @note this expects `callback_object.parameters[0]` to contain the limit
  */
-export function skip(
-	callback_object: Callback_Object,
+export function skip<
+	Value = unknown,
+	Parameters extends unknown[] = [number, ...unknown[]],
+	Key = Shared.Index_Or_Key
+>(
+	callback_object: Callback_Object<Value, void, [number, ...Parameters[]], Key>,
 	iterator_cascade_callbacks: Iterator_Cascade_Callbacks
 ) {
-	if (isNaN(callback_object.storage.count as number)) {
+	if (isNaN((callback_object.storage as Shared.Dictionary<number>).count)) {
 		callback_object.storage.count = 0;
 	}
 
@@ -237,10 +270,9 @@ export function skip(
 		done: false,
 	};
 	while (
-		(callback_object.storage as Shared.Dictionary<number>).count <
-		(callback_object.parameters as [number, ...unknown[]])[0]
+		(callback_object.storage as Shared.Dictionary<number>).count < callback_object.parameters[0]
 	) {
-		next_data = iterator_cascade_callbacks.iterator.next() as IteratorResult<
+		next_data = (iterator_cascade_callbacks.iterator.next()) as IteratorResult<
 			Shared.Yielded_Data,
 			undefined
 		>;
@@ -269,11 +301,15 @@ export function skip(
  * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
  * @note this expects `callback_object.parameters[0]` to contain the limit
  */
-export function step(
-	callback_object: Callback_Object,
+export function step<
+	Value = unknown,
+	Parameters extends unknown[] = [number, ...unknown[]],
+	Key = Shared.Index_Or_Key
+>(
+	callback_object: Callback_Object<Value, void, [number, ...Parameters[]], Key>,
 	iterator_cascade_callbacks: Iterator_Cascade_Callbacks
 ) {
-	if (isNaN(callback_object.storage.count as number)) {
+	if (isNaN((callback_object.storage as Shared.Dictionary<number>).count)) {
 		callback_object.storage.count = 0;
 	}
 
@@ -282,10 +318,9 @@ export function step(
 		done: false,
 	};
 	while (
-		(callback_object.storage as Shared.Dictionary<number>).count <
-		(callback_object.parameters as [number, ...unknown[]])[0]
+		(callback_object.storage as Shared.Dictionary<number>).count < callback_object.parameters[0]
 	) {
-		next_data = iterator_cascade_callbacks.iterator.next() as IteratorResult<
+		next_data = (iterator_cascade_callbacks.iterator.next()) as IteratorResult<
 			Shared.Yielded_Data,
 			undefined
 		>;
@@ -316,11 +351,15 @@ export function step(
  * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
  * @note this expects `callback_object.parameters[0]` to contain the limit
  */
-export function take(
-	callback_object: Callback_Object,
+export function take<
+	Value = unknown,
+	Parameters extends unknown[] = [number, ...unknown[]],
+	Key = Shared.Index_Or_Key
+>(
+	callback_object: Callback_Object<Value, void, [number, ...Parameters[]], Key>,
 	iterator_cascade_callbacks: Iterator_Cascade_Callbacks
 ) {
-	if (isNaN(callback_object.storage.count as number)) {
+	if (isNaN((callback_object.storage as Shared.Dictionary<number>).count)) {
 		callback_object.storage.count = 0;
 		callback_object.storage.resumed = false;
 	} else if (callback_object.storage.paused) {
@@ -331,8 +370,7 @@ export function take(
 	(callback_object.storage as Shared.Dictionary<number>).count++;
 
 	if (
-		(callback_object.storage as Shared.Dictionary<number>).count >
-		(callback_object.parameters as [number, ...unknown[]])[0]
+		(callback_object.storage as Shared.Dictionary<number>).count > callback_object.parameters[0]
 	) {
 		let found_self = false;
 		for (const callback_other of iterator_cascade_callbacks.callbacks) {
@@ -347,9 +385,3 @@ export function take(
 		throw new Pause_Iteration('this.take says amount has been reached');
 	}
 }
-
-/**
- * ===========================================================================
- *                  Custom TypeScript interfaces and types
- * ===========================================================================
- */

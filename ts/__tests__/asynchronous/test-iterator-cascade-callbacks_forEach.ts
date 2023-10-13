@@ -22,17 +22,9 @@ test('Iterator_Cascade_Callbacks.forEach -> Is it fead values in the proper orde
 		.map((value: number) => {
 			return value * 2;
 		})
-		.forEach(
-			(
-				value: any,
-				index_or_key: Shared.Index_Or_Key,
-				references: Synchronous_Types.Callback_Function_References,
-				...paramaters: any[]
-			) => {
-				expect(value).toStrictEqual(expected.shift());
-			},
-			expected
-		)
+		.forEach((value, index_or_key, references, ...paramaters) => {
+			expect(value).toStrictEqual(expected.shift());
+		}, expected)
 		.collect([]);
 });
 

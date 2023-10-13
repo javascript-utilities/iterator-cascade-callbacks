@@ -1,7 +1,6 @@
 // vim: noexpandtab
 
 import { Shared } from './index';
-import { Synchronous } from './synchronous';
 
 /**
  * @namespace {Asynchronous}
@@ -45,7 +44,7 @@ export namespace Asynchronous {
 	export type Callback_Wrapper<Value, Result, Parameters, Key> = (
 		callback_object: Asynchronous.Callback_Object<Value, Result, Parameters, Key>,
 		iterator_cascade_callbacks: Asynchronous.Iterator_Cascade_Callbacks
-	) => Promise<void>;
+	) => Promise<void> | void;
 
 	/**
 	 * Callback function for custom collection algorithms

@@ -14,16 +14,14 @@ import type {
 test('Iterator_Cascade_Callbacks.popCallbackObject -> Does popping defined callback return an instance of `Callback_Object`?', async () => {
 	const icca = new Iterator_Cascade_Callbacks(['1', 2, NaN]);
 
-	const map_callback: Synchronous_Types.Callback_Function = (
+	icca.map((
 		value,
 		index_or_key,
 		references,
 		...parameters
 	) => {
 		return value;
-	};
-
-	icca.map(map_callback);
+	});
 
 	const popped_callback_object = icca.popCallbackObject();
 

@@ -59,7 +59,6 @@ export async function* zip(
  */
 export function entries<
 	Value = unknown,
-	// Result = unknown,
 	Parameters extends unknown[] = unknown[],
 	Key = Shared.Index_Or_Key
 >(
@@ -78,7 +77,6 @@ export function entries<
  */
 export async function filter<
 	Value = unknown,
-	// Result = unknown,
 	Parameters extends unknown[] = unknown[],
 	Key = Shared.Index_Or_Key
 >(
@@ -149,7 +147,6 @@ export async function filter<
  */
 export async function forEach<
 	Value = unknown,
-	// Result = unknown,
 	Parameters extends unknown[] = unknown[],
 	Key = Shared.Index_Or_Key
 >(
@@ -170,7 +167,6 @@ export async function forEach<
  */
 export async function inspect<
 	Value = unknown,
-	// Result = unknown,
 	Parameters extends unknown[] = unknown[],
 	Key = Shared.Index_Or_Key
 >(
@@ -192,7 +188,6 @@ export async function inspect<
  */
 export async function limit<
 	Value = unknown,
-	// Result = unknown,
 	Parameters extends unknown[] = [number, ...unknown[]],
 	Key = Shared.Index_Or_Key
 >(
@@ -259,7 +254,6 @@ export async function map<
  */
 export async function skip<
 	Value = unknown,
-	// Result = unknown,
 	Parameters extends unknown[] = [number, ...unknown[]],
 	Key = Shared.Index_Or_Key
 >(
@@ -308,7 +302,6 @@ export async function skip<
  */
 export async function step<
 	Value = unknown,
-	// Result = unknown,
 	Parameters extends unknown[] = [number, ...unknown[]],
 	Key = Shared.Index_Or_Key
 >(
@@ -359,7 +352,6 @@ export async function step<
  */
 export async function take<
 	Value = unknown,
-	// Result = unknown,
 	Parameters extends unknown[] = [number, ...unknown[]],
 	Key = Shared.Index_Or_Key
 >(

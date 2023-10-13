@@ -2,7 +2,7 @@
 
 'use strict';
 
-import type { Shared, Synchronous } from '../../@types/iterator-cascade-callbacks/'
+import type { Shared, Synchronous } from '../../@types/iterator-cascade-callbacks/';
 
 import { Stop_Iteration, Pause_Iteration } from '../lib/errors.js';
 import * as Iterator_From from '../lib/iterator-from.js';
@@ -11,23 +11,22 @@ import { GeneratorFunction, Yielded_Data } from '../lib/runtime-types.js';
 import * as Wrappers from './wrappers.js';
 
 import { Callback_Object } from './callback-object.js';
-import type { Callback_Object as Callback_Object__Instance } from './callback-object';
 
 /**
  * Iterator that chains callback function execution
  * @author S0AndS0
  * @license AGPL-3.0
  */
-class Iterator_Cascade_Callbacks {
+class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	done: boolean;
 
-	yielded_data: Shared.Yielded_Data;
+	yielded_data: Shared.Yielded_Data<Initial_Iterable_Value>;
 
-	callbacks: Callback_Object__Instance[];
+	callbacks: Callback_Object<Initial_Iterable_Value, unknown, unknown[], unknown>[];
 
 	state: { paused: boolean; resumed: boolean };
 
-	iterator: IterableIterator<Shared.Yielded_Data>;
+	iterator: IterableIterator<Shared.Yielded_Data<Initial_Iterable_Value>>;
 
 	/**
 	 * Instantiates new instance of `Iterator_Cascade_Callbacks` from `iterable` input
@@ -35,7 +34,10 @@ class Iterator_Cascade_Callbacks {
 	 */
 	constructor(iterable: unknown) {
 		this.done = false;
-		this.yielded_data = new Yielded_Data({ content: undefined, index_or_key: NaN });
+		this.yielded_data = new Yielded_Data({
+			content: undefined as unknown as Initial_Iterable_Value,
+			index_or_key: NaN,
+		});
 		this.callbacks = [];
 		this.state = {
 			paused: false,
@@ -51,31 +53,37 @@ class Iterator_Cascade_Callbacks {
 			/**
 			 * iterable: function* () { for (let value of [6, 5, 4]) { yield value; } }
 			 */
-			this.iterator = Iterator_From.generator((iterable as Shared.Generator_Function_Instance)());
+			this.iterator = Iterator_From.generator(
+				(iterable as Shared.Generator_Function_Instance<Initial_Iterable_Value>)()
+			);
 		} else if (typeof iterable === 'object') {
 			// console.trace('Iterator_Cascade_Callbacks constructor detected Object', { iterable });
-			if (typeof (iterable as Generator<unknown, void, unknown>)[Symbol.iterator] === 'function') {
+			if (
+				typeof (iterable as Generator<Initial_Iterable_Value, void, unknown>)[Symbol.iterator] ===
+				'function'
+			) {
 				/**
 				 * iterable: new class { [Symbol.iterable]() { return this; } }
 				 * iterable: (function* () { for (let value of [6, 5, 4]) { yield value; } })()
 				 */
 				this.iterator = Iterator_From.generator(
-					(iterable as Generator<unknown, void, unknown>)[Symbol.iterator]()
+					(iterable as Generator<Initial_Iterable_Value, void, unknown>)[Symbol.iterator]()
 				);
 			} else {
 				/**
 				 * iterable: { key: 'value', spam: 'flavored' }
 				 */
-				this.iterator = Iterator_From.object(iterable as Shared.Dictionary);
+				this.iterator = Iterator_From.object(iterable as Shared.Dictionary<Initial_Iterable_Value>);
 			}
 		} else if (
-			typeof (iterable as Generator<unknown, void, unknown>)[Symbol.iterator] === 'function'
+			typeof (iterable as Generator<Initial_Iterable_Value, void, unknown>)[Symbol.iterator] ===
+			'function'
 		) {
 			/**
 			 * iterable: 'abcdefg'
 			 */
 			this.iterator = Iterator_From.generator(
-				(iterable as Generator<unknown, void, unknown>)[Symbol.iterator]()
+				(iterable as Generator<Initial_Iterable_Value, void, unknown>)[Symbol.iterator]()
 			);
 		} else {
 			throw new TypeError(`Unsuported type of iterable -> ${typeof iterable}`);
@@ -283,8 +291,11 @@ class Iterator_Cascade_Callbacks {
 	 * console.log('Collection Two ->', icc_two.collect([]));
 	 * //> [ 4, 3 ]
 	 */
-	copyCallbacksOnto(iterable: unknown): Iterator_Cascade_Callbacks {
-		const icc = new (this.constructor as Iterator_Cascade_Callbacks__Static)(iterable);
+	copyCallbacksOnto<T = unknown>(iterable: unknown): Iterator_Cascade_Callbacks<T> {
+		/* eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion */
+		const icc = new (this.constructor as Iterator_Cascade_Callbacks__Static)(
+			iterable
+		) as Iterator_Cascade_Callbacks<T>;
 
 		icc.callbacks = this.callbacks.map((callback_object) => {
 			return new Callback_Object({
@@ -293,7 +304,7 @@ class Iterator_Cascade_Callbacks {
 				callback: callback_object.callback,
 				parameters: callback_object.parameters,
 			});
-		});
+		}) as unknown as Callback_Object<T>[];
 
 		return icc;
 	}
@@ -312,13 +323,18 @@ class Iterator_Cascade_Callbacks {
 	 * console.log(collection);
 	 * //> [ [ 0, 9 ], [ 3, 6 ] ]
 	 */
-	entries(): Iterator_Cascade_Callbacks {
-		return this.pushCallbackWrapper({
+	entries<
+		Value = Initial_Iterable_Value,
+		Parameters extends unknown[] = unknown[],
+		Key = Shared.Index_Or_Key
+	>(): this {
+		/* eslint-disable-next-line @typescript-eslint/no-invalid-void-type */
+		return this.pushCallbackWrapper<Value, void, Parameters, Key>({
 			wrapper: Wrappers.entries,
 			name: 'entries',
 			/* eslint-disable-next-line @typescript-eslint/unbound-method */
 			callback: this.#noOpCallback,
-			parameters: this.#noOpParameters,
+			parameters: this.#noOpParameters as unknown as Parameters,
 		});
 	}
 
@@ -340,11 +356,15 @@ class Iterator_Cascade_Callbacks {
 	 * console.log(collection);
 	 * //> [ 8, 6 ]
 	 */
-	filter(
-		callback: Synchronous.Callback_Function,
-		...parameters: unknown[]
-	): Iterator_Cascade_Callbacks {
-		return this.pushCallbackWrapper({
+	filter<
+		Value = Initial_Iterable_Value,
+		Parameters extends unknown[] = unknown[],
+		Key = Shared.Index_Or_Key
+	>(
+		callback: Synchronous.Callback_Function<Value, boolean, Parameters, Key>,
+		...parameters: Parameters
+	): this {
+		return this.pushCallbackWrapper<Value, boolean, Parameters, Key>({
 			wrapper: Wrappers.filter,
 			name: 'filter',
 			callback,
@@ -371,11 +391,16 @@ class Iterator_Cascade_Callbacks {
 	 * console.log(collection);
 	 * //> [ 9, 8, 7, 6, 5 ]
 	 */
-	forEach(
-		callback: Synchronous.Callback_Function,
-		...parameters: unknown[]
-	): Iterator_Cascade_Callbacks {
-		return this.pushCallbackWrapper({
+	forEach<
+		Value = Initial_Iterable_Value,
+		Parameters extends unknown[] = unknown[],
+		Key = Shared.Index_Or_Key
+	>(
+		callback: Synchronous.Callback_Function<Value, void, Parameters, Key>,
+		...parameters: Parameters
+	): this {
+		/* eslint-disable-next-line @typescript-eslint/no-invalid-void-type */
+		return this.pushCallbackWrapper<Value, void, Parameters, Key>({
 			wrapper: Wrappers.forEach,
 			name: 'forEach',
 			callback,
@@ -413,11 +438,12 @@ class Iterator_Cascade_Callbacks {
 	 *   .inspect(inspector)
 	 *   .collect([]);
 	 */
-	inspect(
-		callback: Synchronous.Callback_Function,
-		...parameters: unknown[]
-	): Iterator_Cascade_Callbacks {
-		return this.pushCallbackWrapper({
+	inspect<Value = unknown, Parameters extends unknown[] = unknown[], Key = Shared.Index_Or_Key>(
+		callback: Synchronous.Callback_Function<Value, void, Parameters, Key>,
+		...parameters: Parameters
+	): this {
+		/* eslint-disable-next-line @typescript-eslint/no-invalid-void-type */
+		return this.pushCallbackWrapper<Value, void, Parameters, Key>({
 			wrapper: Wrappers.inspect,
 			name: 'inspect',
 			callback,
@@ -443,8 +469,13 @@ class Iterator_Cascade_Callbacks {
 	 * console.log(collection);
 	 * //> [1, 2]
 	 */
-	limit(amount: number): Iterator_Cascade_Callbacks {
-		return this.pushCallbackWrapper({
+	limit<
+		Value = unknown,
+		Parameters extends unknown[] = [number, ...unknown[]],
+		Key = Shared.Index_Or_Key
+	>(amount: number): this {
+		/* eslint-disable-next-line @typescript-eslint/no-invalid-void-type */
+		return this.pushCallbackWrapper<Value, void, [number, ...Parameters[]], Key>({
 			wrapper: Wrappers.limit,
 			name: 'limit',
 			/* eslint-disable-next-line @typescript-eslint/unbound-method */
@@ -476,12 +507,17 @@ class Iterator_Cascade_Callbacks {
 	 * console.log(collection);
 	 * //> [ 4, 3 ]
 	 */
-	map(
-		callback: Synchronous.Callback_Function,
-		...parameters: unknown[]
-	): Iterator_Cascade_Callbacks {
-		return this.pushCallbackWrapper({
-			wrapper: Wrappers.map,
+	map<
+		Value = Initial_Iterable_Value,
+		Result = Initial_Iterable_Value,
+		Parameters extends unknown[] = unknown[],
+		Key = Shared.Index_Or_Key
+	>(
+		callback: Synchronous.Callback_Function<Value, Result, Parameters, Key>,
+		...parameters: Parameters
+	): this {
+		return this.pushCallbackWrapper<Value, Result, Parameters, Key>({
+			wrapper: Wrappers.map as Synchronous.Callback_Wrapper<Value, Result, Parameters, Key>,
 			name: 'map',
 			callback,
 			parameters,
@@ -503,7 +539,7 @@ class Iterator_Cascade_Callbacks {
 	 * //> value -> 3
 	 * //> value -> 4
 	 */
-	next(): Iterator_Cascade_Callbacks {
+	next(): this {
 		if (this.state.paused) {
 			this.done = false;
 			this.state.paused = false;
@@ -513,17 +549,17 @@ class Iterator_Cascade_Callbacks {
 
 		const yielded_result = this.iterator.next() as IteratorResult<Shared.Yielded_Data, undefined>;
 		this.done = Boolean(yielded_result.done);
-		this.yielded_data.content = yielded_result.value?.content;
+		this.yielded_data.content = yielded_result.value?.content as Initial_Iterable_Value;
 		this.yielded_data.index_or_key = yielded_result.value?.index_or_key;
 
 		if (!this.done) {
 			for (const callback_object of this.callbacks) {
 				try {
-					callback_object.call(this);
+					callback_object.call(this as Iterator_Cascade_Callbacks<unknown>);
 				} catch (error) {
 					if (error instanceof Stop_Iteration) {
 						this.done = true;
-						this.yielded_data.content = undefined;
+						this.yielded_data.content = undefined as unknown as Initial_Iterable_Value;
 						return this;
 					} else if (error instanceof Pause_Iteration) {
 						this.done = true;
@@ -541,11 +577,11 @@ class Iterator_Cascade_Callbacks {
 
 	/**
 	 * Returns, and removes, last `Callback_Object` from `this.callbacks` list
-	 * @return {Synchronous.Callback_Object__Instance?}
+	 * @return {Callback_Object?}
 	 * @this {Iterator_Cascade_Callbacks}
 	 */
-	popCallbackObject(): Synchronous.Callback_Object__Instance | undefined {
-		return this.callbacks.pop();
+	popCallbackObject(): Callback_Object | undefined {
+		return this.callbacks.pop() as Callback_Object;
 	}
 
 	/**
@@ -553,11 +589,10 @@ class Iterator_Cascade_Callbacks {
 	 * @return {Callback_Wrapper?}
 	 * @this {Iterator_Cascade_Callbacks}
 	 */
-	popCallbackWrapper(): Synchronous.Callback_Wrapper | undefined {
-		const callback_object = this.popCallbackObject();
-		if (callback_object !== undefined) {
-			return callback_object.wrapper;
-		}
+	popCallbackWrapper():
+		| Synchronous.Callback_Wrapper<unknown, unknown, unknown[], unknown>
+		| undefined {
+		return this.popCallbackObject()?.wrapper;
 	}
 
 	/**
@@ -570,14 +605,20 @@ class Iterator_Cascade_Callbacks {
 	 * @return {this}
 	 * @this {Iterator_Cascade_Callbacks}
 	 */
-	pushCallbackWrapper(o: {
-		wrapper: Synchronous.Callback_Wrapper;
+	pushCallbackWrapper<
+		Value = unknown,
+		Result = unknown,
+		Parameters extends unknown[] = unknown[],
+		Key = Shared.Index_Or_Key
+	>(o: {
+		wrapper: Synchronous.Callback_Wrapper<Value, Result, Parameters, Key>;
 		name: string;
-		callback: Synchronous.Callback_Function;
-		parameters: unknown[];
-	}): Iterator_Cascade_Callbacks {
-		const callback_object = new Callback_Object(o);
-		this.callbacks.push(callback_object);
+		callback: Synchronous.Callback_Function<Value, Result, Parameters, Key>;
+		parameters: Parameters;
+	}): this {
+		/* @TODO: Figure out how to correct, or convince TypeScript the type hints are correct */
+		/* @ts-expect-error: Argument of type 'Callback_Object<Value, Result, Parameters, Key>' is not assignable to parameter of type 'Callback_Object<unknown, unknown, unknown[], unknown>'. */
+		this.callbacks.push(new Callback_Object(o));
 		return this;
 	}
 
@@ -594,8 +635,13 @@ class Iterator_Cascade_Callbacks {
 	 * console.log(collection);
 	 * //> [ 2, 3, 4, 5 ]
 	 */
-	skip(amount: number): Iterator_Cascade_Callbacks {
-		return this.pushCallbackWrapper({
+	skip<
+		Value = Initial_Iterable_Value,
+		Parameters extends unknown[] = unknown[],
+		Key = Shared.Index_Or_Key
+	>(amount: number): this {
+		/* eslint-disable-next-line @typescript-eslint/no-invalid-void-type */
+		return this.pushCallbackWrapper<Value, void, [number, ...Parameters[]], Key>({
 			wrapper: Wrappers.skip,
 			name: 'skip',
 			/* eslint-disable-next-line @typescript-eslint/unbound-method */
@@ -617,8 +663,11 @@ class Iterator_Cascade_Callbacks {
 	 * console.log(collection);
 	 * //> [ 1, 3, 5 ]
 	 */
-	step(amount: number): Iterator_Cascade_Callbacks {
-		return this.pushCallbackWrapper({
+	step<Value = unknown, Parameters extends unknown[] = unknown[], Key = Shared.Index_Or_Key>(
+		amount: number
+	): this {
+		/* eslint-disable-next-line @typescript-eslint/no-invalid-void-type */
+		return this.pushCallbackWrapper<Value, void, [number, ...Parameters[]], Key>({
 			wrapper: Wrappers.step,
 			name: 'step',
 			/* eslint-disable-next-line @typescript-eslint/unbound-method */
@@ -648,8 +697,11 @@ class Iterator_Cascade_Callbacks {
 	 * console.log(collection_two);
 	 * //> [ 3, 4 ]
 	 */
-	take(amount: number): Iterator_Cascade_Callbacks {
-		return this.pushCallbackWrapper({
+	take<Value = unknown, Parameters extends unknown[] = unknown[], Key = Shared.Index_Or_Key>(
+		amount: number
+	): this {
+		/* eslint-disable-next-line @typescript-eslint/no-invalid-void-type */
+		return this.pushCallbackWrapper<Value, void, [number, ...Parameters[]], Key>({
 			wrapper: Wrappers.take,
 			name: 'take',
 			/* eslint-disable-next-line @typescript-eslint/unbound-method */

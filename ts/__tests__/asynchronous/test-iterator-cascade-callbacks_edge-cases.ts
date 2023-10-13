@@ -11,20 +11,28 @@ import type {
 } from '../../../@types/iterator-cascade-callbacks/';
 
 test('Iterator_Cascade_Callbacks -- tests Edge Cases -> What happens when extra parameters are provided?', async () => {
-	const map_callback: Synchronous_Types.Callback_Function = (
-		value: any,
-		index_or_key: Shared.Index_Or_Key,
-		{ callback_object, iterator_cascade_callbacks },
-		...parameters
-	): Shared.Yielded_Data => {
+	const iterable = [1, 2, 3, 4];
+	const paramaters = ['first', 'second', 'third'];
+
+	const map_callback = (
+		value: typeof iterable,
+		index_or_key: keyof typeof iterable,
+		references: Synchronous_Types.Callback_Function_References<
+			typeof iterable,
+			typeof iterable,
+			typeof paramaters,
+			keyof typeof iterable
+		>,
+		...parameters: typeof paramaters
+	) => {
 		if (parameters.length > (index_or_key as number)) {
 			return parameters.splice(index_or_key as number)[0];
 		}
 		return value;
 	};
 
-	const icca = new Iterator_Cascade_Callbacks([1, 2, 3, 4]);
-	icca.map(map_callback, 'first', 'second', 'third');
+	const icca = new Iterator_Cascade_Callbacks(iterable);
+	icca.map(map_callback, ...paramaters);
 
 	const collection = await icca.collect([]);
 

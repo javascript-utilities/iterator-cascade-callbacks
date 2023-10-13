@@ -2,7 +2,7 @@
 
 'use strict';
 
-import type { Asynchronous, Synchronous, Shared } from '../../@types/iterator-cascade-callbacks/';
+import type { Asynchronous, Shared } from '../../@types/iterator-cascade-callbacks/';
 
 import { Stop_Iteration, Pause_Iteration } from '../lib/errors.js';
 import * as Iterator_From from '../lib/iterator-from.js';
@@ -199,10 +199,7 @@ class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	async collect(
 		/* eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents */
 		target: unknown[] | Shared.Dictionary | unknown,
-		callback_or_amount?:
-			| Asynchronous.Collect_To_Function
-			| Synchronous.Collect_To_Function
-			| number,
+		callback_or_amount?: Asynchronous.Collect_To_Function | number,
 		amount?: number
 		/* eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents */
 	): Promise<unknown[] | Shared.Dictionary | undefined | unknown> {
@@ -390,7 +387,7 @@ class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	>(): this {
 		/* eslint-disable-next-line @typescript-eslint/no-invalid-void-type */
 		return this.pushCallbackWrapper<Value, void, Parameters, Key>({
-			wrapper: Wrappers.entries as Asynchronous.Callback_Wrapper<Value, void, Parameters, Key>,
+			wrapper: Wrappers.entries,
 			name: 'entries',
 			/* eslint-disable-next-line @typescript-eslint/unbound-method */
 			callback: this.#noOpCallback,
@@ -420,7 +417,6 @@ class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 */
 	filter<
 		Value = Initial_Iterable_Value,
-		// Result = Initial_Iterable_Value,
 		Parameters extends unknown[] = unknown[],
 		Key = Shared.Index_Or_Key
 	>(
@@ -428,7 +424,7 @@ class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 		...parameters: Parameters
 	): this {
 		return this.pushCallbackWrapper<Value, boolean, Parameters, Key>({
-			wrapper: Wrappers.filter as Asynchronous.Callback_Wrapper<Value, boolean, Parameters, Key>,
+			wrapper: Wrappers.filter,
 			name: 'filter',
 			callback,
 			parameters,
@@ -505,11 +501,7 @@ class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 *     .collect([]);
 	 * })();
 	 */
-	inspect<
-		Value = unknown,
-		Parameters extends unknown[] = unknown[],
-		Key = Shared.Index_Or_Key
-	>(
+	inspect<Value = unknown, Parameters extends unknown[] = unknown[], Key = Shared.Index_Or_Key>(
 		callback: Asynchronous.Callback_Function<Value, void, Parameters, Key>,
 		...parameters: Parameters
 	): this {
@@ -672,10 +664,7 @@ class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	popCallbackWrapper():
 		| Asynchronous.Callback_Wrapper<unknown, unknown, unknown[], unknown>
 		| undefined {
-		const callback_object = this.popCallbackObject();
-		if (callback_object !== undefined) {
-			return callback_object.wrapper;
-		}
+		return this.popCallbackObject()?.wrapper;
 	}
 
 	/**
@@ -722,7 +711,6 @@ class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 */
 	skip<
 		Value = Initial_Iterable_Value,
-		// Result = unknown,
 		Parameters extends unknown[] = unknown[],
 		Key = Shared.Index_Or_Key
 	>(amount: number): this {
@@ -751,11 +739,9 @@ class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 *   //> [ 1, 3, 5 ]
 	 * })();
 	 */
-	step<
-		Value = unknown,
-		Parameters extends unknown[] = unknown[],
-		Key = Shared.Index_Or_Key
-	>(amount: number): this {
+	step<Value = unknown, Parameters extends unknown[] = unknown[], Key = Shared.Index_Or_Key>(
+		amount: number
+	): this {
 		/* eslint-disable-next-line @typescript-eslint/no-invalid-void-type */
 		return this.pushCallbackWrapper<Value, void, [number, ...Parameters[]], Key>({
 			wrapper: Wrappers.step,
@@ -789,11 +775,9 @@ class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 *   //> [ 3, 4 ]
 	 * })();
 	 */
-	take<
-		Value = unknown,
-		Parameters extends unknown[] = unknown[],
-		Key = Shared.Index_Or_Key
-	>(amount: number): this {
+	take<Value = unknown, Parameters extends unknown[] = unknown[], Key = Shared.Index_Or_Key>(
+		amount: number
+	): this {
 		/* eslint-disable-next-line @typescript-eslint/no-invalid-void-type */
 		return this.pushCallbackWrapper<Value, void, [number, ...Parameters[]], Key>({
 			wrapper: Wrappers.take,

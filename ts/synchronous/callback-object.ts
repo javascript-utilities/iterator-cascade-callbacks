@@ -11,30 +11,20 @@ import type { Iterator_Cascade_Callbacks } from './iterator-cascade-callbacks';
  * @author S0AndS0
  * @license AGPL-3.0
  */
-class Callback_Object {
-	/**
-	 * @property {Asynchronous.Callback_Wrapper} wrapper - Wrapper for callback function that parses inputs and outputs
-	 */
-	wrapper: Synchronous.Callback_Wrapper;
+class Callback_Object<
+	Value = unknown,
+	Result = unknown,
+	Parameters extends unknown[] = unknown[],
+	Key = Shared.Index_Or_Key
+> {
+	wrapper: Synchronous.Callback_Wrapper<Value, Result, Parameters, Key>;
 
-	/**
-	 * @property {string} name - Method name that instantiated callback, eg. `filter`
-	 */
 	name: string;
 
-	/**
-	 * @property {Asynchronous.Callback_Function} callback - Synchronous callback wrapper Function to call
-	 */
-	callback: Synchronous.Callback_Function;
+	callback: Synchronous.Callback_Function<Value, Result, Parameters, Key>;
 
-	/**
-	 * @property {unknown[]} parameters - List of arguments that are passed to callback on each iteration
-	 */
-	parameters: unknown[];
+	parameters: Parameters;
 
-	/**
-	 * @property {Shared.Dictionary} storage - Generic dictionary like object
-	 */
 	storage: Shared.Dictionary;
 
 	/**
@@ -51,10 +41,10 @@ class Callback_Object {
 		callback,
 		parameters,
 	}: {
-		wrapper: Synchronous.Callback_Wrapper;
+		wrapper: Synchronous.Callback_Wrapper<Value, Result, Parameters, Key>;
 		name: string;
-		callback: Synchronous.Callback_Function;
-		parameters: unknown[];
+		callback: Synchronous.Callback_Function<Value, Result, Parameters, Key>;
+		parameters: Parameters;
 	}) {
 		this.wrapper = wrapper;
 		this.callback = callback;
@@ -63,7 +53,7 @@ class Callback_Object {
 		if (Array.isArray(parameters)) {
 			this.parameters = parameters;
 		} else {
-			this.parameters = [];
+			this.parameters = [] as unknown as Parameters;
 		}
 	}
 
@@ -78,14 +68,3 @@ class Callback_Object {
 }
 
 export { Callback_Object };
-
-/**
- * ===========================================================================
- *                  Custom TypeScript interfaces and types
- * ===========================================================================
- */
-
-/**
- * Enable calling `new` and other non-instance methods
- */
-export type Callback_Object__Static = typeof Callback_Object;

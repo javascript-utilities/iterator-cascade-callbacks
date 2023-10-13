@@ -6,7 +6,10 @@
 import { Iterator_Cascade_Callbacks } from '../../synchronous';
 import { Synchronous } from '../lib/example-iterables';
 
-import type {  Shared, Synchronous as Synchronous_Types } from '../../../@types/iterator-cascade-callbacks/'
+import type {
+	Shared,
+	Synchronous as Synchronous_Types,
+} from '../../../@types/iterator-cascade-callbacks/';
 
 test('Iterator_Cascade_Callbacks.forEach -> Is it fead values in the proper order?', () => {
 	const expected = Synchronous.array_input.map((value) => {
@@ -19,17 +22,9 @@ test('Iterator_Cascade_Callbacks.forEach -> Is it fead values in the proper orde
 		.map((value: number) => {
 			return value * 2;
 		})
-		.forEach(
-			(
-				value: number,
-				index_or_key: Shared.Index_Or_Key,
-				references: Synchronous_Types.Callback_Function_References,
-				...paramaters: any[]
-			) => {
-				expect(value).toStrictEqual(expected.shift());
-			},
-			expected
-		)
+		.forEach((value, index_or_key, references, ...paramaters) => {
+			expect(value).toStrictEqual(expected.shift());
+		}, expected)
 		.collect([]);
 });
 

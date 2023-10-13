@@ -3,6 +3,7 @@
 'use strict';
 
 import type { Asynchronous, Shared } from '../../@types/iterator-cascade-callbacks/';
+
 import type { Iterator_Cascade_Callbacks } from './iterator-cascade-callbacks';
 
 /**

@@ -13,16 +13,14 @@ import type {
 test('Iterator_Cascade_Callbacks.popCallbackWrapper -> ', async () => {
 	const icca = new Iterator_Cascade_Callbacks(['1', 2, NaN]);
 
-	const map_callback: Synchronous_Types.Callback_Function = (
+	icca.map((
 		value,
 		index_or_key,
 		references,
 		...parameters
 	) => {
 		return value;
-	};
-
-	icca.map(map_callback);
+	});
 
 	const popped_callback_wrapper = icca.popCallbackWrapper();
 

@@ -20,31 +20,15 @@ test('Iterator_Cascade_Callbacks.inspect -> Is it possible to inspect before and
 	const icca = new Iterator_Cascade_Callbacks(Synchronous.array_input);
 
 	icca
-		.inspect(
-			(
-				value: any,
-				index_or_key: Shared.Index_Or_Key,
-				references: Synchronous_Types.Callback_Function_References,
-				...paramaters: any[]
-			) => {
-				expect(value).toStrictEqual(paramaters[0].shift());
-			},
-			expected_one
-		)
+		.inspect((value, index_or_key, references, ...paramaters) => {
+			expect(value).toStrictEqual(paramaters[0].shift());
+		}, expected_one)
 		.map((value: number) => {
 			return value * 2;
 		})
-		.inspect(
-			(
-				value: any,
-				index_or_key: Shared.Index_Or_Key,
-				references: Synchronous_Types.Callback_Function_References,
-				...paramaters: any[]
-			) => {
-				expect(value).toStrictEqual(paramaters[0].shift());
-			},
-			expected_two
-		);
+		.inspect((value, index_or_key, references, ...paramaters) => {
+			expect(value).toStrictEqual(paramaters[0].shift());
+		}, expected_two);
 
 	await icca.collect([]);
 });
@@ -53,12 +37,7 @@ test('Iterator_Cascade_Callbacks.inspect ->', async () => {
 	const icca = new Iterator_Cascade_Callbacks(Synchronous.array_input);
 
 	icca.inspect(
-		(
-			value: any,
-			index_or_key: Shared.Index_Or_Key,
-			references: Synchronous_Types.Callback_Function_References,
-			...paramaters: any[]
-		) => {
+		(value, index_or_key, references, ...paramaters) => {
 			expect(paramaters).toBeInstanceOf(Array);
 		},
 		'foo',
