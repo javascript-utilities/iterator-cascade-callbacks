@@ -23,7 +23,7 @@ import { Callback_Object } from './callback-object.js';
  * @license AGPL-3.0
  * @see {link} https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-3.html#async-iteration
  */
-class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
+export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	done: boolean;
 
 	yielded_data: Shared.Yielded_Data<Initial_Iterable_Value>;
@@ -674,11 +674,11 @@ class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 
 	/**
 	 * Instantiates `Callback_Object` with callback_wrapper and pushes to `this.callbacks` via `this.pushCallbackObject`
-	 * @param {Object} o
-	 * @param {Asynchronous.Callback_Wrapper} o.wrapper - Wrapper for callback function that parses inputs and outputs
-	 * @param {string} o.name - Callback wrapper name
+	 * @param {Object} options
+	 * @param {Asynchronous.Callback_Wrapper} options.wrapper - Wrapper for callback function that parses inputs and outputs
+	 * @param {string} options.name - Callback wrapper name
 	 * @param {Asynchronous.Callback_Function} callback - Generic callback function for parsing and/or mutating iterator data
-	 * @param {...unknown[]} o.parameters - List of arguments that are passed to callback on each iteration
+	 * @param {...unknown[]} options.parameters - List of arguments that are passed to callback on each iteration
 	 * @return {this}
 	 * @this {Iterator_Cascade_Callbacks}
 	 */
@@ -687,7 +687,7 @@ class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 		Result = unknown,
 		Parameters extends unknown[] = unknown[],
 		Key = Shared.Index_Or_Key
-	>(o: {
+	>(options: {
 		wrapper: Asynchronous.Callback_Wrapper<Value, Result, Parameters, Key>;
 		name: string;
 		callback: Asynchronous.Callback_Function<Value, Result, Parameters, Key>;
@@ -695,7 +695,7 @@ class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	}): this {
 		/* @TODO: Figure out how to correct, or convince TypeScript the type hints are correct */
 		/* @ts-expect-error: Argument of type 'Callback_Object<Value, Result, Parameters, Key>' is not assignable to parameter of type 'Callback_Object<unknown, unknown, unknown[], unknown>'. */
-		this.callbacks.push(new Callback_Object(o));
+		this.callbacks.push(new Callback_Object(options));
 		return this;
 	}
 
@@ -811,8 +811,6 @@ class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 		return this;
 	}
 }
-
-export { Iterator_Cascade_Callbacks };
 
 /**
  * ===========================================================================

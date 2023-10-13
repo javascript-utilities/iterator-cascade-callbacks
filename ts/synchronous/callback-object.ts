@@ -6,55 +6,40 @@ import type { Synchronous, Shared } from '../../@types/iterator-cascade-callback
 
 import type { Iterator_Cascade_Callbacks } from './iterator-cascade-callbacks';
 
+import { Callback_Object_Base } from '../lib/callback-object-base';
+
 /**
  * Classy object for storing wrapper function state between iterations
  * @author S0AndS0
  * @license AGPL-3.0
  */
-class Callback_Object<
+export class Callback_Object<
 	Value = unknown,
 	Result = unknown,
 	Parameters extends unknown[] = unknown[],
 	Key = Shared.Index_Or_Key
-> {
+> extends Callback_Object_Base<Parameters> {
 	wrapper: Synchronous.Callback_Wrapper<Value, Result, Parameters, Key>;
-
-	name: string;
-
 	callback: Synchronous.Callback_Function<Value, Result, Parameters, Key>;
-
-	parameters: Parameters;
-
-	storage: Shared.Dictionary;
 
 	/**
 	 * Builds new instance of `Callback_Object` to append to `Iterator_Cascade_Callbacks.callbacks` list
-	 * @param {Object} o - Labeled parameters
-	 * @param {Synchronous.Callback_Wrapper} o.wrapper - Function wrapper that handles input/output between `Callback_Function` and `Iterator_Cascade_Callbacks`
-	 * @param {string} o.name - Method name that instantiated callback, eg. `filter`
-	 * @param {Synchronous.Callback_Function} o.callback - Function that executes for each iteration of `Iterator_Cascade_Callbacks`
-	 * @param {unknown[]} o.parameters - Array of arguments that are passed to callback on each iteration
+	 * @param {Object} options - Labeled parameters
+	 * @param {string} options.name - Method name that instantiated callback, eg. `filter`
+	 * @param {unknown[]} options.parameters - Array of arguments that are passed to callback on each iteration
+	 * @param {Synchronous.Callback_Function} options.callback - Function that executes for each iteration of `Iterator_Cascade_Callbacks`
+	 * @param {Synchronous.Callback_Wrapper} options.wrapper - Function wrapper that handles input/output between `Callback_Function` and `Iterator_Cascade_Callbacks`
+	 * @see {@link Callback_Object_Base#constructor} for `name` and `parameters`
 	 */
-	constructor({
-		wrapper,
-		name,
-		callback,
-		parameters,
-	}: {
-		wrapper: Synchronous.Callback_Wrapper<Value, Result, Parameters, Key>;
+	constructor(options: {
 		name: string;
-		callback: Synchronous.Callback_Function<Value, Result, Parameters, Key>;
 		parameters: Parameters;
+		callback: Synchronous.Callback_Function<Value, Result, Parameters, Key>;
+		wrapper: Synchronous.Callback_Wrapper<Value, Result, Parameters, Key>;
 	}) {
-		this.wrapper = wrapper;
-		this.callback = callback;
-		this.storage = {};
-		this.name = name;
-		if (Array.isArray(parameters)) {
-			this.parameters = parameters;
-		} else {
-			this.parameters = [] as unknown as Parameters;
-		}
+		super(options);
+		this.callback = options.callback;
+		this.wrapper = options.wrapper;
 	}
 
 	/**
@@ -66,5 +51,3 @@ class Callback_Object<
 		this.wrapper(this, iterator_cascade_callbacks);
 	}
 }
-
-export { Callback_Object };
