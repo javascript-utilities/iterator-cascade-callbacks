@@ -33,7 +33,7 @@ export namespace Asynchronous {
 	export type Callback_Function<Value, Result, Parameters extends Array<unknown>, Key> = (
 		value: Value,
 		index_or_key: Key,
-		references: Asynchronous.Callback_Function_References,
+		references: Asynchronous.Callback_Function_References<Value, Result, Parameters, Key>,
 		...parameters: Parameters
 	) => Result;
 
@@ -67,12 +67,12 @@ export namespace Asynchronous {
 	 * console.log(collection);
 	 * //> Map(2) { 'spam' => 'flavored', 'canned' => 'ham' }
 	 */
-	export type Collect_To_Function = (
-		target: any,
-		value: any,
-		index_or_key: Shared.Index_Or_Key<unknown>,
-		iterator_cascade_callbacks: Iterator_Cascade_Callbacks<unknown>
-	) => Promise<any> | any;
+	export type Collect_To_Function<Target = any, Value = any> = (
+		target: Target,
+		value: Value,
+		index_or_key: Shared.Index_Or_Key,
+		iterator_cascade_callbacks: Iterator_Cascade_Callbacks
+	) => Promise<Target> | Target;
 }
 
 export { Asynchronous };

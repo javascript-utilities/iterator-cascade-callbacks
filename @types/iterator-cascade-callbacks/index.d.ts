@@ -20,7 +20,7 @@ export namespace Shared {
 	 * const index: Index_Or_Key = 42;
 	 */
 	// export type Index_Or_Key = number | string | undefined;
-	export type Index_Or_Key<K = number | string> = K | undefined | unknown;
+	export type Index_Or_Key<K = number | string> = K | unknown;
 
 	/**
 	 * Classy object with `value` and `index_or_key` entries
