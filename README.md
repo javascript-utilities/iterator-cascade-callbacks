@@ -1489,6 +1489,45 @@ Collects results from `this` to either an Array or Object
 Returns **{any[] | Shared.Dictionary | undefined}**
 
 
+#### Method `Asynchronous.Iterator_Cascade_Callbacks.collectToArray`
+[heading__method_asynchronousiterator_cascade_callbackscollecttoarray]:
+  #method-asynchronousiterator_cascade_callbackscollecttoarray
+  "Collects results from `this.next()` to an Array&#10;&#10;collectToArray(target: any[], amount?: number) =&gt; any[]"
+
+
+Collects results from `this.next()` to an Array
+
+
+**Parameters**
+
+
+- **{any[]}** `target` - Array to push collected values to
+
+- **{number?}** `amount` - Limit collection to no more than amount
+
+
+Returns **{any[]}**
+
+
+**Example**
+
+
+```javascript
+const icca = new Asynchronous.Iterator_Cascade_Callbacks([5, 6, 7, 8, 9]);
+
+(async () => {
+  const collection = await icca
+    .filter((value) => {
+      return value % 2 === 0;
+    })
+    .collectToArray([1, 2, 3]);
+
+  console.log(collection);
+  //> [ 1, 2, 3, 6, 8 ]
+})();
+```
+
+
 #### Method `Asynchronous.Iterator_Cascade_Callbacks.collectToFunction`
 [heading__method_asynchronousiterator_cascade_callbackscollecttofunction]:
   #method-asynchronousiterator_cascade_callbackscollecttofunction
