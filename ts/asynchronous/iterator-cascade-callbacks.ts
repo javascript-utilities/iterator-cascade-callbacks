@@ -199,21 +199,21 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	async collect<
 		/* eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents */
 		Target extends unknown[] | Shared.Dictionary<unknown> | unknown = unknown,
-		Callback_Or_Amount extends Asynchronous.Collect_To_Function | number | undefined = undefined,
-	>(
-		target: Target,
-		callback_or_amount?: Callback_Or_Amount,
-		amount?: number
-	): Promise<Target> {
+		Value = Initial_Iterable_Value,
+		Callback_Or_Amount extends
+			| Asynchronous.Collect_To_Function<Target, Value>
+			| number
+			| undefined = undefined
+	>(target: Target, callback_or_amount?: Callback_Or_Amount, amount?: number): Promise<Target> {
 		if (typeof callback_or_amount === 'function') {
 			return await this.collectToFunction(target, callback_or_amount, amount);
 		} else if (Array.isArray(target)) {
 			return await this.collectToArray(target, callback_or_amount as number);
 		} else if (typeof target === 'object') {
-			return await this.collectToObject(
+			return (await this.collectToObject(
 				target as Shared.Dictionary,
 				callback_or_amount as number
-			) as Target;
+			)) as Target;
 		} else {
 			throw new TypeError(`Unsuported type for collect target -> ${typeof target}`);
 		}
@@ -277,12 +277,12 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 */
 	async collectToFunction<
 		Target = unknown,
-		Callback extends Asynchronous.Collect_To_Function = Asynchronous.Collect_To_Function,
-	>(
-		target: Target,
-		callback: Callback,
-		amount?: number
-	): Promise<Target> {
+		Value = unknown,
+		Callback extends Asynchronous.Collect_To_Function = Asynchronous.Collect_To_Function<
+			Target,
+			Value
+		>
+	>(target: Target, callback: Callback, amount?: number): Promise<Target> {
 		let count = 0;
 		for await (const value of this) {
 			await callback(

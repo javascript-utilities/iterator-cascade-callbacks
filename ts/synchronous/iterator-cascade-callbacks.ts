@@ -154,7 +154,11 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	collect<
 		/* eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents */
 		Target extends unknown[] | Shared.Dictionary<unknown> | unknown = unknown,
-		Callback_Or_Amount extends Synchronous.Collect_To_Function | number | undefined = undefined
+		Value = Initial_Iterable_Value,
+		Callback_Or_Amount extends
+			| Synchronous.Collect_To_Function<Target, Value>
+			| number
+			| undefined = undefined
 	>(target: Target, callback_or_amount?: Callback_Or_Amount, amount?: number): Target {
 		if (typeof callback_or_amount === 'function') {
 			return this.collectToFunction(target, callback_or_amount, amount);
@@ -221,7 +225,11 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 */
 	collectToFunction<
 		Target = unknown,
-		Callback extends Synchronous.Collect_To_Function = Synchronous.Collect_To_Function
+		Value = unknown,
+		Callback extends Synchronous.Collect_To_Function = Synchronous.Collect_To_Function<
+			Target,
+			Value
+		>
 	>(target: Target, callback: Callback, amount?: number): Target {
 		let count = 0;
 		for (const value of this) {
