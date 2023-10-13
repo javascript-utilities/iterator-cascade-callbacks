@@ -51,9 +51,16 @@ class Test__Callback_Object {
 
 		test('Callback_Object.constructor -> Do `.parameters` default to an empty array if undefined?', () => {
 			const name = 'empty_parameters';
+			const wrapper = Wrappers.map;
 
-			/* @ts-ignore */
-			const callback_object = new Callback_Object(this.callback_wrapper, name, undefined);
+			const callback_object = new Callback_Object({
+				wrapper,
+				name,
+				callback: () => {},
+				/* @ts-ignore: Type 'undefined' is not assignable to type 'any[]'. */
+				parameters: undefined,
+			});
+
 			expect(callback_object.parameters).toStrictEqual([]);
 		});
 
