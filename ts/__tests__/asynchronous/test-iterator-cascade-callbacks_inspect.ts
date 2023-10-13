@@ -20,14 +20,14 @@ test('Iterator_Cascade_Callbacks.inspect -> Is it possible to inspect before and
 	const icca = new Iterator_Cascade_Callbacks(Synchronous.array_input);
 
 	icca
-		.inspect((value, index_or_key, references, ...paramaters) => {
-			expect(value).toStrictEqual(paramaters[0].shift());
+		.inspect((value, index_or_key, references, ...parameters) => {
+			expect(value).toStrictEqual(parameters[0].shift());
 		}, expected_one)
 		.map((value: number) => {
 			return value * 2;
 		})
-		.inspect((value, index_or_key, references, ...paramaters) => {
-			expect(value).toStrictEqual(paramaters[0].shift());
+		.inspect((value, index_or_key, references, ...parameters) => {
+			expect(value).toStrictEqual(parameters[0].shift());
 		}, expected_two);
 
 	await icca.collect([]);
@@ -37,8 +37,8 @@ test('Iterator_Cascade_Callbacks.inspect ->', async () => {
 	const icca = new Iterator_Cascade_Callbacks(Synchronous.array_input);
 
 	icca.inspect(
-		(value, index_or_key, references, ...paramaters) => {
-			expect(paramaters).toBeInstanceOf(Array);
+		(value, index_or_key, references, ...parameters) => {
+			expect(parameters).toBeInstanceOf(Array);
 		},
 		'foo',
 		'bar'
