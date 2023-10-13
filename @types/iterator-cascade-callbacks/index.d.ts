@@ -44,21 +44,7 @@ export namespace Shared {
 	 * const result_from_object: Yielded_Entry = ['foo', 'bar'];
 	 * ```
 	 */
-	export type Yielded_Entry = ArrayLike<Index_Or_Key, any>;
-
-	/**
-	 * Return string value for comparisons
-	 * @notes
-	 * - `==` values are equivalent after type coercion
-	 * - `===` values and types are equal
-	 * - `!=` values are not equivalent after type coercion
-	 * - `!==` values are not equal but types are equivalent
-	 * - `>=` left is greater than right and types are equal
-	 * - `>` left is greater than right after type coercion
-	 * - `<=` left is less than right but types are equivalent
-	 * - `<` left is less than right after type coercion
-	 */
-	export type Comparison_Results = '==' | '===' | '!=' | '!==' | '>=' | '>' | '<=' | '<';
+	export type Yielded_Entry<T = unknown> = [Index_Or_Key<T>, any];
 
 	/**
 	 * Generator function that has not been initialized

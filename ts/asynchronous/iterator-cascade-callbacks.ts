@@ -272,7 +272,12 @@ class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	): Promise<unknown> {
 		let count = 0;
 		for await (const value of this) {
-			await callback(target, value, this.yielded_data.index_or_key, this);
+			await callback(
+				target,
+				value,
+				this.yielded_data.index_or_key,
+				this as Iterator_Cascade_Callbacks<unknown>
+			);
 			count++;
 			if (count >= (amount as number)) {
 				break;

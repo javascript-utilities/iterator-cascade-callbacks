@@ -27,15 +27,6 @@ const AsyncGeneratorFunction = async function* () {}.constructor;
 const GeneratorFunction = function* () {}.constructor;
 
 /**
- * Thanks be to @theseyi of GitHub
- * @see {link} https://github.com/microsoft/TypeScript/issues/14600#issuecomment-488817980
- */
-const Static_Contract =
-	<T extends new (...args: Array<unknown>) => void>(): ((c: T) => void) =>
-	/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-	(_ctor: T): void => {};
-
-/**
  * Classy object with `value` and `index_or_key` entries
  *
  * @example
@@ -43,7 +34,7 @@ const Static_Contract =
  * const result: Yielded_Data = new Yielded_Data({ content: 'spam', index_or_key: 3 });
  * ```
  */
-class Yielded_Data<T = unknown, K = Shared.Index_Or_Key> implements Shared.Yielded_Data<T, K> {
+class Yielded_Data<T = unknown, K = Shared.Index_Or_Key> {
 	content: T;
 
 	index_or_key: K;
@@ -58,7 +49,6 @@ export {
 	// AsyncGeneratorClass,
 	AsyncGeneratorFunction,
 	GeneratorFunction,
-	Static_Contract,
 	Yielded_Data,
 };
 

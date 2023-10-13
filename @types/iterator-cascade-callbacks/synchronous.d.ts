@@ -1,6 +1,8 @@
 // vim: noexpandtab
 
 import { Shared } from './index';
+import type { Iterator_Cascade_Callbacks } from '../../ts/synchronous/iterator-cascade-callbacks';
+import type { Callback_Object } from '../../ts/synchronous/callback-object';
 
 /**
  * Shared namespace between source code and tests for this repository
@@ -16,7 +18,7 @@ export namespace Synchronous {
 	 * @property {Synchronous.Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
 	 * @typedef {Synchronous.Callback_Function_References}
 	 */
-	export type Callback_Function_References<Value, Result, Parameters, Key> = {
+	export type Callback_Function_References<Value, Result, Parameters extends Array<unknown>, Key> = {
 		iterator_cascade_callbacks: Synchronous.Iterator_Cascade_Callbacks;
 		callback_object: Synchronous.Callback_Object<Value, Result, Parameters, Key>;
 	};
@@ -29,7 +31,7 @@ export namespace Synchronous {
 	 * @param {...any[]} parameters - List of arguments that are passed to callback on each iteration
 	 * @typedef Callback_Function
 	 */
-	export type Callback_Function<Value, Result, Parameters, Key> = (
+	export type Callback_Function<Value, Result, Parameters extends Array<unknown>, Key> = (
 		value: Value,
 		index_or_key: Key,
 		references: Synchronous.Callback_Function_References,
@@ -42,7 +44,7 @@ export namespace Synchronous {
 	 * @param {Synchronous.Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
 	 * @typedef Callback_Wrapper
 	 */
-	export type Callback_Wrapper<Value, Result, Parameters, Key> = (
+	export type Callback_Wrapper<Value, Result, Parameters extends Array<unknown>, Key> = (
 		callback_object: Synchronous.Callback_Object<Value, Result, Parameters, Key>,
 		iterator_cascade_callbacks: Synchronous.Iterator_Cascade_Callbacks
 	) => void;

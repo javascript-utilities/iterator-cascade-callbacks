@@ -1,6 +1,8 @@
 // vim: noexpandtab
 
 import { Shared } from './index';
+import type { Iterator_Cascade_Callbacks } from '../../ts/asynchronous/iterator-cascade-callbacks';
+import type { Callback_Object } from '../../ts/asynchronous/callback-object';
 
 /**
  * @namespace {Asynchronous}
@@ -11,13 +13,13 @@ import { Shared } from './index';
 export namespace Asynchronous {
 	/**
 	 * Object with references to `Iterator_Cascade_Callbacks` and `Callback_Object` instances
-	 * @property {Asynchronous.Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
-	 * @property {Asynchronous.Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
+	 * @property {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
+	 * @property {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
 	 * @typedef {Asynchronous.Callback_Function_References}
 	 */
-	export type Callback_Function_References<Value, Result, Parameters, Key> = {
-		iterator_cascade_callbacks: Asynchronous.Iterator_Cascade_Callbacks;
-		callback_object: Asynchronous.Callback_Object<Value, Result, Parameters, Key>;
+	export type Callback_Function_References<Value, Result, Parameters extends Array<unknown>, Key> = {
+		iterator_cascade_callbacks: Iterator_Cascade_Callbacks;
+		callback_object: Callback_Object<Value, Result, Parameters, Key>;
 	};
 
 	/**
@@ -28,22 +30,22 @@ export namespace Asynchronous {
 	 * @param {...any[]} parameters - List of arguments that are passed to callback on each iteration
 	 * @typedef Callback_Function
 	 */
-	export type Callback_Function<Value, Result, Parameters, Key> = (
+	export type Callback_Function<Value, Result, Parameters extends Array<unknown>, Key> = (
 		value: Value,
 		index_or_key: Key,
-		references: Asynchronous.Callback_Function_References,
+		references: Asynchronous.Callback_Function_References<Value, Result, Parameters, Key>,
 		...parameters: Parameters
 	) => Result;
 
 	/**
 	 * Wrapper for callback function that parses inputs and outputs, and passes parameters to `Callback_Function`
-	 * @param {Asynchronous.Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
-	 * @param {Asynchronous.Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
+	 * @param {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
+	 * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
 	 * @typedef Callback_Wrapper
 	 */
-	export type Callback_Wrapper<Value, Result, Parameters, Key> = (
-		callback_object: Asynchronous.Callback_Object<Value, Result, Parameters, Key>,
-		iterator_cascade_callbacks: Asynchronous.Iterator_Cascade_Callbacks
+	export type Callback_Wrapper<Value, Result, Parameters extends Array<unknown>, Key> = (
+		callback_object: Callback_Object<Value, Result, Parameters, Key>,
+		iterator_cascade_callbacks: Iterator_Cascade_Callbacks
 	) => Promise<void> | void;
 
 	/**
@@ -51,7 +53,7 @@ export namespace Asynchronous {
 	 * @param {any} target - An object that function will collect values to
 	 * @param {value} any - Value portion of `Yielded_Tuple` from `Iterator_Cascade_Callbacks`
 	 * @param {number|string} index_or_key - Index or Key portion of `Yielded_Tuple` from `Iterator_Cascade_Callbacks`
-	 * @param {Asynchronous.Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
+	 * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
 	 * @typedef Collect_To_Function
 	 * @example
 	 * const icca = new Asynchronous.Iterator_Cascade_Callbacks({ spam: 'flavored', canned: 'ham' });
@@ -69,7 +71,7 @@ export namespace Asynchronous {
 		target: any,
 		value: any,
 		index_or_key: Shared.Index_Or_Key,
-		iterator_cascade_callbacks: Asynchronous.Iterator_Cascade_Callbacks
+		iterator_cascade_callbacks: Iterator_Cascade_Callbacks
 	) => Promise<any> | any;
 }
 
