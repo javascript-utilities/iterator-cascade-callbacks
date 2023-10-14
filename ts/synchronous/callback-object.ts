@@ -25,10 +25,10 @@ export class Callback_Object<
 	/**
 	 * Builds new instance of `Callback_Object` to append to `Iterator_Cascade_Callbacks.callbacks` list
 	 * @param {Object} options - Labeled parameters
-	 * @param {string} options.name - Method name that instantiated callback, eg. `filter`
+	 * @param {string} options.name - Method name that instantiated callback, eg. `"filter"` or `"map"`
 	 * @param {unknown[]} options.parameters - Array of arguments that are passed to callback on each iteration
-	 * @param {Synchronous.Callback_Function} options.callback - Function that executes for each iteration of `Iterator_Cascade_Callbacks`
-	 * @param {Synchronous.Callback_Wrapper} options.wrapper - Function wrapper that handles input/output between `Callback_Function` and `Iterator_Cascade_Callbacks`
+	 * @param {Synchronous.Callback_Function} options.callback - Function that executes for each iteration of `Synchronous.Iterator_Cascade_Callbacks`
+	 * @param {Synchronous.Callback_Wrapper} options.wrapper - Function wrapper that handles input/output between `Synchronous.Callback_Function` and `Synchronous.Iterator_Cascade_Callbacks`
 	 * @see {@link Callback_Object_Base#constructor} for `name` and `parameters`
 	 */
 	constructor(options: {

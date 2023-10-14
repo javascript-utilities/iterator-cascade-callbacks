@@ -25,9 +25,9 @@ class Callback_Object<
 	/**
 	 * Builds new instance of `Callback_Object` to append to `Iterator_Cascade_Callbacks.callbacks` list
 	 * @param {Object} options - Labeled parameters
-	 * @param {string} options.name - Method name that instantiated callback, eg. `filter`
+	 * @param {string} options.name - Method name that instantiated callback, eg. `"filter"` or `"map"`
 	 * @param {unknown[]} options.parameters - Array of arguments that are passed to callback on each iteration
-	 * @param {Asynchronous.Callback_Function} options.callback - Function that executes for each iteration of `Iterator_Cascade_Callbacks`
+	 * @param {Asynchronous.Callback_Function} options.callback - Function that executes for each iteration of `Asynchronous.Iterator_Cascade_Callbacks`
 	 * @param {Asynchronous.Callback_Wrapper} options.wrapper - Function wrapper that handles input/output between `Callback_Function` and `Iterator_Cascade_Callbacks`
 	 * @see {@link Callback_Object_Base#constructor} for `name` and `parameters`
 	 */
@@ -44,7 +44,7 @@ class Callback_Object<
 
 	/**
 	 * Calls `this.wrapper` function with reference to this `Callback_Object` and `Iterator_Cascade_Callbacks`
-	 * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Reference to `Iterator_Cascade_Callbacks` instance
+	 * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Reference to `Asynchronous.Iterator_Cascade_Callbacks` instance
 	 * @this {Callback_Object}
 	 */
 	async call(iterator_cascade_callbacks: Iterator_Cascade_Callbacks) {

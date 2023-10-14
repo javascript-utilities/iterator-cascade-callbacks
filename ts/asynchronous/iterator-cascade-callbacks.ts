@@ -18,7 +18,7 @@ import * as Wrappers from './wrappers.js';
 import { Callback_Object } from './callback-object.js';
 
 /**
- * Asynchronous Iterator that chains callback function execution
+ * Asynchronous Iterator that chains asynchronous iterables and/or callback function execution
  * @author S0AndS0
  * @license AGPL-3.0
  * @see {link} https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-3.html#async-iteration
@@ -38,7 +38,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 
 	/**
 	 * Instantiates new instance of `Iterator_Cascade_Callbacks` from `iterable` input
-	 * @param {unknown} iterable - Currently may be an array, object, generator, or iterator type
+	 * @param {unknown} **{unknown}** `iterable` - Currently may be an array, object, generator, iterator, or object that implements `Symbol.asyncIterator` type
 	 */
 	constructor(iterable: unknown) {
 		this.done = false;
@@ -143,10 +143,10 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	}
 
 	/**
-	 * Returns new instance of `Iterator_Cascade_Callbacks` that yields lists of either `Yielded_Tuple` or `undefined` results
-	 * @param {unknown[]} iterables - List of Generators, Iterators, and/or instances of `Iterator_Cascade_Callbacks`
+	 * Returns new instance of `Asynchronous.Iterator_Cascade_Callbacks` that yields lists of either `Shared.Yielded_Data` or `undefined` results
+	 * @param {unknown[]} iterables - List of Generators, Iterators, and/or instances of `Asynchronous.Iterator_Cascade_Callbacks`
 	 * @notes
-	 * - Parameters that are not an instance of `Iterator_Cascade_Callbacks` will be converted
+	 * - Parameters that are not an instance of `Asynchronous.Iterator_Cascade_Callbacks` will be converted
 	 * - Iteration will continue until **all** iterables result in `done` value of `true`
 	 * @example - Equal Length Iterables
 	 * const icca_one = new Asynchronous.Iterator_Cascade_Callbacks([1, 2, 3]);
@@ -180,6 +180,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 */
 	static zip(...iterables: unknown[]): Iterator_Cascade_Callbacks {
 		return new this(Wrappers.zip(iterables, this));
+
 	}
 
 	/***/
@@ -190,11 +191,12 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	/**
 	 * Collects results from `this` to either an Array or Object
 	 * @param {unknown[]|Shared.Dictionary|unknown} target - When target is Array values are pushed, when target is Object key value pares are assigned, callback is required for other types
-	 * @param {Collect_To_Function?|number?} callback_or_amount - Callback function for collecting to custom type, or number to limit collection to
+	 * @param {Asynchronous.Collect_To_Function?|number?} callback_or_amount - Callback function for collecting to custom type, or number to limit collection to
 	 * @param {number?} amount - Limit collection to no more than amount
 	 * @return {Promise<unknown[]|Object|unknown>}
 	 * @throws {TypeError}
 	 * @this {Iterator_Cascade_Callbacks}
+	 * @see {@link Asynchronous.Collect_To_Function}
 	 */
 	async collect<
 		/* eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents */
