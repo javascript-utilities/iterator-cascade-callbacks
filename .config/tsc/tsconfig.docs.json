@@ -1,11 +1,14 @@
 {
-	"comments": ["This file is intended for use by CI/CD servers"],
+	"comments": [
+		"This file is intended for use by CI/CD servers",
+		"For configuration options check: npm run docs -- --help"
+	],
 	"extends": "./tsconfig.base.json",
 	"compilerOptions": {
 		"removeComments": false,
 		"outDir": "../../targets/docs"
 	},
-	"include": ["../../ts/*", "../../@types/**/*"],
+	"include": ["../../ts/index.ts", "../../@types/**/*"],
 	"exclude": ["../../ts/__tests__/**/*"],
 	"typedocOptions": {
 		"entryPoints": ["../../ts/index.ts"],
@@ -15,6 +18,9 @@
 		"hideGenerator": true,
 		"hidePageTitle": false,
 		"hideParameterTypesInTitle": true,
+		"includeVersion": true,
+		"gitRevision": "v1.0.0",
+    "excludeExternals": true,
 		"name": "Iterator Cascade Callbacks"
 	}
 }

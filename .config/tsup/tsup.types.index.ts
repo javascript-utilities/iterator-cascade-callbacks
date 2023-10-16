@@ -5,11 +5,10 @@ import * as path from 'path';
 
 import { defineConfig } from 'tsup';
 
-import { SharedConfig as SharedConfig_Base_MJS } from './tsup.base.mjs';
 import { SharedConfig as SharedConfig_Base_Types } from './tsup.base.types';
 
 export default defineConfig(
-	Object.assign({}, SharedConfig_Base_MJS, SharedConfig_Base_Types, {
-		entry: ['ts/asynchronous.ts', '!ts/lib', '!ts/__tests__'],
+	Object.assign({}, SharedConfig_Base_Types, {
+		entry: ['ts/index.ts', '!ts/lib', '!ts/__tests__'],
 	})
 );

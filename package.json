@@ -7,37 +7,28 @@
   "types": "./targets/types/index.d.ts",
   "exports": {
     ".": {
+      "types": "./targets/types/index.d.ts",
       "import": "./targets/mjs/index.mjs",
-      "require": "./targets/cjs/index.cjs",
-      "types": "./targets/types/index.d.ts"
+      "require": "./targets/cjs/index.js"
+    },
+    "./asynchronous": {
+      "types": "./targets/types/asynchronous.d.ts",
+      "import": "./targets/mjs/asynchronous.mjs",
+      "require": "./targets/cjs/asynchronous.js"
+    },
+    "./synchronous": {
+      "types": "./targets/types/synchronous.d.ts",
+      "import": "./targets/mjs/synchronous.mjs",
+      "require": "./targets/cjs/synchronous.js"
     }
   },
   "scripts": {
-    "tsup:cjs:all": "npm run tsup:cjs:index:all && npm run tsup:cjs:asynchronous:all && npm run tsup:cjs:synchronous:all",
-    "tsup:cjs:index:all": "npm run tsup:cjs:index:code && npm run tsup:cjs:index:types",
-    "tsup:cjs:index:code": "tsup --config .config/tsup/tsup.cjs.index.code.ts",
-    "tsup:cjs:index:types": "tsup --config .config/tsup/tsup.cjs.index.types.ts",
-    "tsup:cjs:asynchronous:all": "npm run tsup:cjs:asynchronous:code && npm run tsup:cjs:asynchronous:types",
-    "tsup:cjs:asynchronous:code": "tsup --config .config/tsup/tsup.cjs.asynchronous.code.ts",
-    "tsup:cjs:asynchronous:types": "tsup --config .config/tsup/tsup.cjs.asynchronous.types.ts",
-    "tsup:cjs:synchronous:all": "npm run tsup:cjs:synchronous:code && npm run tsup:cjs:synchronous:types",
-    "tsup:cjs:synchronous:code": "tsup --config .config/tsup/tsup.cjs.synchronous.code.ts",
-    "tsup:cjs:synchronous:types": "tsup --config .config/tsup/tsup.cjs.synchronous.types.ts",
-    "tsup:mjs:all": "npm run tsup:mjs:index:all && npm run tsup:mjs:asynchronous:all && npm run tsup:mjs:synchronous:all",
-    "tsup:mjs:index:all": "npm run tsup:mjs:index:code && npm run tsup:mjs:index:types",
-    "tsup:mjs:index:code": "tsup --config .config/tsup/tsup.mjs.index.code.ts",
-    "tsup:mjs:index:types": "tsup --config .config/tsup/tsup.mjs.index.types.ts",
-    "tsup:mjs:asynchronous:all": "npm run tsup:mjs:asynchronous:code && npm run tsup:mjs:asynchronous:types",
-    "tsup:mjs:asynchronous:code": "tsup --config .config/tsup/tsup.mjs.asynchronous.code.ts",
-    "tsup:mjs:asynchronous:types": "tsup --config .config/tsup/tsup.mjs.asynchronous.types.ts",
-    "tsup:mjs:synchronous:all": "npm run tsup:mjs:synchronous:code && npm run tsup:mjs:synchronous:types",
-    "tsup:mjs:synchronous:code": "tsup --config .config/tsup/tsup.mjs.synchronous.code.ts",
-    "tsup:mjs:synchronous:types": "tsup --config .config/tsup/tsup.mjs.synchronous.types.ts",
-    "tsup:all": "npm run tsup:cjs:all && npm run tsup:mjs:all",
-    "clean:all": "npm run clean:cjs ; npm run clean:mjs ; npm run clean:ci-cd",
-    "clean:cjs": "rm -r targets/cjs",
-    "clean:mjs": "rm -r targets/mjs",
+    "clean:all": "npm run clean:ci-cd ; npm run clean:cjs ; npm clean:docs ; npm run clean:mjs ; npm clean:types ; npm clean:docs",
     "clean:ci-cd": "rm -r targets/ci-cd",
+    "clean:cjs": "rm -r targets/cjs",
+    "clean:docs": "rm -r docs",
+    "clean:mjs": "rm -r targets/mjs",
+    "clean:types": "rm -r targets/mjs",
     "ci:all": "npm run ci:lint && npm run ci:build:all && npm run ci:test",
     "ci:build:all": "npm run ci:build:code && npm run ci:build:tests",
     "ci:build:code": "tsc --project .config/tsc/tsconfig.ci-cd.code.json",
@@ -46,7 +37,23 @@
     "ci:lint": "eslint ts",
     "ci:test": "jest --coverage",
     "docs": "typedoc --tsconfig .config/tsc/tsconfig.docs.json",
-    "py-serve": "python3 -m http.server --bind 127.0.0.1 9080"
+    "tsup:cjs:all": "npm run tsup:cjs:index && npm run tsup:cjs:asynchronous && npm run tsup:cjs:synchronous",
+    "tsup:cjs:index": "tsup --config .config/tsup/tsup.cjs.index.ts",
+    "tsup:cjs:asynchronous": "tsup --config .config/tsup/tsup.cjs.asynchronous.ts",
+    "tsup:cjs:synchronous": "tsup --config .config/tsup/tsup.cjs.synchronous.ts",
+    "tsup:mjs:all": "npm run tsup:mjs:index && npm run tsup:mjs:asynchronous && npm run tsup:mjs:synchronous",
+    "tsup:mjs:index": "tsup --config .config/tsup/tsup.mjs.index.ts",
+    "tsup:mjs:asynchronous": "tsup --config .config/tsup/tsup.mjs.asynchronous.ts",
+    "tsup:mjs:synchronous": "tsup --config .config/tsup/tsup.mjs.synchronous.ts",
+    "tsup:types:all": "npm run tsup:types:index && npm run tsup:types:asynchronous && npm run tsup:types:synchronous",
+    "tsup:types:index": "tsup --config .config/tsup/tsup.types.index.ts",
+    "tsup:types:asynchronous": "tsup --config .config/tsup/tsup.types.asynchronous.ts",
+    "tsup:types:synchronous": "tsup --config .config/tsup/tsup.types.synchronous.ts",
+    "tsup:all": "npm run tsup:cjs:all && npm run tsup:mjs:all",
+    "py-serve": "python3 -m http.server --bind 127.0.0.1 9080",
+    "prepublishOnly": "npm clean:all && npm ci:all && npm run tsup:all && npm docs",
+    "publish": "echo publish",
+    "postpublish": "echo postpublish"
   },
   "jest": {
     "verbose": true,
@@ -85,7 +92,9 @@
   },
   "eslintConfig": {
     "reportUnusedDisableDirectives": true,
-    "ignorePatterns": [],
+    "ignorePatterns": [
+      "*/__tests__/**/*"
+    ],
     "extends": [
       "eslint:recommended",
       "plugin:@typescript-eslint/recommended",
@@ -101,12 +110,10 @@
       ]
     },
     "plugins": [
-      "@typescript-eslint"
+      "@typescript-eslint",
+      "eslint-plugin-tsdoc"
     ],
     "root": true,
-    "ignorePatterns": [
-      "*/__tests__/**/*"
-    ],
     "rules": {}
   },
   "repository": {
@@ -136,10 +143,22 @@
     "jest": "^29.6.4",
     "jest-environment-jsdom": "^29.6.4",
     "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.1",
     "tsup": "^7.2.0",
     "typedoc": "^0.25.2",
     "typedoc-plugin-markdown": "^3.16.0",
     "typedoc-plugin-missing-exports": "^2.1.0",
     "typescript": "^5.2.2"
-  }
+  },
+  "workspaces": [
+    "examples/mts_node_fibonacci",
+    "examples/mjs_webpack_counter",
+    "examples/mts_node_fetch"
+  ],
+  "files": [
+    "docs",
+    "targets/cjs",
+    "targets/mjs",
+    "targets/types"
+  ]
 }
