@@ -13,8 +13,7 @@ const package_json = JSON.parse(
 const SharedConfig = {
 	name: package_json.name,
 	minify: env === 'production',
-	/* @TODO: sort-out why for type bundling errors out */
-	dts: true,
+	dts: false,
 	clean: false,
 	sourcemap: true,
 } as Options;
