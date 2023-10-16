@@ -1,0 +1,20 @@
+{
+	"comments": ["This file is intended for use by CI/CD servers"],
+	"extends": "./tsconfig.base.json",
+	"compilerOptions": {
+		"removeComments": false,
+		"outDir": "../../targets/docs"
+	},
+	"include": ["../../ts/*", "../../@types/**/*"],
+	"exclude": ["../../ts/__tests__/**/*"],
+	"typedocOptions": {
+		"entryPoints": ["../../ts/index.ts"],
+		"out": "../../docs",
+		"plugin": ["typedoc-plugin-markdown", "typedoc-plugin-missing-exports"],
+		"hideBreadcrumbs": true,
+		"hideGenerator": true,
+		"hidePageTitle": false,
+		"hideParameterTypesInTitle": true,
+		"name": "Iterator Cascade Callbacks"
+	}
+}

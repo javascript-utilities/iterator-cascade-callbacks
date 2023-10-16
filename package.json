@@ -45,6 +45,7 @@
     "ci:check": "tsc --project tsconfig.json --noEmit ",
     "ci:lint": "eslint ts",
     "ci:test": "jest --coverage",
+    "docs": "typedoc --tsconfig .config/tsc/tsconfig.docs.json",
     "py-serve": "python3 -m http.server --bind 127.0.0.1 9080"
   },
   "jest": {
@@ -131,10 +132,14 @@
     "@typescript-eslint/parser": "^6.7.4",
     "eslint": "^8.51.0",
     "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-tsdoc": "^0.2.17",
     "jest": "^29.6.4",
     "jest-environment-jsdom": "^29.6.4",
     "ts-jest": "^29.1.1",
     "tsup": "^7.2.0",
+    "typedoc": "^0.25.2",
+    "typedoc-plugin-markdown": "^3.16.0",
+    "typedoc-plugin-missing-exports": "^2.1.0",
     "typescript": "^5.2.2"
   }
 }
