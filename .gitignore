@@ -10,6 +10,9 @@ coverage
 ## TypeScript
 tsconfig.tsbuildinfo
 
+## TypeScript and tsup
+targets
+
 ## Vim (BTW™)
 *.swp
 *.swo
