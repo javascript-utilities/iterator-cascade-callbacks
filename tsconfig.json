@@ -1,6 +1,6 @@
 {
 	"comments": ["This file is intended for use by IDEs"],
-  "extends": "./.config/tsc/tsconfig.base.json",
+	"extends": "./.config/tsc/tsconfig.base.json",
 	"compilerOptions": {
 		"outDir": "targets/ci-cd"
 	},
