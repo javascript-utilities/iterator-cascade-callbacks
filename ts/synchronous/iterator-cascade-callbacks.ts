@@ -205,7 +205,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 * @param {Collect_To_Function?|number?} callback_or_amount - Callback function for collecting to custom type, or number to limit collection to
 	 * @param {number?} amount - Limit collection to no more than amount
 	 *
-	 * @return {unknown[]|Object|unknown}
+	 * @returns {unknown[]|Object|unknown}
 	 *
 	 * @throws {TypeError}
 	 *
@@ -247,7 +247,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 * @param {unknown[]} target - Array to push collected values to
 	 * @param {number?} amount - Limit collection to no more than amount
 	 *
-	 * @return {unknown[]}
+	 * @returns {unknown[]}
 	 *
 	 * @this {Iterator_Cascade_Callbacks}
 	 *
@@ -287,7 +287,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 * @param {Function} callback - Custom callback function for collecting iterated values
 	 * @param {number?} amount - Limit collection to no more than amount
 	 *
-	 * @return {unknown} target - The object that callback function has mutated
+	 * @returns {unknown} target - The object that callback function has mutated
 	 *
 	 * @this {Iterator_Cascade_Callbacks}
 	 *
@@ -338,7 +338,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 * @param {Object} target - Dictionary like object to assign key value pares to
 	 * @param {number?} amount - Limit collection to no more than amount
 	 *
-	 * @return {Object}
+	 * @returns {Object}
 	 *
 	 * @this {Iterator_Cascade_Callbacks}
 	 *
@@ -378,7 +378,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 *
 	 * @param {unknown} iterable - Any compatible iterable object, iterator, or generator
 	 *
-	 * @return {Iterator_Cascade_Callbacks}
+	 * @returns {Iterator_Cascade_Callbacks}
 	 *
 	 * @notes
 	 * - New instance will share references to callback wrapper functions
@@ -428,7 +428,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	/**
 	 * Sets `this.value` to `Yielded_Entry` which contains `[this.yielded_data.index_or_key, this.yielded_data.content]`
 	 *
-	 * @return {this}
+	 * @returns {this}
 	 *
 	 * @this {Iterator_Cascade_Callbacks}
 	 *
@@ -439,9 +439,12 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 * ```javascript
 	 * const icc = new Synchronous.Iterator_Cascade_Callbacks([9, 8, 7, 6, 5]);
 	 *
-	 * const collection = icc.entries().filter(([index, value]) => {
-	 *   return (value - index) % 3 === 0;
-	 * }).collect([]);
+	 * const collection = icc
+	 *   .entries()
+	 *   .filter(([index, value]) => {
+	 *     return (value - index) % 3 === 0;
+	 *   })
+	 *   .collect([]);
 	 *
 	 * console.log(collection);
 	 * //> [ [ 0, 9 ], [ 3, 6 ] ]
@@ -468,7 +471,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 * @param {Synchronous.Callback_Function} callback - Function that determines truth of `value` and/or `index_or_key` for each iteration
 	 * @param {...unknown[]} parameters - List of arguments that are passed to callback on each iteration
 	 *
-	 * @return {this}
+	 * @returns {this}
 	 *
 	 * @this {Iterator_Cascade_Callbacks}
 	 *
@@ -608,7 +611,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 *
 	 * @param {number} amount - Max number of values to compute
 	 *
-	 * @return {this}
+	 * @returns {this}
 	 *
 	 * @throws {Stop_Iteration}
 	 *
@@ -653,7 +656,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 * @param {Synchronous.Callback_Function} callback - Function may modify `value` and/or `index_or_key`
 	 * @param {...unknown[]} parameters - List of arguments that are passed to callback on each iteration
 	 *
-	 * @return {this}
+	 * @returns {this}
 	 *
 	 * @this {Iterator_Cascade_Callbacks}
 	 *
@@ -700,7 +703,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	/**
 	 * Updates `this.yielded_data.content` from chaining `this.callbacks` list, and `this.done` from `this.iterator.next()`
 	 *
-	 * @return {this}
+	 * @returns {this}
 	 *
 	 * @this {Iterator_Cascade_Callbacks}
 	 *
@@ -757,7 +760,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	/**
 	 * Returns, and removes, last `Callback_Object` from `this.callbacks` list
 	 *
-	 * @return {Callback_Object?}
+	 * @returns {Callback_Object?}
 	 *
 	 * @this {Iterator_Cascade_Callbacks}
 	 */
@@ -768,7 +771,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	/**
 	 * Removes last `Callback_Object` from `this.callbacks` list and returns `Callback_Wrapper` function
 	 *
-	 * @return {Callback_Wrapper?}
+	 * @returns {Callback_Wrapper?}
 	 *
 	 * @this {Iterator_Cascade_Callbacks}
 	 */
@@ -787,7 +790,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 * @param {Synchronous.Callback_Function} callback - Generic callback function for parsing and/or mutating iterator data
 	 * @param {...unknown[]} options.parameters - List of arguments that are passed to callback on each iteration
 	 *
-	 * @return {this}
+	 * @returns {this}
 	 *
 	 * @this {Iterator_Cascade_Callbacks}
 	 */
@@ -813,7 +816,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 *
 	 * @param {number} amount - Number of iterations to skip past
 	 *
-	 * @return {this}
+	 * @returns {this}
 	 *
 	 * @this {Iterator_Cascade_Callbacks}
 	 *
@@ -850,7 +853,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 *
 	 * @param {number} amount - Number of iterations to step over
 	 *
-	 * @return {this}
+	 * @returns {this}
 	 *
 	 * @this {Iterator_Cascade_Callbacks}
 	 *
@@ -885,7 +888,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 *
 	 * @param {number} amount - Number of values to compute before pausing
 	 *
-	 * @return {this}
+	 * @returns {this}
 	 *
 	 * @throws {Pause_Iteration}
 	 *
