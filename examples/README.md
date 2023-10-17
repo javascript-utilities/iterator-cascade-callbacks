@@ -8,17 +8,15 @@
 
 
 - [&#x2B06; Top of Document][heading__top]
-
 - [Contributing new examples][heading__contributing_new_examples]
-  - [Initialize an example workspace with given `NAME`] [heading__initialize_an_example_workspace_with_given_name]
-  - [Update `package.json` to define `"type": "module"`] [heading__update_packagejson_to_define_type_module_if_using_import_syntax]
+  - [Initialize an example workspace with given `NAME`][heading__initialize_an_example_workspace_with_given_name]
+  - [Update `package.json` to define `"type": "module"`][heading__update_packagejson_to_define_type_module]
   - [Update `package.json` to define `"private": true`][heading__update_packagejson_to_define_private_true]
-  - [Define root of repository as `file:` path dependency] [heading__define_root_of_repository_as_file_path_dependency]
-  - [Install dependencies, if any, to workspace of selected `NAME`] [heading__install_dependencies_if_any_to_workspace_of_selected_name]
-  - [Define a TypeScript configuration file] [heading__define_a_typescript_configuration_file]
-  - [Make a `src/` directory and `index.ts` file] [heading__make_a_src_directory_and_indexts_file]
-  - [Either `import` or `require` library features within example script] [heading__either_import_or_require_library_features_within_example_script]
-
+  - [Define root of repository as `file:` path dependency][heading__define_root_of_repository_as_file_path_dependency]
+  - [Install dependencies, if any, to workspace of selected `NAME`][heading__install_dependencies_if_any_to_workspace_of_selected_name]
+  - [Define a TypeScript configuration file][heading__define_a_typescript_configuration_file]
+  - [Make a `src/` directory and `index.ts` file][heading__make_a_src_directory_and_indexts_file]
+  - [Either `import` or `require` library features within example script][heading__either_import_or_require_library_features_within_example_script]
 - [Development tips and tricks][heading__development_tips_and_tricks]
 
 
@@ -29,9 +27,7 @@
 [heading__contributing_new_examples]: #contributing-new-examples
 
 
-> Note; please start with following the
-> [`README.md` -- `Forking`][file__readme__heading__forking]
->  instructions.
+> Note; please start with the `./README.md` -- `Forking` instructions.
 >
 > Examples _should_ be simple and, other than Iterator Cascade Callbacks
 > features, must not contain local file-path dependencies.
@@ -78,7 +74,7 @@ license: (ISC) AGPL-3.0
 
 
 ### Update `package.json` to define `"type": "module"`
-[heading__update_packagejson_to_define_type_module_if_using_import_syntax]: #update-packagejson-to-define-type-module-if-using-import-syntax
+[heading__update_packagejson_to_define_type_module]: #update-packagejson-to-define-type-module
 
 
 > Note; this seems to be _mostly_ required if using `import` syntax within
@@ -213,6 +209,6 @@ ______
 
 
 [file__readme__heading__forking]:
-  ../README.md#forking
+  ./../README.md#forking
   "&#x1F531; Tips for forking iterator-cascade-callbacks"
 

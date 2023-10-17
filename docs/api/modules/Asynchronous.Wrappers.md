@@ -48,7 +48,7 @@
 
 #### Defined in
 
-[ts/asynchronous/wrappers.ts:62](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/asynchronous/wrappers.ts#L62)
+[ts/asynchronous/wrappers.ts:62](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/asynchronous/wrappers.ts#L62)
 
 ___
 
@@ -81,7 +81,7 @@ ___
 
 #### Defined in
 
-[ts/asynchronous/wrappers.ts:81](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/asynchronous/wrappers.ts#L81)
+[ts/asynchronous/wrappers.ts:81](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/asynchronous/wrappers.ts#L81)
 
 ___
 
@@ -114,7 +114,7 @@ ___
 
 #### Defined in
 
-[ts/asynchronous/wrappers.ts:152](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/asynchronous/wrappers.ts#L152)
+[ts/asynchronous/wrappers.ts:152](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/asynchronous/wrappers.ts#L152)
 
 ___
 
@@ -147,7 +147,7 @@ ___
 
 #### Defined in
 
-[ts/asynchronous/wrappers.ts:173](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/asynchronous/wrappers.ts#L173)
+[ts/asynchronous/wrappers.ts:173](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/asynchronous/wrappers.ts#L173)
 
 ___
 
@@ -184,7 +184,7 @@ this expects `callback_object.parameters[0]` to contain the limit
 
 #### Defined in
 
-[ts/asynchronous/wrappers.ts:195](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/asynchronous/wrappers.ts#L195)
+[ts/asynchronous/wrappers.ts:195](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/asynchronous/wrappers.ts#L195)
 
 ___
 
@@ -218,7 +218,7 @@ ___
 
 #### Defined in
 
-[ts/asynchronous/wrappers.ts:231](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/asynchronous/wrappers.ts#L231)
+[ts/asynchronous/wrappers.ts:231](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/asynchronous/wrappers.ts#L231)
 
 ___
 
@@ -255,7 +255,7 @@ this expects `callback_object.parameters[0]` to contain the limit
 
 #### Defined in
 
-[ts/asynchronous/wrappers.ts:263](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/asynchronous/wrappers.ts#L263)
+[ts/asynchronous/wrappers.ts:263](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/asynchronous/wrappers.ts#L263)
 
 ___
 
@@ -292,7 +292,7 @@ this expects `callback_object.parameters[0]` to contain the limit
 
 #### Defined in
 
-[ts/asynchronous/wrappers.ts:312](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/asynchronous/wrappers.ts#L312)
+[ts/asynchronous/wrappers.ts:312](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/asynchronous/wrappers.ts#L312)
 
 ___
 
@@ -329,7 +329,7 @@ this expects `callback_object.parameters[0]` to contain the limit
 
 #### Defined in
 
-[ts/asynchronous/wrappers.ts:363](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/asynchronous/wrappers.ts#L363)
+[ts/asynchronous/wrappers.ts:363](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/asynchronous/wrappers.ts#L363)
 
 ___
 
@@ -354,4 +354,4 @@ ___
 
 #### Defined in
 
-[ts/asynchronous/wrappers.ts:28](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/asynchronous/wrappers.ts#L28)
+[ts/asynchronous/wrappers.ts:28](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/asynchronous/wrappers.ts#L28)

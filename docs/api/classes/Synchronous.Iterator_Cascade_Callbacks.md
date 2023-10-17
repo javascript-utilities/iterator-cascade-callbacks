@@ -87,7 +87,7 @@ when passed unsupported iterables
 
 #### Defined in
 
-[ts/synchronous/iterator-cascade-callbacks.ts:73](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/synchronous/iterator-cascade-callbacks.ts#L73)
+[ts/synchronous/iterator-cascade-callbacks.ts:73](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/synchronous/iterator-cascade-callbacks.ts#L73)
 
 ## Properties
 
@@ -99,7 +99,7 @@ Cheep reusable array reference satisfies TypeScript, and `pushCallbackWrapper`, 
 
 #### Defined in
 
-[ts/synchronous/iterator-cascade-callbacks.ts:939](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/synchronous/iterator-cascade-callbacks.ts#L939)
+[ts/synchronous/iterator-cascade-callbacks.ts:939](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/synchronous/iterator-cascade-callbacks.ts#L939)
 
 ___
 
@@ -118,7 +118,7 @@ Array of objects that hold pointers to `Asynchronous.Callback_Wrapper` and `Asyn
 
 #### Defined in
 
-[ts/synchronous/iterator-cascade-callbacks.ts:33](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/synchronous/iterator-cascade-callbacks.ts#L33)
+[ts/synchronous/iterator-cascade-callbacks.ts:33](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/synchronous/iterator-cascade-callbacks.ts#L33)
 
 ___
 
@@ -134,7 +134,7 @@ Report when/if instance of `Asynchronous.Iterator_Cascade_Callbacks` is done pro
 
 #### Defined in
 
-[ts/synchronous/iterator-cascade-callbacks.ts:41](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/synchronous/iterator-cascade-callbacks.ts#L41)
+[ts/synchronous/iterator-cascade-callbacks.ts:41](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/synchronous/iterator-cascade-callbacks.ts#L41)
 
 ___
 
@@ -154,7 +154,7 @@ Generator that `this.next()` cascades values through `this.callbacks` list
 
 #### Defined in
 
-[ts/synchronous/iterator-cascade-callbacks.ts:52](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/synchronous/iterator-cascade-callbacks.ts#L52)
+[ts/synchronous/iterator-cascade-callbacks.ts:52](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/synchronous/iterator-cascade-callbacks.ts#L52)
 
 ___
 
@@ -175,7 +175,7 @@ Allow for finer-grain states than `this.done`
 
 #### Defined in
 
-[ts/synchronous/iterator-cascade-callbacks.ts:59](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/synchronous/iterator-cascade-callbacks.ts#L59)
+[ts/synchronous/iterator-cascade-callbacks.ts:59](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/synchronous/iterator-cascade-callbacks.ts#L59)
 
 ___
 
@@ -185,7 +185,7 @@ ___
 
 #### Defined in
 
-[ts/synchronous/iterator-cascade-callbacks.ts:64](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/synchronous/iterator-cascade-callbacks.ts#L64)
+[ts/synchronous/iterator-cascade-callbacks.ts:64](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/synchronous/iterator-cascade-callbacks.ts#L64)
 
 ## Accessors
 
@@ -205,7 +205,7 @@ Get data from `this.yielded_data.content`
 
 #### Defined in
 
-[ts/synchronous/iterator-cascade-callbacks.ts:197](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/synchronous/iterator-cascade-callbacks.ts#L197)
+[ts/synchronous/iterator-cascade-callbacks.ts:197](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/synchronous/iterator-cascade-callbacks.ts#L197)
 
 ## Methods
 
@@ -221,7 +221,7 @@ Cheep reusable function reference satisfies TypeScript, and `pushCallbackWrapper
 
 #### Defined in
 
-[ts/synchronous/iterator-cascade-callbacks.ts:934](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/synchronous/iterator-cascade-callbacks.ts#L934)
+[ts/synchronous/iterator-cascade-callbacks.ts:934](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/synchronous/iterator-cascade-callbacks.ts#L934)
 
 ___
 
@@ -240,7 +240,7 @@ ___
 
 #### Defined in
 
-[ts/synchronous/iterator-cascade-callbacks.ts:945](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/synchronous/iterator-cascade-callbacks.ts#L945)
+[ts/synchronous/iterator-cascade-callbacks.ts:945](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/synchronous/iterator-cascade-callbacks.ts#L945)
 
 ___
 
@@ -284,7 +284,7 @@ Collects results from `this` to either an Array or Object
 
 #### Defined in
 
-[ts/synchronous/iterator-cascade-callbacks.ts:221](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/synchronous/iterator-cascade-callbacks.ts#L221)
+[ts/synchronous/iterator-cascade-callbacks.ts:221](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/synchronous/iterator-cascade-callbacks.ts#L221)
 
 ___
 
@@ -332,7 +332,7 @@ console.log(collection);
 
 #### Defined in
 
-[ts/synchronous/iterator-cascade-callbacks.ts:271](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/synchronous/iterator-cascade-callbacks.ts#L271)
+[ts/synchronous/iterator-cascade-callbacks.ts:271](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/synchronous/iterator-cascade-callbacks.ts#L271)
 
 ___
 
@@ -385,7 +385,7 @@ console.log(collection);
 
 #### Defined in
 
-[ts/synchronous/iterator-cascade-callbacks.ts:311](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/synchronous/iterator-cascade-callbacks.ts#L311)
+[ts/synchronous/iterator-cascade-callbacks.ts:311](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/synchronous/iterator-cascade-callbacks.ts#L311)
 
 ___
 
@@ -429,7 +429,7 @@ console.log(collection);
 
 #### Defined in
 
-[ts/synchronous/iterator-cascade-callbacks.ts:358](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/synchronous/iterator-cascade-callbacks.ts#L358)
+[ts/synchronous/iterator-cascade-callbacks.ts:358](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/synchronous/iterator-cascade-callbacks.ts#L358)
 
 ___
 
@@ -483,7 +483,7 @@ console.log('Collection Two ->', icc_two.collect([]));
 
 #### Defined in
 
-[ts/synchronous/iterator-cascade-callbacks.ts:410](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/synchronous/iterator-cascade-callbacks.ts#L410)
+[ts/synchronous/iterator-cascade-callbacks.ts:410](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/synchronous/iterator-cascade-callbacks.ts#L410)
 
 ___
 
@@ -527,7 +527,7 @@ console.log(collection);
 
 #### Defined in
 
-[ts/synchronous/iterator-cascade-callbacks.ts:453](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/synchronous/iterator-cascade-callbacks.ts#L453)
+[ts/synchronous/iterator-cascade-callbacks.ts:453](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/synchronous/iterator-cascade-callbacks.ts#L453)
 
 ___
 
@@ -581,7 +581,7 @@ console.log(collection);
 
 #### Defined in
 
-[ts/synchronous/iterator-cascade-callbacks.ts:497](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/synchronous/iterator-cascade-callbacks.ts#L497)
+[ts/synchronous/iterator-cascade-callbacks.ts:497](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/synchronous/iterator-cascade-callbacks.ts#L497)
 
 ___
 
@@ -636,7 +636,7 @@ console.log(collection);
 
 #### Defined in
 
-[ts/synchronous/iterator-cascade-callbacks.ts:540](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/synchronous/iterator-cascade-callbacks.ts#L540)
+[ts/synchronous/iterator-cascade-callbacks.ts:540](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/synchronous/iterator-cascade-callbacks.ts#L540)
 
 ___
 
@@ -700,7 +700,7 @@ const collection = icc
 
 #### Defined in
 
-[ts/synchronous/iterator-cascade-callbacks.ts:596](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/synchronous/iterator-cascade-callbacks.ts#L596)
+[ts/synchronous/iterator-cascade-callbacks.ts:596](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/synchronous/iterator-cascade-callbacks.ts#L596)
 
 ___
 
@@ -753,7 +753,7 @@ console.log(collection);
 
 #### Defined in
 
-[ts/synchronous/iterator-cascade-callbacks.ts:638](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/synchronous/iterator-cascade-callbacks.ts#L638)
+[ts/synchronous/iterator-cascade-callbacks.ts:638](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/synchronous/iterator-cascade-callbacks.ts#L638)
 
 ___
 
@@ -811,7 +811,7 @@ console.log(collection);
 
 #### Defined in
 
-[ts/synchronous/iterator-cascade-callbacks.ts:686](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/synchronous/iterator-cascade-callbacks.ts#L686)
+[ts/synchronous/iterator-cascade-callbacks.ts:686](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/synchronous/iterator-cascade-callbacks.ts#L686)
 
 ___
 
@@ -841,7 +841,7 @@ for (let value of icc) {
 
 #### Defined in
 
-[ts/synchronous/iterator-cascade-callbacks.ts:724](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/synchronous/iterator-cascade-callbacks.ts#L724)
+[ts/synchronous/iterator-cascade-callbacks.ts:724](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/synchronous/iterator-cascade-callbacks.ts#L724)
 
 ___
 
@@ -857,7 +857,7 @@ Returns, and removes, last `Callback_Object` from `this.callbacks` list
 
 #### Defined in
 
-[ts/synchronous/iterator-cascade-callbacks.ts:767](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/synchronous/iterator-cascade-callbacks.ts#L767)
+[ts/synchronous/iterator-cascade-callbacks.ts:767](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/synchronous/iterator-cascade-callbacks.ts#L767)
 
 ___
 
@@ -873,7 +873,7 @@ Removes last `Callback_Object` from `this.callbacks` list and returns `Callback_
 
 #### Defined in
 
-[ts/synchronous/iterator-cascade-callbacks.ts:778](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/synchronous/iterator-cascade-callbacks.ts#L778)
+[ts/synchronous/iterator-cascade-callbacks.ts:778](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/synchronous/iterator-cascade-callbacks.ts#L778)
 
 ___
 
@@ -908,7 +908,7 @@ Instantiates `Callback_Object` with callback_wrapper and pushes to `this.callbac
 
 #### Defined in
 
-[ts/synchronous/iterator-cascade-callbacks.ts:797](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/synchronous/iterator-cascade-callbacks.ts#L797)
+[ts/synchronous/iterator-cascade-callbacks.ts:797](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/synchronous/iterator-cascade-callbacks.ts#L797)
 
 ___
 
@@ -953,7 +953,7 @@ console.log(collection);
 
 #### Defined in
 
-[ts/synchronous/iterator-cascade-callbacks.ts:836](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/synchronous/iterator-cascade-callbacks.ts#L836)
+[ts/synchronous/iterator-cascade-callbacks.ts:836](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/synchronous/iterator-cascade-callbacks.ts#L836)
 
 ___
 
@@ -998,7 +998,7 @@ console.log(collection);
 
 #### Defined in
 
-[ts/synchronous/iterator-cascade-callbacks.ts:873](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/synchronous/iterator-cascade-callbacks.ts#L873)
+[ts/synchronous/iterator-cascade-callbacks.ts:873](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/synchronous/iterator-cascade-callbacks.ts#L873)
 
 ___
 
@@ -1054,7 +1054,7 @@ console.log(collection_two);
 
 #### Defined in
 
-[ts/synchronous/iterator-cascade-callbacks.ts:918](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/synchronous/iterator-cascade-callbacks.ts#L918)
+[ts/synchronous/iterator-cascade-callbacks.ts:918](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/synchronous/iterator-cascade-callbacks.ts#L918)
 
 ___
 
@@ -1121,4 +1121,4 @@ for (let values of icc_zip) {
 
 #### Defined in
 
-[ts/synchronous/iterator-cascade-callbacks.ts:187](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/main/ts/synchronous/iterator-cascade-callbacks.ts#L187)
+[ts/synchronous/iterator-cascade-callbacks.ts:187](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/synchronous/iterator-cascade-callbacks.ts#L187)

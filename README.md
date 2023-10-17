@@ -76,11 +76,11 @@ npm install --save-dev iterator-cascade-callbacks
 ```
 
 
-... Check [NodeJS Examples][heading__nodejs_examples] for details on how to
-import this project within your own source code.
+... Check [Usage][heading__usage] for quick tips on how to import this project
+within your own source code.
 
-[API][directory__api__iterator_cascade_callbacks] documentation _should_ be
-reasonably up-to-date with quick examples, and tips.
+[API](docs/api/) documentation _should_ be reasonably up-to-date with
+quick examples, and tips.
 
 
 ______
@@ -90,9 +90,8 @@ ______
 [heading__usage]: #usage "&#x1F9F0; Examples on how to utilize this repository"
 
 
-> Note; the [`examples/`][directory__exampes__iterator_cascade_callbacks]
-> directory contains sample projects, which likely will be more instructive
-> than this set of sub-sections.
+> Note; the `examples/` directory contains sample projects, which likely will
+> be more instructive than this set of sub-sections.
 
 
 ---
@@ -121,7 +120,7 @@ import type {
 
 
 ```javascript
-const { Asynchronous, Synchronous } require('iterator-cascade-callbacks');
+const { Asynchronous, Synchronous } = require('iterator-cascade-callbacks');
 ```
 
 
@@ -132,10 +131,11 @@ const { Asynchronous, Synchronous } require('iterator-cascade-callbacks');
 [heading__synchronousiterator_cascade_callbacks_examples]: #synchronousiterator_cascade_callbacks-examples
 
 
-- `examples/mjs_webpack_counter/README.md` ⇒  Demonstrate utilizing Iterator
-  Cascade Callbacks with synchronous Counter Iterator
-- `examples/mts_node_fibonacci/README.md` ⇒  Demonstrate utilizing Iterator
-  Cascade Callbacks with synchronous Fibonacci generator
+- [`examples/mjs_webpack_counter/`](examples/mjs_webpack_counter/) ⇒
+  Demonstrate utilizing Iterator Cascade Callbacks with synchronous Counter
+  Iterator
+- [`examples/mts_node_fibonacci/`](examples/mts_node_fibonacci/) ⇒  Demonstrate
+  utilizing Iterator Cascade Callbacks with synchronous Fibonacci generator
 
 
 ---
@@ -145,8 +145,8 @@ const { Asynchronous, Synchronous } require('iterator-cascade-callbacks');
 [heading__asynchronousiterator_cascade_callbacks_examples]: #asynchronousiterator_cascade_callbacks-examples
 
 
-- `examples/mts_node_fetch/README.md` ⇒  Demonstrate utilizing Iterator Cascade
-  Callbacks with asynchronous fetch generator
+- [`examples/mts_node_fetch/`](examples/mts_node_fetch/) ⇒ Demonstrate
+  utilizing Iterator Cascade Callbacks with asynchronous fetch generator
 
 
 ______
@@ -185,7 +185,7 @@ ______
 **Error message example**
 
 ```
-src/index.ts:3:30 - error TS7016: Could not find a declaration file for module '@javascript-utilities/iterator-cas cade-callbacks'. '...' implicitly has an 'any' type.
+src/index.ts:3:30 - error TS7016: Could not find a declaration file for module '@javascript-utilities/iterator-cascade-callbacks'. '...' implicitly has an 'any' type.
 
 Try `npm i --save-dev @types/iterator-cascade-callbacks` if it exists or add a new declaration (.d.ts) file containing `declare module '@javascript-utilities/iterator-cascade-callbacks';`
 
@@ -427,11 +427,7 @@ For further details review full length version of
   https://travis-ci.com/javascript-utilities/iterator-cascade-callbacks
 
 
-[directory__api__iterator_cascade_callbacks]:
-  tree/main/docs/api
+[iterator_cascade_callbacks__docs__api__readme]:
+  docs/api/README.md
   "API documentation generated from source code doc-comments"
-
-[directory__exampes__iterator_cascade_callbacks]:
-  tree/main/examples
-  "TypeScript source code of this repository that is intended to be used by other projects"
 
