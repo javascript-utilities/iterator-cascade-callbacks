@@ -9,6 +9,6 @@ import { SharedConfig as SharedConfig_Base_Types } from './tsup.base.types';
 
 export default defineConfig(
 	Object.assign({}, SharedConfig_Base_Types, {
-		entry: ['ts/synchronous.ts', '!ts/lib', '!ts/__tests__'],
+		entry: ['src/synchronous.ts', '!src/lib', '!src/__tests__'],
 	})
 );

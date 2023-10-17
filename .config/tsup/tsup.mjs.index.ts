@@ -9,6 +9,6 @@ import { SharedConfig as SharedConfig_Base_MJS } from './tsup.base.mjs';
 
 export default defineConfig(
 	Object.assign({}, SharedConfig_Base_MJS, {
-		entry: ['ts/index.ts', '!ts/lib', '!ts/__tests__'],
+		entry: ['src/index.ts', '!src/lib', '!src/__tests__'],
 	})
 );

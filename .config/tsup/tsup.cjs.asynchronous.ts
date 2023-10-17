@@ -9,6 +9,6 @@ import { SharedConfig as SharedConfig_Base_CJS } from './tsup.base.cjs';
 
 export default defineConfig(
 	Object.assign({}, SharedConfig_Base_CJS, {
-		entry: ['ts/asynchronous.ts', '!ts/lib', '!ts/__tests__'],
+		entry: ['src/asynchronous.ts', '!src/lib', '!src/__tests__'],
 	})
 );

@@ -17,7 +17,7 @@ const target = {
 const SharedConfig = Object.assign({}, SharedConfig_Base_All, {
 	outDir: path.resolve(path.join(__dirname, '..', '..', 'targets', target.sub_directory)),
 	format: target.format,
-	entry: ['ts/asynchronous.ts', '!ts/lib', '!ts/__tests__'],
+	entry: ['src/asynchronous.ts', '!src/lib', '!src/__tests__'],
 	/**
 	 * @see {@link NormalizedOptions.dts Spicificly the `DtsConfig` internal type}
 	 */
