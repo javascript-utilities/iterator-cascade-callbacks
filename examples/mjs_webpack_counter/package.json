@@ -1,0 +1,32 @@
+{
+  "name": "mjs_webpack_counter",
+  "version": "0.0.2",
+  "description": "Demonstrate utilizing Iterator Cascade Callbacks with synchronous Counter Iterator",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "webpack",
+    "py-serve": "python3 -m http.server --directory dist --bind 127.0.0.1 8080",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/javascript-utilities/iterator-cascade-callbacks.git"
+  },
+  "keywords": [
+    "example",
+    "iterator"
+  ],
+  "author": "S0AndS0",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/javascript-utilities/iterator-cascade-callbacks/issues"
+  },
+  "homepage": "https://github.com/javascript-utilities/iterator-cascade-callbacks#readme",
+  "dependencies": {
+    "@javascript-utilities/iterator-cascade-callbacks": "file:../../"
+  },
+  "devDependencies": {
+    "webpack-cli": "^5.1.4"
+  },
+  "private": true
+}

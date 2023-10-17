@@ -13,6 +13,9 @@ tsconfig.tsbuildinfo
 ## TypeScript and tsup
 targets
 
+## Examples
+examples/*/dist
+
 ## Vim (BTW™)
 *.swp
 *.swo
