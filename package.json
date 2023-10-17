@@ -1,6 +1,6 @@
 {
   "name": "@javascript-utilities/iterator-cascade-callbacks",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "JavaScript/TypeScript Iterables with Rust-like ergonomics: `.filter`, `.map`, and more!",
   "main": "./targets/mjs/index.mjs",
   "module": "./targets/mjs/index.mjs",
@@ -161,5 +161,9 @@
     "targets/cjs",
     "targets/mjs",
     "targets/types"
-  ]
+  ],
+  "funding": {
+    "type": "individual",
+    "url": "https://liberapay.com/javascript-utilities/"
+  }
 }

@@ -1,4 +1,4 @@
-# Iterator Cascade Callbacks - v1.0.0
+# Iterator Cascade Callbacks - v1.0.1
 
 ## Table of contents
 
@@ -34,4 +34,4 @@
 
 #### Defined in
 
-[src/index.ts:16](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/src/index.ts#L16)
+[src/index.ts:16](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.1/src/index.ts#L16)

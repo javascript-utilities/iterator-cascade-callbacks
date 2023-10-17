@@ -62,7 +62,7 @@ Builds new instance of `Callback_Object` to append to `Iterator_Cascade_Callback
 
 #### Defined in
 
-[src/lib/callback-object-base.ts:23](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/src/lib/callback-object-base.ts#L23)
+[src/lib/callback-object-base.ts:23](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.1/src/lib/callback-object-base.ts#L23)
 
 ## Properties
 
@@ -72,7 +72,7 @@ Builds new instance of `Callback_Object` to append to `Iterator_Cascade_Callback
 
 #### Defined in
 
-[src/lib/callback-object-base.ts:13](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/src/lib/callback-object-base.ts#L13)
+[src/lib/callback-object-base.ts:13](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.1/src/lib/callback-object-base.ts#L13)
 
 ___
 
@@ -82,7 +82,7 @@ ___
 
 #### Defined in
 
-[src/lib/callback-object-base.ts:14](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/src/lib/callback-object-base.ts#L14)
+[src/lib/callback-object-base.ts:14](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.1/src/lib/callback-object-base.ts#L14)
 
 ___
 
@@ -92,4 +92,4 @@ ___
 
 #### Defined in
 
-[src/lib/callback-object-base.ts:15](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/src/lib/callback-object-base.ts#L15)
+[src/lib/callback-object-base.ts:15](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.1/src/lib/callback-object-base.ts#L15)

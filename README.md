@@ -64,7 +64,7 @@ dependency...
 
 
 ```Bash
-npm install iterator-cascade-callbacks
+npm install @javascript-utilities/iterator-cascade-callbacks
 ```
 
 
@@ -72,7 +72,7 @@ npm install iterator-cascade-callbacks
 
 
 ```Bash
-npm install --save-dev iterator-cascade-callbacks
+npm install --save-dev @javascript-utilities/iterator-cascade-callbacks
 ```
 
 
@@ -102,13 +102,13 @@ ______
 
 
 ```typescript
-import { Asynchronous, Synchronous } from 'iterator-cascade-callbacks';
+import { Asynchronous, Synchronous } from '@javascript-utilities/iterator-cascade-callbacks';
 
 import type {
   Asynchronous as Asynchronous_Types,
   Synchronous as Synchronous_Types,
   Shared as Shared_Types
-} from 'iterator-cascade-callbacks';
+} from '@javascript-utilities/iterator-cascade-callbacks';
 ```
 
 
@@ -120,7 +120,7 @@ import type {
 
 
 ```javascript
-const { Asynchronous, Synchronous } = require('iterator-cascade-callbacks');
+const { Asynchronous, Synchronous } = require('@javascript-utilities/iterator-cascade-callbacks');
 ```
 
 

@@ -36,4 +36,4 @@ Error.constructor
 
 #### Defined in
 
-[src/lib/errors.ts:13](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/src/lib/errors.ts#L13)
+[src/lib/errors.ts:13](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.1/src/lib/errors.ts#L13)
