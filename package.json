@@ -1,26 +1,74 @@
 {
-  "name": "iterator-cascade-callbacks",
-  "version": "0.0.6",
-  "description": "Iterator helper methods that enable chaining",
-  "main": "iterator-cascade-callbacks.js",
+  "name": "@javascript-utilities/iterator-cascade-callbacks",
+  "version": "1.0.0",
+  "description": "JavaScript/TypeScript Iterables with Rust-like ergonomics: `.filter`, `.map`, and more!",
+  "main": "./targets/mjs/index.mjs",
+  "module": "./targets/mjs/index.mjs",
+  "types": "./targets/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./targets/types/index.d.ts",
+      "import": "./targets/mjs/index.mjs",
+      "require": "./targets/cjs/index.js"
+    },
+    "./asynchronous": {
+      "types": "./targets/types/asynchronous.d.ts",
+      "import": "./targets/mjs/asynchronous.mjs",
+      "require": "./targets/cjs/asynchronous.js"
+    },
+    "./synchronous": {
+      "types": "./targets/types/synchronous.d.ts",
+      "import": "./targets/mjs/synchronous.mjs",
+      "require": "./targets/cjs/synchronous.js"
+    }
+  },
   "scripts": {
-    "ts-build": "tsc --build",
-    "ts-watch": "tsc --watch",
-    "ci-test": "jest --coverage",
-    "ci-build": "npm run ts-build && npm run ci-test",
-    "ci-watch": "jest --coverage --watchAll"
+    "clean:all": "npm run clean:ci-cd ; npm run clean:cjs ; npm run clean:docs ; npm run clean:mjs ; npm run clean:types ; npm run clean:docs",
+    "clean:ci-cd": "rm -r targets/ci-cd",
+    "clean:cjs": "rm -r targets/cjs",
+    "clean:docs": "rm -r docs/api",
+    "clean:mjs": "rm -r targets/mjs",
+    "clean:types": "rm -r targets/types",
+    "ci:all": "npm run ci:lint && npm run ci:build:all && npm run ci:test",
+    "ci:build:all": "npm run ci:build:code && npm run ci:build:tests",
+    "ci:build:code": "tsc --project .config/tsc/tsconfig.ci-cd.code.json",
+    "ci:build:tests": "tsc --project .config/tsc/tsconfig.ci-cd.tests.json",
+    "ci:check": "tsc --project tsconfig.json --noEmit ",
+    "ci:lint": "eslint ts",
+    "ci:test": "jest --coverage",
+    "docs:all": "npm run docs:api",
+    "docs:api": "typedoc --tsconfig .config/tsc/tsconfig.docs.json",
+    "tsup:all": "npm run tsup:cjs:all && npm run tsup:mjs:all && npm run tsup:types:all",
+    "tsup:cjs:all": "npm run tsup:cjs:index && npm run tsup:cjs:asynchronous && npm run tsup:cjs:synchronous",
+    "tsup:cjs:asynchronous": "tsup --config .config/tsup/tsup.cjs.asynchronous.ts",
+    "tsup:cjs:index": "tsup --config .config/tsup/tsup.cjs.index.ts",
+    "tsup:cjs:synchronous": "tsup --config .config/tsup/tsup.cjs.synchronous.ts",
+    "tsup:mjs:all": "npm run tsup:mjs:index && npm run tsup:mjs:asynchronous && npm run tsup:mjs:synchronous",
+    "tsup:mjs:asynchronous": "tsup --config .config/tsup/tsup.mjs.asynchronous.ts",
+    "tsup:mjs:index": "tsup --config .config/tsup/tsup.mjs.index.ts",
+    "tsup:mjs:synchronous": "tsup --config .config/tsup/tsup.mjs.synchronous.ts",
+    "tsup:types:all": "npm run tsup:types:index && npm run tsup:types:asynchronous && npm run tsup:types:synchronous",
+    "tsup:types:asynchronous": "tsup --config .config/tsup/tsup.types.asynchronous.ts",
+    "tsup:types:index": "tsup --config .config/tsup/tsup.types.index.ts",
+    "tsup:types:synchronous": "tsup --config .config/tsup/tsup.types.synchronous.ts",
+    "prepublishOnly": "npm run clean:all ; npm run ci:all && npm run tsup:all && npm run docs:all"
   },
   "jest": {
     "verbose": true,
     "testEnvironment": "jsdom",
     "roots": [
-      "__tests__"
+      "targets/ci-cd/__tests__"
     ],
     "collectCoverageFrom": [
-      "iterator-cascade-callbacks.js"
+      "targets/ci-cd/asynchronous/*.js",
+      "targets/ci-cd/synchronous/*.js",
+      "targets/ci-cd/lib/**/*.js"
     ],
     "coveragePathIgnorePatterns": [
       "node_modules/"
+    ],
+    "testPathIgnorePatterns": [
+      "targets/ci-cd/__tests__/lib"
     ],
     "coverageThreshold": {
       "global": {
@@ -28,11 +76,45 @@
         "branches": 100,
         "functions": 100,
         "lines": 100
+      },
+      "./*/lib/runtime-types*": {
+        "statements": 0,
+        "branches": 0,
+        "functions": 0,
+        "lines": 0
       }
     },
     "coverageReporters": [
       "text"
     ]
+  },
+  "eslintConfig": {
+    "reportUnusedDisableDirectives": true,
+    "ignorePatterns": [
+      "*/__tests__/**/*"
+    ],
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:@typescript-eslint/recommended-requiring-type-checking",
+      "plugin:@typescript-eslint/strict",
+      "prettier"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "tsconfigRootDir": ".",
+      "project": [
+        "./tsconfig.json"
+      ]
+    },
+    "plugins": [
+      "@typescript-eslint",
+      "eslint-plugin-tsdoc"
+    ],
+    "root": true,
+    "rules": {
+      "tsdoc/syntax": "off"
+    }
   },
   "repository": {
     "type": "git",
@@ -51,10 +133,32 @@
   },
   "homepage": "https://github.com/javascript-utilities/iterator-cascade-callbacks#readme",
   "devDependencies": {
-    "@types/jest": "^26.0.20",
-    "@types/node": "^14.14.20",
-    "jest": "^26.6.3",
-    "ts-jest": "^26.4.4",
-    "typescript": "^4.1.3"
-  }
+    "@types/jest": "^29.5.4",
+    "@types/node": "^20.5.9",
+    "@typescript-eslint/eslint-plugin": "^6.7.4",
+    "@typescript-eslint/parser": "^6.7.4",
+    "eslint": "^8.51.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-tsdoc": "^0.2.17",
+    "jest": "^29.6.4",
+    "jest-environment-jsdom": "^29.6.4",
+    "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.1",
+    "tsup": "^7.2.0",
+    "typedoc": "^0.25.2",
+    "typedoc-plugin-markdown": "^3.16.0",
+    "typedoc-plugin-missing-exports": "^2.1.0",
+    "typescript": "^5.2.2"
+  },
+  "workspaces": [
+    "examples/mts_node_fibonacci",
+    "examples/mjs_webpack_counter",
+    "examples/mts_node_fetch"
+  ],
+  "files": [
+    "docs",
+    "targets/cjs",
+    "targets/mjs",
+    "targets/types"
+  ]
 }

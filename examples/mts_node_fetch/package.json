@@ -1,0 +1,33 @@
+{
+  "name": "mts_node_fetch",
+  "version": "0.0.1",
+  "description": "Demonstrate utilizing Iterator Cascade Callbacks with asynchronous fetch generator",
+  "main": "dist/index.mjs",
+  "devDependencies": {
+    "@types/node": "^20.8.6",
+    "typescript": "^5.2.2"
+  },
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "demo": "node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/javascript-utilities/iterator-cascade-callbacks.git"
+  },
+  "keywords": [
+    "example",
+    "generator"
+  ],
+  "author": "S0AndS0",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/javascript-utilities/iterator-cascade-callbacks/issues"
+  },
+  "dependencies": {
+    "@javascript-utilities/iterator-cascade-callbacks": "file:../../"
+  },
+  "homepage": "https://github.com/javascript-utilities/iterator-cascade-callbacks#readme",
+  "private": true
+}

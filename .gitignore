@@ -1,2 +1,21 @@
-*.swp
+## Development
+dev
+
+## NodeJS
 node_modules
+
+## CI/CD
+coverage
+
+## TypeScript
+tsconfig.tsbuildinfo
+
+## TypeScript and tsup
+targets
+
+## Examples
+examples/*/dist
+
+## Vim (BTW™)
+*.swp
+*.swo

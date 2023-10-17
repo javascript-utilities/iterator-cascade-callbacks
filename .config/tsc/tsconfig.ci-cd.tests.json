@@ -1,0 +1,14 @@
+{
+	"comments": ["This file is intended for use by CI/CD servers"],
+	"extends": "./tsconfig.base.json",
+	"compilerOptions": {
+		"outDir": "../../targets/ci-cd"
+	},
+	"include": [
+		"../../ts/__tests__/*",
+		"../../ts/__tests__/lib",
+		"../../ts/__tests__/synchronous",
+		"../../ts/__tests__/asynchronous"
+	],
+	"exclude": ["../../@types/**/*"]
+}
