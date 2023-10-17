@@ -5,22 +5,23 @@
 	],
 	"extends": "./tsconfig.base.json",
 	"compilerOptions": {
-		"removeComments": false,
-		"outDir": "../../targets/docs"
+		"removeComments": false
 	},
 	"include": ["../../ts/index.ts", "../../@types/**/*"],
 	"exclude": ["../../ts/__tests__/**/*"],
 	"typedocOptions": {
 		"entryPoints": ["../../ts/index.ts"],
-		"out": "../../docs",
-		"plugin": ["typedoc-plugin-markdown", "typedoc-plugin-missing-exports"],
+		"excludeExternals": true,
+		"excludeReferences": true,
+		"gitRevision": "main",
 		"hideBreadcrumbs": true,
 		"hideGenerator": true,
 		"hidePageTitle": false,
 		"hideParameterTypesInTitle": true,
 		"includeVersion": true,
-		"gitRevision": "v1.0.0",
-    "excludeExternals": true,
-		"name": "Iterator Cascade Callbacks"
+		"name": "Iterator Cascade Callbacks",
+		"out": "../../docs/api",
+		"readme": "none",
+		"plugin": ["typedoc-plugin-markdown", "typedoc-plugin-missing-exports"]
 	}
 }
