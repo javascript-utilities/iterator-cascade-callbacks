@@ -34,4 +34,4 @@
 
 #### Defined in
 
-[ts/index.ts:16](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/ts/index.ts#L16)
+[src/index.ts:16](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/src/index.ts#L16)

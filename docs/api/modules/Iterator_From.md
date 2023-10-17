@@ -37,7 +37,7 @@ Converts `Array` to `GeneratorFunction`
 
 #### Defined in
 
-[ts/lib/iterator-from.ts:18](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/ts/lib/iterator-from.ts#L18)
+[src/lib/iterator-from.ts:18](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/src/lib/iterator-from.ts#L18)
 
 ___
 
@@ -67,7 +67,7 @@ Converts Asynchronous Iterator class
 
 #### Defined in
 
-[ts/lib/iterator-from.ts:57](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/ts/lib/iterator-from.ts#L57)
+[src/lib/iterator-from.ts:57](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/src/lib/iterator-from.ts#L57)
 
 ___
 
@@ -97,7 +97,7 @@ Converts Iterator class or `GeneratorFunction` to `Generator`
 
 #### Defined in
 
-[ts/lib/iterator-from.ts:42](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/ts/lib/iterator-from.ts#L42)
+[src/lib/iterator-from.ts:42](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/src/lib/iterator-from.ts#L42)
 
 ___
 
@@ -127,4 +127,4 @@ Converts `Object` to `GeneratorFunction`
 
 #### Defined in
 
-[ts/lib/iterator-from.ts:29](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/ts/lib/iterator-from.ts#L29)
+[src/lib/iterator-from.ts:29](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/src/lib/iterator-from.ts#L29)

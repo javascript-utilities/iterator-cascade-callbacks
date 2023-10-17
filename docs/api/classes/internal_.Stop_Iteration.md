@@ -52,4 +52,4 @@ Error.constructor
 
 #### Defined in
 
-[ts/lib/errors.ts:45](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/ts/lib/errors.ts#L45)
+[src/lib/errors.ts:45](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/src/lib/errors.ts#L45)
