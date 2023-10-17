@@ -3,6 +3,7 @@
 'use strict';
 
 import type { Asynchronous, Shared } from '../../@types/iterator-cascade-callbacks/';
+import type { Callback_Object_Base } from '../lib/callback-object-base';
 
 import { Stop_Iteration, Pause_Iteration } from '../lib/errors.js';
 import * as Iterator_From from '../lib/iterator-from.js';
@@ -19,38 +20,79 @@ import { Callback_Object } from './callback-object.js';
 
 /**
  * Asynchronous Iterator that chains asynchronous iterables and/or callback function execution
+ *
  * @author S0AndS0
  * @license AGPL-3.0
- * @see {link} https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-3.html#async-iteration
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncGenerator MDN -- AsyncGenerator}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncIterator MDN -- AsyncIterator}
+ * @see {@link https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-3.html#async-iteration TypeScript docs -- Async Iteration}
  */
 export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
-	done: boolean;
-
-	yielded_data: Shared.Yielded_Data<Initial_Iterable_Value>;
-
+	/**
+	 * Array of objects that hold pointers to `Asynchronous.Callback_Wrapper` and `Asynchronous.Callback_Function`
+	 *
+	 * @see {@link Callback_Object_Base}
+	 * @see {@link Callback_Object}
+	 * @see {@link Asynchronous.Callback_Wrapper}
+	 * @see {@link Asynchronous.Callback_Function}
+	 */
 	callbacks: Callback_Object<Initial_Iterable_Value, unknown, unknown[], unknown>[];
 
-	state: { paused: boolean; resumed: boolean };
+	/**
+	 * Report when/if instance of `Asynchronous.Iterator_Cascade_Callbacks` is done producing output via `this.next()`
+	 *
+	 * @notes
+	 * - The `.done` property is used by `for (value of iterable)` loops to trigger termination
+	 */
+	done: boolean;
 
+	/**
+	 * Generator that `this.next()` cascades values through `this.callbacks` list
+	 *
+	 * @see {@link Iterator_Cascade_Callbacks.constructor For how this property is assigned}
+	 * @see {@link Iterator_Cascade_Callbacks.next For how iterator values are passed through `this.callbacks` list}
+	 * @see {@link Iterator_From.array For when Array runtime type is detected}
+	 * @see {@link Iterator_From.generator For when Generator runtime type is detected}
+	 * @see {@link Iterator_From.asyncGenerator For when AsyncGenerator or AsyncIterator runtime type is detected}
+	 * @see {@link Iterator_From.object for when Object runtime type is detected}
+	 */
 	iterator:
 		| IterableIterator<Shared.Yielded_Data<Initial_Iterable_Value>>
 		| AsyncGenerator<Shared.Yielded_Data<Initial_Iterable_Value>, void, unknown>;
 
 	/**
+	 * Allow for finer-grain states than `this.done`
+	 * @see {Iterator_Cascade_Callbacks.next For where this is automaticly updated}
+	 */
+	state: { paused: boolean; resumed: boolean };
+
+	/**
+	 *
+	 */
+	yielded_data: Shared.Yielded_Data<Initial_Iterable_Value>;
+
+	/**
 	 * Instantiates new instance of `Iterator_Cascade_Callbacks` from `iterable` input
-	 * @param {unknown} **{unknown}** `iterable` - Currently may be an array, object, generator, iterator, or object that implements `Symbol.asyncIterator` type
+	 *
+	 * @param {unknown} iterable - Currently may be an array, object, generator, iterator, or object that implements `Symbol.asyncIterator` type
+	 *
+	 * @throws {TypeError} when passed unsupported iterables
 	 */
 	constructor(iterable: unknown) {
-		this.done = false;
-		this.yielded_data = new Yielded_Data({
-			content: undefined as unknown as Initial_Iterable_Value,
-			index_or_key: NaN,
-		});
 		this.callbacks = [];
+
+		this.done = false;
+
 		this.state = {
 			paused: false,
 			resumed: false,
 		};
+
+		this.yielded_data = new Yielded_Data({
+			content: undefined as unknown as Initial_Iterable_Value,
+			index_or_key: NaN,
+		});
 
 		if (Array.isArray(iterable)) {
 			/**
@@ -128,7 +170,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 				(iterable as Generator<Initial_Iterable_Value, void, unknown>)[Symbol.iterator]()
 			);
 		} else {
-			throw new TypeError(`Unsuported type of iterable -> ${typeof iterable}`);
+			throw new TypeError(`Unsupported type of iterable -> ${typeof iterable}`);
 		}
 
 		/* https://stackoverflow.com/questions/34517538/setting-an-es6-class-getter-to-enumerable */
@@ -144,11 +186,18 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 
 	/**
 	 * Returns new instance of `Asynchronous.Iterator_Cascade_Callbacks` that yields lists of either `Shared.Yielded_Data` or `undefined` results
+	 *
 	 * @param {unknown[]} iterables - List of Generators, Iterators, and/or instances of `Asynchronous.Iterator_Cascade_Callbacks`
+	 *
 	 * @notes
 	 * - Parameters that are not an instance of `Asynchronous.Iterator_Cascade_Callbacks` will be converted
 	 * - Iteration will continue until **all** iterables result in `done` value of `true`
-	 * @example - Equal Length Iterables
+	 *
+	 * @see {@link Wrappers.zip For implementation details}
+	 *
+	 * @example Equal Length Iterables
+	 *
+	 * ```javascript
 	 * const icca_one = new Asynchronous.Iterator_Cascade_Callbacks([1, 2, 3]);
 	 * const icca_two = new Asynchronous.Iterator_Cascade_Callbacks([4, 5, 6]);
 	 *
@@ -162,8 +211,11 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 *   //> values -> [ 2, 5 ]
 	 *   //> values -> [ 3, 6 ]
 	 * })();
+	 * ```
 	 *
-	 * @example - Unequal Length Iterables
+	 * @example Unequal Length Iterables
+	 *
+	 * ```javascript
 	 * const icca_three = new Asynchronous.Iterator_Cascade_Callbacks([7, 8, 9]);
 	 * const icca_four = new Asynchronous.Iterator_Cascade_Callbacks([10, 11]);
 	 *
@@ -177,26 +229,41 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 *   //> values -> [ 8, 11 ]
 	 *   //> values -> [ 9, undefined ]
 	 * })();
+	 * ```
 	 */
 	static zip(...iterables: unknown[]): Iterator_Cascade_Callbacks {
 		return new this(Wrappers.zip(iterables, this));
-
 	}
 
-	/***/
+	/**
+	 * Get data from `this.yielded_data.content`
+	 *
+	 * @notes
+	 * - Implicitly called by `for (value of iterable)` loops
+	 */
 	get value() {
 		return this.yielded_data.content;
 	}
 
 	/**
 	 * Collects results from `this` to either an Array or Object
+	 *
 	 * @param {unknown[]|Shared.Dictionary|unknown} target - When target is Array values are pushed, when target is Object key value pares are assigned, callback is required for other types
 	 * @param {Asynchronous.Collect_To_Function?|number?} callback_or_amount - Callback function for collecting to custom type, or number to limit collection to
 	 * @param {number?} amount - Limit collection to no more than amount
+	 *
 	 * @return {Promise<unknown[]|Object|unknown>}
+	 *
 	 * @throws {TypeError}
+	 *
+	 * @notes
+	 * - Order of detection for `callback_or_amount` is; `Function`, `Array`, `Object`
+	 *
 	 * @this {Iterator_Cascade_Callbacks}
-	 * @see {@link Asynchronous.Collect_To_Function}
+	 *
+	 * @see {@link Iterator_Cascade_Callbacks.collectToArray For when `Array` instance is detected}
+	 * @see {@link Iterator_Cascade_Callbacks.collectToFunction For when `Function` instance is detected}
+	 * @see {@link Iterator_Cascade_Callbacks.collectToObject For when `Object` instance is detected}
 	 */
 	async collect<
 		/* eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents */
@@ -223,11 +290,19 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 
 	/**
 	 * Collects results from `this.next()` to an Array
+	 *
 	 * @param {unknown[]} target - Array to push collected values to
 	 * @param {number?} amount - Limit collection to no more than amount
+	 *
 	 * @return {Promise<unknown[]>}
+	 *
 	 * @this {Iterator_Cascade_Callbacks}
+	 *
+	 * @see {@link Iterator_Cascade_Callbacks.collect For common entry point}
+	 *
 	 * @example
+	 *
+	 * ```javascript
 	 * const icca = new Asynchronous.Iterator_Cascade_Callbacks([5, 6, 7, 8, 9]);
 	 *
 	 * (async () => {
@@ -240,6 +315,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 *   console.log(collection);
 	 *   //> [ 1, 2, 3, 6, 8 ]
 	 * })();
+	 * ```
 	 */
 	async collectToArray<Target extends unknown[] = unknown[]>(
 		target: Target,
@@ -258,12 +334,22 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 
 	/**
 	 * Collects results from `this.next()` to a callback function target
+	 *
 	 * @param {unknown} target - Any object or primitive, will be passed to `callback` function along with `value` and `index_or_key`
 	 * @param {Asynchronous.Collect_To_Function} callback - Custom callback function for collecting iterated values
 	 * @param {number?} amount - Limit collection to no more than amount
+	 *
 	 * @return {Promise<unknown>} target - The object that callback function has mutated
+	 *
+	 * @see {@link Asynchronous.Collect_To_Function}
+	 *
 	 * @this {Iterator_Cascade_Callbacks}
+	 *
+	 * @see {@link Iterator_Cascade_Callbacks.collect For common entry point}
+	 *
 	 * @example
+	 *
+	 * ```javascript
 	 * const icca = new Asynchronous.Iterator_Cascade_Callbacks({ spam: 'flavored', canned: 'ham' });
 	 *
 	 * const map = new Map();
@@ -276,6 +362,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 *   console.log(collection);
 	 *   //> Map(2) { 'spam' => 'flavored', 'canned' => 'ham' }
 	 * })();
+	 * ```
 	 */
 	async collectToFunction<
 		Target = unknown,
@@ -303,11 +390,19 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 
 	/**
 	 * Collects results from `this.next()` to an Object
+	 *
 	 * @param {Object} target - Dictionary like object to assign key value pares to
 	 * @param {number?} amount - Limit collection to no more than amount
+	 *
 	 * @return {Promise<Object>}
+	 *
 	 * @this {Iterator_Cascade_Callbacks}
+	 *
+	 * @see {@link Iterator_Cascade_Callbacks.collect For common entry point}
+	 *
 	 * @example
+	 *
+	 * ```javascript
 	 * const icca = new Asynchronous.Iterator_Cascade_Callbacks({ spam: 'flavored', canned: 'ham' });
 	 *
 	 * (async () => {
@@ -316,6 +411,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 *   console.log(collection);
 	 *   //> { spam: 'flavored', canned: 'ham' }
 	 * })();
+	 * ```
 	 */
 	async collectToObject<Target extends Shared.Dictionary>(
 		target: Target,
@@ -339,13 +435,20 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	}
 
 	/**
-	 * Returns new instance of `Iterator_Cascade_Callbacks` with copy of callbacks
+	 * Returns new instance of `Iterator_Cascade_Callbacks` with copy of `this.callbacks`
+	 *
 	 * @param {unknown} iterable - Any compatible iterable object, iterator, or generator
+	 *
 	 * @return {Iterator_Cascade_Callbacks}
+	 *
 	 * @this {Iterator_Cascade_Callbacks}
+	 *
 	 * @notes
 	 * - New instance will share references to callback wrapper functions
+	 *
 	 * @example
+	 *
+	 * ```javascript
 	 * const iterable_one = [1, 2, 3, 4, 5];
 	 * const iterable_two = [9, 8, 7, 6, 5];
 	 *
@@ -365,6 +468,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 *   console.log('Collection Two ->', await icca_two.collect([]));
 	 *   //> [ 4, 3 ]
 	 * })();
+	 * ```
 	 */
 	copyCallbacksOnto<T = unknown>(iterable: unknown): Iterator_Cascade_Callbacks<T> {
 		/* eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion */
@@ -386,9 +490,16 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 
 	/**
 	 * Sets `this.value` to `Yielded_Entry` which contains `[this.yielded_data.index_or_key, this.yielded_data.content]`
+	 *
 	 * @return {this}
+	 *
 	 * @this {Iterator_Cascade_Callbacks}
+	 *
+	 * @see {@link Wrappers.entries For implementation details}
+	 *
 	 * @example
+	 *
+	 * ```javascript
 	 * const icca = new Asynchronous.Iterator_Cascade_Callbacks([9, 8, 7, 6, 5]);
 	 *
 	 * (async () => {
@@ -402,6 +513,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 *   console.log(collection);
 	 *   //> [ [ 0, 9 ], [ 3, 6 ] ]
 	 * })();
+	 * ```
 	 */
 	entries<
 		Value = Initial_Iterable_Value,
@@ -420,11 +532,19 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 
 	/**
 	 * Sets `this.value` if callback function returns _truthy_, else consumes `this.iterator` and recomputes value for callback to test
+	 *
 	 * @param {Asynchronous.Callback_Function} callback - Function that determines truth of `value` and/or `index_or_key` for each iteration
 	 * @param {...unknown[]} parameters - List of arguments that are passed to callback on each iteration
+	 *
 	 * @return {this}
+	 *
 	 * @this {Iterator_Cascade_Callbacks}
+	 *
+	 * @see {@link Wrappers.filter For implementation details}
+	 *
 	 * @example
+	 *
+	 * ```javascript
 	 * const icca = new Asynchronous.Iterator_Cascade_Callbacks([9, 8, 7, 6, 5]);
 	 *
 	 * (async () => {
@@ -437,6 +557,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 *   console.log(collection);
 	 *   //> [ 8, 6 ]
 	 * })();
+	 * ```
 	 */
 	filter<
 		Value = Initial_Iterable_Value,
@@ -456,12 +577,19 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 
 	/**
 	 * Executes callback for each iteration
+	 *
 	 * @param {Asynchronous.Callback_Function} callback - Function that generally does not mutate `value` or `index_or_key` for `Iterator_Cascade_Callbacks` instance
 	 * @param {...unknown[]} parameters - List of arguments that are passed to callback on each iteration
+	 *
 	 * @notes
 	 * - If mutation of `value` or `index_or_key` are desired then `map` is a better option
 	 * - No protections are in place to prevent mutation of `value` or `index_or_key` Objects
+	 *
+	 * @see {@link Wrappers.forEach For implementation details}
+	 *
 	 * @example
+	 *
+	 * ```javascript
 	 * const icca = new Asynchronous.Iterator_Cascade_Callbacks([9, 8, 7, 6, 5]);
 	 *
 	 * (async () => {
@@ -474,6 +602,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 *   console.log(collection);
 	 *   //> [ 9, 8, 7, 6, 5 ]
 	 * })();
+	 * ```
 	 */
 	forEach<
 		Value = Initial_Iterable_Value,
@@ -494,9 +623,17 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 
 	/**
 	 * Useful for debugging and inspecting iteration state
+	 *
 	 * @param {Asynchronous.Callback_Function} callback - Function that logs something about each iteration
 	 * @param {...unknown[]} parameters - List of arguments that are passed to callback on each iteration
+	 *
+	 * @this {Iterator_Cascade_Callbacks}
+	 *
+	 * @see {@link Wrappers.inspect For implementation details}
+	 *
 	 * @example
+	 *
+	 * ```javascript
 	 * function inspector(
 	 *   value,
 	 *   index_or_key,
@@ -523,6 +660,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 *     .inspect(inspector)
 	 *     .collect([]);
 	 * })();
+	 * ```
 	 */
 	inspect<Value = unknown, Parameters extends unknown[] = unknown[], Key = Shared.Index_Or_Key>(
 		callback: Asynchronous.Callback_Function<Value, void, Parameters, Key>,
@@ -539,15 +677,25 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 
 	/**
 	 * Stops iteration when limit is reached
+	 *
 	 * @param {number} amount - Max number of values to compute
+	 *
 	 * @return {this}
+	 *
 	 * @throws {Stop_Iteration}
+	 *
 	 * @this {Iterator_Cascade_Callbacks}
+	 *
 	 * @notes
 	 * - Useful when iterating over data of indeterminate, or infinite, length
 	 * - More predictable if ordered at the end of `this.callbacks` list
 	 * - Callbacks exist when `amount` is reached will be called prior to throwing `Stop_Iteration`
+	 *
+	 * @see {@link Wrappers.limit For implementation details}
+	 *
 	 * @example
+	 *
+	 * ```javascript
 	 * const icca = new Asynchronous.Iterator_Cascade_Callbacks([1, 2, 3, 4]);
 	 *
 	 * (async () => {
@@ -556,6 +704,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 *   console.log(collection);
 	 *   //> [1, 2]
 	 * })();
+	 * ```
 	 */
 	limit<
 		Value = unknown,
@@ -574,13 +723,22 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 
 	/**
 	 * Applies `callback` to modify `value` and/or `index_or_key` for each iteration
+	 *
 	 * @param {Asynchronous.Callback_Function} callback - Function may modify `value` and/or `index_or_key`
 	 * @param {...unknown[]} parameters - List of arguments that are passed to callback on each iteration
+	 *
 	 * @return {this}
+	 *
 	 * @this {Iterator_Cascade_Callbacks}
+	 *
 	 * @notes
 	 * - If callback does **not** return `Yielded_Data` (array), then results from callback are used as `value` and initial `index_or_key` is reused
+	 *
+	 * @see {@link Wrappers.map For implementation details}
+	 *
 	 * @example
+	 *
+	 * ```javascript
 	 * const icca = new Asynchronous.Iterator_Cascade_Callbacks([9, 8, 7, 6, 5]);
 	 *
 	 * (async () => {
@@ -596,6 +754,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 *   console.log(collection);
 	 *   //> [4, 3]
 	 * })();
+	 * ```
 	 */
 	map<
 		Value = Initial_Iterable_Value,
@@ -615,10 +774,15 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	}
 
 	/**
-	 * Updates `this.value` from chaining `this.callbacks` list, and `this.done` from `this.iterator.next()`
+	 * Updates `this.yielded_data.content` from chaining `this.callbacks` list, and `this.done` from `this.iterator.next()`
+	 *
 	 * @return {Promise<this>}
+	 *
 	 * @this {Iterator_Cascade_Callbacks}
+	 *
 	 * @example
+	 *
+	 * ```javascript
 	 * const icca = new Asynchronous.Iterator_Cascade_Callbacks([1, 2, 3, 4]);
 	 *
 	 * (async () => {
@@ -630,6 +794,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 *   //> value -> 3
 	 *   //> value -> 4
 	 * })();
+	 * ```
 	 */
 	async next(): Promise<this> {
 		if (this.state.paused) {
@@ -672,7 +837,9 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 
 	/**
 	 * Returns, and removes, last `Callback_Object` from `this.callbacks` list
+	 *
 	 * @return {Callback_Object}
+	 *
 	 * @this {Iterator_Cascade_Callbacks}
 	 */
 	popCallbackObject(): Callback_Object | undefined {
@@ -681,7 +848,9 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 
 	/**
 	 * Removes last `Callback_Object` from `this.callbacks` list and returns `Callback_Wrapper` function
+	 *
 	 * @return {Asynchronous.Callback_Wrapper?}
+	 *
 	 * @this {Iterator_Cascade_Callbacks}
 	 */
 	popCallbackWrapper():
@@ -692,12 +861,15 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 
 	/**
 	 * Instantiates `Callback_Object` with callback_wrapper and pushes to `this.callbacks` via `this.pushCallbackObject`
+	 *
 	 * @param {Object} options
 	 * @param {Asynchronous.Callback_Wrapper} options.wrapper - Wrapper for callback function that parses inputs and outputs
 	 * @param {string} options.name - Callback wrapper name
 	 * @param {Asynchronous.Callback_Function} callback - Generic callback function for parsing and/or mutating iterator data
 	 * @param {...unknown[]} options.parameters - List of arguments that are passed to callback on each iteration
+	 *
 	 * @return {this}
+	 *
 	 * @this {Iterator_Cascade_Callbacks}
 	 */
 	pushCallbackWrapper<
@@ -719,10 +891,18 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 
 	/**
 	 * Skip number of iterations
+	 *
 	 * @param {number} amount - Number of iterations to skip past
+	 *
 	 * @return {this}
+	 *
 	 * @this {Iterator_Cascade_Callbacks}
+	 *
+	 * @see {@link Wrappers.skip For implementation details}
+	 *
 	 * @example
+	 *
+	 * ```javascript
 	 * const icca = new Asynchronous.Iterator_Cascade_Callbacks([0, 1, 2, 3, 4, 5]);
 	 *
 	 * (async () => {
@@ -731,6 +911,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 *   console.log(collection);
 	 *   //> [ 2, 3, 4, 5 ]
 	 * })();
+	 * ```
 	 */
 	skip<
 		Value = Initial_Iterable_Value,
@@ -749,10 +930,18 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 
 	/**
 	 * Step over every _n_ iterations
+	 *
 	 * @param {number} amount - Number of iterations to step over
+	 *
 	 * @return {this}
+	 *
 	 * @this {Iterator_Cascade_Callbacks}
+	 *
+	 * @see {@link Wrappers.step For implementation details}
+	 *
 	 * @example
+	 *
+	 * ```javascript
 	 * const icca = new Asynchronous.Iterator_Cascade_Callbacks([0, 1, 2, 3, 4, 5]);
 	 *
 	 * (async () => {
@@ -761,6 +950,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 *   console.log(collection);
 	 *   //> [ 1, 3, 5 ]
 	 * })();
+	 * ```
 	 */
 	step<Value = unknown, Parameters extends unknown[] = unknown[], Key = Shared.Index_Or_Key>(
 		amount: number
@@ -777,13 +967,23 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 
 	/**
 	 * Pauses/breaks iteration when limit is reached
+	 *
 	 * @param {number} amount - Number of values to compute before pausing
+	 *
 	 * @return {this}
+	 *
 	 * @throws {Pause_Iteration}
+	 *
 	 * @this {Iterator_Cascade_Callbacks}
+	 *
 	 * @notes
 	 * - If immediately collecting to an object, consider using `collect()` method instead
+	 *
+	 * @see {@link Wrappers.take For implementation details}
+	 *
 	 * @example
+	 *
+	 * ```javascript
 	 * const icca = new Asynchronous.Iterator_Cascade_Callbacks([1, 2, 3, 4]);
 	 *
 	 * icca.take(2);
@@ -797,6 +997,7 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	 *   console.log(collection_two);
 	 *   //> [ 3, 4 ]
 	 * })();
+	 * ```
 	 */
 	take<Value = unknown, Parameters extends unknown[] = unknown[], Key = Shared.Index_Or_Key>(
 		amount: number
@@ -822,19 +1023,13 @@ export class Iterator_Cascade_Callbacks<Initial_Iterable_Value = unknown> {
 	#noOpParameters = [];
 
 	/**
-	 * @see {link} https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncIterator
-	 * @see {link} https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#the_async_iterator_and_async_iterable_protocols
+	 * @see {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncIterator}
+	 * @see {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#the_async_iterator_and_async_iterable_protocols}
 	 */
 	[Symbol.asyncIterator]() {
 		return this;
 	}
 }
-
-/**
- * ===========================================================================
- *                  Custom TypeScript interfaces and types
- * ===========================================================================
- */
 
 /**
  * Enable calling `new` and other non-instance methods on `Asynchronous.Iterator_Cascade_Callbacks`

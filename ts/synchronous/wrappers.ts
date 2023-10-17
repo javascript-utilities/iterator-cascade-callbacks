@@ -23,6 +23,7 @@ import { Yielded_Data } from '../lib/runtime-types.js';
 /**
  * @param {any[]} iterables - Almost anything that implements `[Symbol.iterator]` or [Symbol.iterator]
  * @param {Iterator_Cascade_Callbacks__Static} iterator_cascade_callbacks - Uninitialized class that is, or inherits from, `Iterator_Cascade_Callbacks`
+ * @see {@link Iterator_Cascade_Callbacks.zip For usage details}
  */
 export function* zip(
 	iterables: unknown[],
@@ -56,6 +57,7 @@ export function* zip(
 /**
  * @param {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
  * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
+ * @see {@link Iterator_Cascade_Callbacks.entries For usage details}
  */
 export function entries<
 	Value = unknown,
@@ -74,6 +76,7 @@ export function entries<
 /**
  * @param {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
  * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
+ * @see {@link Iterator_Cascade_Callbacks.filter For usage details}
  */
 export function filter<
 	Value = unknown,
@@ -144,6 +147,7 @@ export function filter<
 /**
  * @param {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
  * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
+ * @see {@link Iterator_Cascade_Callbacks.forEach For usage details}
  */
 export function forEach<
 	Value = unknown,
@@ -164,6 +168,7 @@ export function forEach<
 /**
  * @param {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
  * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
+ * @see {@link Iterator_Cascade_Callbacks.inspect For usage details}
  */
 export function inspect<
 	Value = unknown,
@@ -185,6 +190,7 @@ export function inspect<
  * @param {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
  * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
  * @note this expects `callback_object.parameters[0]` to contain the limit
+ * @see {@link Iterator_Cascade_Callbacks.limit For usage details}
  */
 export function limit<
 	Value = unknown,
@@ -221,6 +227,7 @@ export function limit<
 /**
  * @param {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
  * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
+ * @see {@link Iterator_Cascade_Callbacks.map For usage details}
  */
 export function map<
 	Value = unknown,
@@ -252,6 +259,7 @@ export function map<
  * @param {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
  * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
  * @note this expects `callback_object.parameters[0]` to contain the limit
+ * @see {@link Iterator_Cascade_Callbacks.skip For usage details}
  */
 export function skip<
 	Value = unknown,
@@ -300,6 +308,7 @@ export function skip<
  * @param {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
  * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
  * @note this expects `callback_object.parameters[0]` to contain the limit
+ * @see {@link Iterator_Cascade_Callbacks.step For usage details}
  */
 export function step<
 	Value = unknown,
@@ -350,6 +359,7 @@ export function step<
  * @param {Callback_Object} callback_object - Instance reference to `this` of `Callback_Object`
  * @param {Iterator_Cascade_Callbacks} iterator_cascade_callbacks - Instance reference to `this` of `Iterator_Cascade_Callbacks`
  * @note this expects `callback_object.parameters[0]` to contain the limit
+ * @see {@link Iterator_Cascade_Callbacks.take For usage details}
  */
 export function take<
 	Value = unknown,

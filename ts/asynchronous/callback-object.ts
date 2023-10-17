@@ -28,7 +28,7 @@ class Callback_Object<
 	 * @param {string} options.name - Method name that instantiated callback, eg. `"filter"` or `"map"`
 	 * @param {unknown[]} options.parameters - Array of arguments that are passed to callback on each iteration
 	 * @param {Asynchronous.Callback_Function} options.callback - Function that executes for each iteration of `Asynchronous.Iterator_Cascade_Callbacks`
-	 * @param {Asynchronous.Callback_Wrapper} options.wrapper - Function wrapper that handles input/output between `Callback_Function` and `Iterator_Cascade_Callbacks`
+	 * @param {Asynchronous.Callback_Wrapper} options.wrapper - Function wrapper that handles input/output between `Asynchronous.Callback_Function` and `Iterator_Cascade_Callbacks`
 	 * @see {@link Callback_Object_Base#constructor} for `name` and `parameters`
 	 */
 	constructor(options: {

@@ -49,6 +49,11 @@ export function* generator<T = unknown>(
 	}
 }
 
+/**
+ * Converts Asynchronous Iterator class
+ * @param {GeneratorFunction} iterator - Objects with `.next()` or `[Symbol.asyncIterator]()` method defined
+ * @yields {[any, number]}
+ */
 export async function* asyncGenerator<T = unknown>(
 	iterator: AsyncIterable<T>
 ): AsyncGenerator<Shared.Yielded_Data<T, number>, void, unknown> {
