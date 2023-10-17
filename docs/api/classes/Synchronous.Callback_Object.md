@@ -82,7 +82,7 @@ Callback_Object_Base#constructor for `name` and `parameters`
 
 #### Defined in
 
-[ts/synchronous/callback-object.ts:34](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/synchronous/callback-object.ts#L34)
+[ts/synchronous/callback-object.ts:34](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/ts/synchronous/callback-object.ts#L34)
 
 ## Properties
 
@@ -92,7 +92,7 @@ Callback_Object_Base#constructor for `name` and `parameters`
 
 #### Defined in
 
-[ts/synchronous/callback-object.ts:23](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/synchronous/callback-object.ts#L23)
+[ts/synchronous/callback-object.ts:23](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/ts/synchronous/callback-object.ts#L23)
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
 #### Defined in
 
-[ts/lib/callback-object-base.ts:13](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/lib/callback-object-base.ts#L13)
+[ts/lib/callback-object-base.ts:13](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/ts/lib/callback-object-base.ts#L13)
 
 ___
 
@@ -120,7 +120,7 @@ ___
 
 #### Defined in
 
-[ts/lib/callback-object-base.ts:14](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/lib/callback-object-base.ts#L14)
+[ts/lib/callback-object-base.ts:14](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/ts/lib/callback-object-base.ts#L14)
 
 ___
 
@@ -134,7 +134,7 @@ ___
 
 #### Defined in
 
-[ts/lib/callback-object-base.ts:15](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/lib/callback-object-base.ts#L15)
+[ts/lib/callback-object-base.ts:15](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/ts/lib/callback-object-base.ts#L15)
 
 ___
 
@@ -144,7 +144,7 @@ ___
 
 #### Defined in
 
-[ts/synchronous/callback-object.ts:22](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/synchronous/callback-object.ts#L22)
+[ts/synchronous/callback-object.ts:22](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/ts/synchronous/callback-object.ts#L22)
 
 ## Methods
 
@@ -166,4 +166,4 @@ Calls `this.wrapper` function with reference to this `Callback_Object` and `Iter
 
 #### Defined in
 
-[ts/synchronous/callback-object.ts:50](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/ts/synchronous/callback-object.ts#L50)
+[ts/synchronous/callback-object.ts:50](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/ts/synchronous/callback-object.ts#L50)

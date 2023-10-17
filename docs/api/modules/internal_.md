@@ -58,7 +58,7 @@ Generic callback function for parsing and/or mutating iterator data
 
 #### Defined in
 
-[@types/iterator-cascade-callbacks/asynchronous.d.ts:38](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/@types/iterator-cascade-callbacks/asynchronous.d.ts#L38)
+[@types/iterator-cascade-callbacks/asynchronous.d.ts:38](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/@types/iterator-cascade-callbacks/asynchronous.d.ts#L38)
 
 ___
 
@@ -96,7 +96,7 @@ Generic callback function for parsing and/or mutating iterator data
 
 #### Defined in
 
-[@types/iterator-cascade-callbacks/synchronous.d.ts:34](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/@types/iterator-cascade-callbacks/synchronous.d.ts#L34)
+[@types/iterator-cascade-callbacks/synchronous.d.ts:34](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/@types/iterator-cascade-callbacks/synchronous.d.ts#L34)
 
 ___
 
@@ -124,7 +124,7 @@ Object with references to `Iterator_Cascade_Callbacks` and `Callback_Object` ins
 
 #### Defined in
 
-[@types/iterator-cascade-callbacks/asynchronous.d.ts:20](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/@types/iterator-cascade-callbacks/asynchronous.d.ts#L20)
+[@types/iterator-cascade-callbacks/asynchronous.d.ts:20](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/@types/iterator-cascade-callbacks/asynchronous.d.ts#L20)
 
 ___
 
@@ -152,7 +152,7 @@ Object with references to `Iterator_Cascade_Callbacks` and `Callback_Object` ins
 
 #### Defined in
 
-[@types/iterator-cascade-callbacks/synchronous.d.ts:21](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/@types/iterator-cascade-callbacks/synchronous.d.ts#L21)
+[@types/iterator-cascade-callbacks/synchronous.d.ts:21](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/@types/iterator-cascade-callbacks/synchronous.d.ts#L21)
 
 ___
 
@@ -188,7 +188,7 @@ Wrapper for callback function that parses inputs and outputs, and passes paramet
 
 #### Defined in
 
-[@types/iterator-cascade-callbacks/asynchronous.d.ts:51](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/@types/iterator-cascade-callbacks/asynchronous.d.ts#L51)
+[@types/iterator-cascade-callbacks/asynchronous.d.ts:51](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/@types/iterator-cascade-callbacks/asynchronous.d.ts#L51)
 
 ___
 
@@ -224,7 +224,7 @@ Wrapper for callback function that parses inputs and outputs, and passes paramet
 
 #### Defined in
 
-[@types/iterator-cascade-callbacks/synchronous.d.ts:47](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/@types/iterator-cascade-callbacks/synchronous.d.ts#L47)
+[@types/iterator-cascade-callbacks/synchronous.d.ts:47](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/@types/iterator-cascade-callbacks/synchronous.d.ts#L47)
 
 ___
 
@@ -282,7 +282,7 @@ const map = new Map();
 
 #### Defined in
 
-[@types/iterator-cascade-callbacks/asynchronous.d.ts:79](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/@types/iterator-cascade-callbacks/asynchronous.d.ts#L79)
+[@types/iterator-cascade-callbacks/asynchronous.d.ts:79](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/@types/iterator-cascade-callbacks/asynchronous.d.ts#L79)
 
 ___
 
@@ -333,7 +333,7 @@ console.log(collection);
 
 #### Defined in
 
-[@types/iterator-cascade-callbacks/synchronous.d.ts:71](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/@types/iterator-cascade-callbacks/synchronous.d.ts#L71)
+[@types/iterator-cascade-callbacks/synchronous.d.ts:71](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/@types/iterator-cascade-callbacks/synchronous.d.ts#L71)
 
 ___
 
@@ -361,7 +361,7 @@ const data: Dictionary = { key: 'value' };
 
 #### Defined in
 
-[@types/iterator-cascade-callbacks/index.d.ts:13](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/@types/iterator-cascade-callbacks/index.d.ts#L13)
+[@types/iterator-cascade-callbacks/index.d.ts:13](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/@types/iterator-cascade-callbacks/index.d.ts#L13)
 
 ___
 
@@ -386,7 +386,7 @@ const index: Index_Or_Key = 42;
 
 #### Defined in
 
-[@types/iterator-cascade-callbacks/index.d.ts:23](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/@types/iterator-cascade-callbacks/index.d.ts#L23)
+[@types/iterator-cascade-callbacks/index.d.ts:23](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/@types/iterator-cascade-callbacks/index.d.ts#L23)
 
 ___
 
@@ -418,4 +418,4 @@ const result: Yielded_Data = new Yielded_Data({ content: 'spam', index_or_key: 3
 
 #### Defined in
 
-[@types/iterator-cascade-callbacks/index.d.ts:33](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/63bd328/@types/iterator-cascade-callbacks/index.d.ts#L33)
+[@types/iterator-cascade-callbacks/index.d.ts:33](https://github.com/javascript-utilities/iterator-cascade-callbacks/blob/v1.0.0/@types/iterator-cascade-callbacks/index.d.ts#L33)

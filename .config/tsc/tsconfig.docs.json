@@ -13,7 +13,7 @@
 		"entryPoints": ["../../ts/index.ts"],
 		"excludeExternals": true,
 		"excludeReferences": true,
-		"gitRevision": "main",
+		"gitRevision": "v1.0.0",
 		"hideBreadcrumbs": true,
 		"hideGenerator": true,
 		"hidePageTitle": false,
