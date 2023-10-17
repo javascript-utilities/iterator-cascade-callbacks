@@ -4,6 +4,6 @@
 	"compilerOptions": {
 		"outDir": "targets/ci-cd"
 	},
-	"include": ["ts/**/*", "@types/**/*"],
-	"exclude": ["ts/__tests__/**/*"]
+	"include": ["src/**/*", "@types/**/*"],
+	"exclude": ["src/__tests__/**/*"]
 }

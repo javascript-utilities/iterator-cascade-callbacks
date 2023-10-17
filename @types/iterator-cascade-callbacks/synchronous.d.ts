@@ -1,8 +1,8 @@
 // vim: noexpandtab
 
 import { Shared } from './index';
-import type { Iterator_Cascade_Callbacks } from '../../ts/synchronous/iterator-cascade-callbacks';
-import type { Callback_Object } from '../../ts/synchronous/callback-object';
+import type { Iterator_Cascade_Callbacks } from '../../src/synchronous/iterator-cascade-callbacks';
+import type { Callback_Object } from '../../src/synchronous/callback-object';
 
 /**
  * Shared namespace between source code and tests for this repository

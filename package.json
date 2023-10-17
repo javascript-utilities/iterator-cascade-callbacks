@@ -23,10 +23,11 @@
     }
   },
   "scripts": {
-    "clean:all": "npm run clean:ci-cd ; npm run clean:cjs ; npm run clean:docs ; npm run clean:mjs ; npm run clean:types ; npm run clean:docs",
+    "clean:all": "npm run clean:ci-cd ; npm run clean:cjs ; npm run clean:docs ; npm run clean:jest ; npm run clean:mjs ; npm run clean:types",
     "clean:ci-cd": "rm -r targets/ci-cd",
     "clean:cjs": "rm -r targets/cjs",
     "clean:docs": "rm -r docs/api",
+    "clean:jest": "jest --clearCache",
     "clean:mjs": "rm -r targets/mjs",
     "clean:types": "rm -r targets/types",
     "ci:all": "npm run ci:lint && npm run ci:build:all && npm run ci:test",
@@ -34,7 +35,7 @@
     "ci:build:code": "tsc --project .config/tsc/tsconfig.ci-cd.code.json",
     "ci:build:tests": "tsc --project .config/tsc/tsconfig.ci-cd.tests.json",
     "ci:check": "tsc --project tsconfig.json --noEmit ",
-    "ci:lint": "eslint ts",
+    "ci:lint": "eslint src",
     "ci:test": "jest --coverage",
     "docs:all": "npm run docs:api",
     "docs:api": "typedoc --tsconfig .config/tsc/tsconfig.docs.json",
@@ -77,7 +78,7 @@
         "functions": 100,
         "lines": 100
       },
-      "./*/lib/runtime-types*": {
+      "./src/lib/runtime-types.ts": {
         "statements": 0,
         "branches": 0,
         "functions": 0,

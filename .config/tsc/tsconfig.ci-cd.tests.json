@@ -5,10 +5,10 @@
 		"outDir": "../../targets/ci-cd"
 	},
 	"include": [
-		"../../ts/__tests__/*",
-		"../../ts/__tests__/lib",
-		"../../ts/__tests__/synchronous",
-		"../../ts/__tests__/asynchronous"
+		"../../src/__tests__/*",
+		"../../src/__tests__/lib",
+		"../../src/__tests__/synchronous",
+		"../../src/__tests__/asynchronous"
 	],
 	"exclude": ["../../@types/**/*"]
 }

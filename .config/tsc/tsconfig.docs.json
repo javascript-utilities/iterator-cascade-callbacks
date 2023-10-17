@@ -7,10 +7,10 @@
 	"compilerOptions": {
 		"removeComments": false
 	},
-	"include": ["../../ts/index.ts", "../../@types/**/*"],
-	"exclude": ["../../ts/__tests__/**/*"],
+	"include": ["../../src/index.ts", "../../@types/**/*"],
+	"exclude": ["../../src/__tests__/**/*"],
 	"typedocOptions": {
-		"entryPoints": ["../../ts/index.ts"],
+		"entryPoints": ["../../src/index.ts"],
 		"excludeExternals": true,
 		"excludeReferences": true,
 		"gitRevision": "main",
