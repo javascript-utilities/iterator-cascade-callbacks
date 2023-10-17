@@ -113,7 +113,9 @@
       "eslint-plugin-tsdoc"
     ],
     "root": true,
-    "rules": {}
+    "rules": {
+      "tsdoc/syntax": "off"
+    }
   },
   "repository": {
     "type": "git",
