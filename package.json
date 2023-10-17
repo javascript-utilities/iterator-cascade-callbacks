@@ -50,7 +50,6 @@
     "tsup:types:asynchronous": "tsup --config .config/tsup/tsup.types.asynchronous.ts",
     "tsup:types:synchronous": "tsup --config .config/tsup/tsup.types.synchronous.ts",
     "tsup:all": "npm run tsup:cjs:all && npm run tsup:mjs:all",
-    "py-serve": "python3 -m http.server --bind 127.0.0.1 9080",
     "prepublishOnly": "npm clean:all && npm ci:all && npm run tsup:all && npm docs",
     "publish": "echo publish",
     "postpublish": "echo postpublish"

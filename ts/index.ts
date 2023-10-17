@@ -22,4 +22,4 @@ const Shared = {
 	Stop_Iteration,
 };
 
-export { Asynchronous, Shared, Synchronous };
+export { Asynchronous, Iterator_From, Shared, Synchronous };

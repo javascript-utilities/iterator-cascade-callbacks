@@ -3,6 +3,8 @@
 'use strict';
 
 import type { Asynchronous, Shared } from '../../@types/iterator-cascade-callbacks/';
+
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 import type { Callback_Object_Base } from '../lib/callback-object-base';
 
 import { Stop_Iteration, Pause_Iteration } from '../lib/errors.js';
